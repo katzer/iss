@@ -20,16 +20,32 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-compile: &defaults
-  dockerfile: Dockerfile.musl
-  environment:
-    MRUBY_CONFIG: build_config.musl.rb
-bintest:
-  <<: *defaults
-clean:
-  <<: *defaults
-shell:
-  <<: *defaults
-  command: sh
-release:
-  <<: *defaults
+root '/iss/index.html'
+
+get '/iss' do
+  render redirect: '/iss/index.html'
+end
+
+# get '/fifa' do |r|
+#   query = ['--no-color'] + r.query.split(/&|%20/)
+#   query.unshift '-f=json' unless r.query.include? '-f='
+
+#   output, = Open3.capture3('fifa', *query)
+
+#   if query - %w[-p -v -h] != query
+#     html output
+#   elsif query - %w[-c -t] != query
+#     json output.split("\n")
+#   elsif !query.include?('-f=json')
+#     json output.split("\n")
+#   else
+#     json "[#{output.split("\n").join(',')}]"
+#   end
+# end
+
+get '/api/jobs', controller: JobsController, action: 'jobs'
+get '/api/jobs/{job_id}/reports', controller: JobsController, action: 'reports'
+get '/api/jobs/{job_id}/reports/{report_id}/results', controller: JobsController, action: 'results'
+
+get '/api/lfv/{planet_id}/files', controller: LFVController, action: 'files'
+get '/api/lfv/{planet_id}/files/{file_path}', controller: LFVController, action: 'file'

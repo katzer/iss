@@ -20,35 +20,11 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-opt! :help do
-  <<-usage
-
-#{Orbit::LOGO}
-
-usage: iss [options...]
-Options:
--e, --environment The environment to run the server with.
--h, --host        The host to bind the local server on.
-                  Defaults to: 0.0.0.0
--p, --port        The port number to start the local server on.
-                  Defaults to: 1974
--h, --help        This help text
--v, --version     Show version number
-usage
-end
-
-opt! :version do
-  "v#{ISS::VERSION} - #{OS.sysname} #{OS.bits(:binary)}-Bit (#{OS.machine})"
-end
-
-opt :environment, 'development' do |env|
-  ENV['SHELF_ENV'] = env
-end
-
-opt :port, 1974 do |port|
-  set :port, port.to_i
-end
-
-opt :host, 'localhost' do |host|
-  set :host, host
+class Planet
+  # Find planet by id.
+  #
+  # @return [ Hash ]
+  def self.find(id)
+    ORBIT_FILE.find { |planet| planet['id'] == id }
+  end
 end

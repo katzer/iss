@@ -20,16 +20,9 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-compile: &defaults
-  dockerfile: Dockerfile.musl
-  environment:
-    MRUBY_CONFIG: build_config.musl.rb
-bintest:
-  <<: *defaults
-clean:
-  <<: *defaults
-shell:
-  <<: *defaults
-  command: sh
-release:
-  <<: *defaults
+if ENV.include? 'ORBIT_HOME'
+  # Folder where to find all static assets, e.g. the web app
+  document_root File.join(ENV['ORBIT_HOME'], 'public'), urls: ['/iss']
+  # Folder where to write logs
+  log_folder File.join(ENV['ORBIT_HOME'], 'logs'), 'iss.log'
+end

@@ -20,7 +20,7 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-module Orbit
+module ISS
   # Colorized ORBIT logo
   LOGO = <<-logo.set_color(OS.posix? ? 208 : :light_yellow).freeze
           `-/++++++/:-`

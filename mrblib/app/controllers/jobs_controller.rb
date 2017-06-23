@@ -20,38 +20,35 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-get '/iss' do
-  render redirect: '/iss/index.html'
-end
+class JobsController < Yeah::Controller
+  # Render all jobs foind under the jobs folder.
+  #
+  # @return [ Void ]
+  def jobs
+    render json: Job.find_all.map!(&:to_h)
+  end
 
-# get '/fifa' do |r|
-#   query = ['--no-color'] + r.query.split(/&|%20/)
-#   query.unshift '-f=json' unless r.query.include? '-f='
+  # Render all reports for a given job.
+  #
+  # @param [ String ] job_id The ID of the job to look for.
+  #
+  # @return [ Void ]
+  def reports(job_id)
+    job = Job.find(job_id)
 
-#   output, = Open3.capture3('fifa', *query)
+    job ? render(json: job.reports.map!(&:to_h)) : render(404)
+  end
 
-#   if query - %w[-p -v -h] != query
-#     html output
-#   elsif query - %w[-c -t] != query
-#     json output.split("\n")
-#   elsif !query.include?('-f=json')
-#     json output.split("\n")
-#   else
-#     json "[#{output.split("\n").join(',')}]"
-#   end
-# end
+  # Render all results for a given job and report.
+  #
+  # @param [ String ] job_id    The ID of the job to look for.
+  # @param [ String ] report_id The ID of the report to look for.
+  #
+  # @return [ Void ]
+  def results(job_id, report_id)
+    job    = Job.find(job_id)
+    report = job.reports.find { |r| r.id == report_id } if job
 
-get '/api/jobs' do
-  render json: Orbit::Job.find_all.map!(&:to_h)
-end
-
-get '/api/jobs/{job_id}/reports' do |job_id|
-  job = Orbit::Job.find(job_id)
-  job ? render(json: job.reports.map!(&:to_h)) : render(404)
-end
-
-get '/api/jobs/{job_id}/reports/{report_id}/results' do |job_id, report_id|
-  job    = Orbit::Job.find(job_id)
-  report = job.reports.find { |r| r.id == report_id } if job
-  report ? render(json: report.results.map!(&:to_h)) : render(404)
+    report ? render(json: report.results.map!(&:to_h)) : render(404)
+  end
 end

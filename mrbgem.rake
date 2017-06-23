@@ -20,7 +20,7 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-require_relative 'mrblib/iss/version'
+require_relative 'mrblib/version'
 
 MRuby::Gem::Specification.new('iss') do |spec|
   spec.license = 'Apache 2.0'

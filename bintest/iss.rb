@@ -21,7 +21,7 @@
 # @APPPLANT_LICENSE_HEADER_END@
 
 require 'open3'
-require_relative '../mrblib/iss/version'
+require_relative '../mrblib/version'
 
 ENV['ORBIT_HOME'] = __dir__
 ENV['ORBIT_FILE'] = File.expand_path('config/orbit.json', __dir__)

@@ -20,26 +20,35 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-raise '$ORBIT_HOME not set' unless ENV['ORBIT_HOME']
-raise '$ORBIT_FILE not set' unless ENV['ORBIT_FILE']
+opt! :help do
+  <<-usage
 
-module Orbit
-  ORBIT_HOME     = ENV['ORBIT_HOME']
-  ORBIT_FILE     = JSON.parse(IO.read(ENV['ORBIT_FILE']))
-  JOBS_FOLDER    = File.join(ORBIT_HOME, 'jobs').freeze
-  REPORTS_FOLDER = File.join(ORBIT_HOME, 'reports').freeze
+#{ISS::LOGO}
 
-  # Find planet by id.
-  #
-  # @return [ Hash ]
-  def self.find_planet(id)
-    ORBIT_FILE.find { |planet| planet['id'] == id }
-  end
+usage: iss [options...]
+Options:
+-e, --environment The environment to run the server with.
+-h, --host        The host to bind the local server on.
+                  Defaults to: 0.0.0.0
+-p, --port        The port number to start the local server on.
+                  Defaults to: 1974
+-h, --help        This help text
+-v, --version     Show version number
+usage
 end
 
-# $stdout.close
-# $stderr.close
+opt! :version do
+  "v#{ISS::VERSION} - #{OS.sysname} #{OS.bits(:binary)}-Bit (#{OS.machine})"
+end
 
-# Dir.mkdir Orbit::LOGS_FOLDER unless Dir.exist? Orbit::LOGS_FOLDER
-# $stdout = File.new "#{Orbit::LOGS_FOLDER}/iss.log", 'w'
-# $stderr = File.new "#{Orbit::LOGS_FOLDER}/iss.err", 'w'
+opt :environment, 'development' do |env|
+  ENV['SHELF_ENV'] = env
+end
+
+opt :port, 1974 do |port|
+  set :port, port.to_i
+end
+
+opt :host, 'localhost' do |host|
+  set :host, host
+end

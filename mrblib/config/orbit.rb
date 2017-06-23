@@ -20,11 +20,10 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-# Folder where to find all static assets, e.g. the web app
-document_root File.join(ENV['ORBIT_HOME'], 'public'), urls: ['/iss']
+raise '$ORBIT_HOME not set' unless ENV['ORBIT_HOME']
+raise '$ORBIT_FILE not set' unless ENV['ORBIT_FILE']
 
-# Folder where to write logs
-log_folder File.join(ENV['ORBIT_HOME'], 'logs'), 'iss.log'
-
-# Default entry point for "GET /"
-root '/iss/index.html'
+ORBIT_HOME     = ENV['ORBIT_HOME']
+ORBIT_FILE     = JSON.parse(IO.read(ENV['ORBIT_FILE']))
+JOBS_FOLDER    = File.join(ORBIT_HOME, 'jobs').freeze
+REPORTS_FOLDER = File.join(ORBIT_HOME, 'reports').freeze

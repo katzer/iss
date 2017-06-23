@@ -24,6 +24,10 @@ compile: &defaults
   build: .
   volumes:
     - .:/home/mruby/code:rw
+  environment:
+    ORBIT_HOME: /home/mruby/code/bintest/config
+    ORBIT_FILE: /home/mruby/code/bintest/config/orbit.json
+    MRUBY_VERSION: ${MRUBY_VERSION}
   command: rake compile
 bintest:
   <<: *defaults
