@@ -56,6 +56,36 @@ assert('usage [--help]') do
   assert_include output, 'usage'
 end
 
+assert('usage [--port]') do
+  begin
+    _, output, status = Open3.popen2(BINARY, '--port', '8888')
+
+    assert_include output.gets, 'http://localhost:8888'
+  ensure
+    Process.kill :KILL, status.pid
+  end
+end
+
+assert('usage [-p]') do
+  begin
+    _, output, status = Open3.popen2(BINARY, '-p', '8889')
+
+    assert_include output.gets, 'http://localhost:8889'
+  ensure
+    Process.kill :KILL, status.pid
+  end
+end
+
+assert('usage [--host]') do
+  begin
+    _, output, status = Open3.popen2(BINARY, '--host', '0.0.0.0')
+
+    assert_include output.gets, 'http://0.0.0.0:'
+  ensure
+    Process.kill :KILL, status.pid
+  end
+end
+
 assert('unknown flag') do
   _, output, status = Open3.capture3(BINARY, '-unknown')
 

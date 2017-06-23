@@ -1,5 +1,6 @@
 mruby/
 releases/
 packages/
+bintest/logs/
 
 public
