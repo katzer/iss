@@ -23,6 +23,9 @@
 require 'open3'
 require_relative '../mrblib/iss/version'
 
+ENV['ORBIT_HOME'] = __dir__
+ENV['ORBIT_FILE'] = File.expand_path('config/orbit.json', __dir__)
+
 BINARY = File.expand_path('../mruby/bin/iss', __dir__)
 
 assert('version [-v]') do
