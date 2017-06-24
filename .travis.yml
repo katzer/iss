@@ -19,7 +19,7 @@ matrix:
   - env: MRUBY_VERSION=head
 
 before_script:
-- chmod u+x bin/*
+- chmod u+x scripts/*
 
 script:
 - "[[ $TRAVIS_COMMIT_MESSAGE == *\\[ci-compile\\]* ]] && scripts/compile || echo 'skip compile'"
