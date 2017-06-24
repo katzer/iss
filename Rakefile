@@ -157,8 +157,8 @@ def in_a_docker_container?
   $?.success?
 end
 
-MRuby.targets.keep_if { |_, t| t.bintest_enabled? } if ARGV[0] == 'test:bintest'
-MRuby.targets.keep_if { |_, t| t.test_enabled? }    if ARGV[0] == 'test:mtest'
+MRuby.targets.keep_if { |_, t| t.bintest_enabled? } if ['test:bintest', 'test'].include? ARGV[0]
+MRuby.targets.keep_if { |_, t| t.test_enabled? }    if ['test:mtest', 'test'].include? ARGV[0]
 MRuby.targets.keep_if { |n, _| n == 'host' }        if ENV['MRUBY_CLI_LOCAL']
 
 if ENV['MRUBY_CLI_LOCAL'] || ARGV[0].start_with?('test')

@@ -22,11 +22,11 @@ before_script:
 - chmod u+x bin/*
 
 script:
-- "[[ $TRAVIS_COMMIT_MESSAGE == *\\[ci-compile\\]* ]] && bin/compile || echo 'skip compile'"
-- bin/bintest
+- "[[ $TRAVIS_COMMIT_MESSAGE == *\\[ci-compile\\]* ]] && scripts/compile || echo 'skip compile'"
+- scripts/test
 
 before_deploy:
-- bin/release
+- scripts/release
 - mruby/build/x86_64-pc-linux-gnu-glibc-2.12/bin/fifa -v
 - mruby/build/x86_64-pc-linux-gnu/bin/fifa -v
 - export BUILD_VERSION=`rake local:version`

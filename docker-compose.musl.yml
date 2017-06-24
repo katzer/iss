@@ -24,7 +24,7 @@ compile: &defaults
   dockerfile: Dockerfile.musl
   environment:
     MRUBY_CONFIG: build_config.musl.rb
-bintest:
+test:
   <<: *defaults
 clean:
   <<: *defaults

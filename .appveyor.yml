@@ -46,4 +46,4 @@ build_script:
 
 test_script:
 - DEL mruby\mrbgems\mruby-compiler\bintest\*.rb
-- rake test:bintest
+- rake test

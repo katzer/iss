@@ -24,7 +24,7 @@ compile: &defaults
   dockerfile: Dockerfile.glibc-2.12
   environment:
     MRUBY_CONFIG: build_config.glibc-2.12.rb
-bintest:
+test:
   <<: *defaults
 clean:
   <<: *defaults

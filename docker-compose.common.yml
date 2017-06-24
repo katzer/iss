@@ -29,9 +29,9 @@ compile: &defaults
     ORBIT_FILE: /home/mruby/code/bintest/config/orbit.json
     MRUBY_VERSION: ${MRUBY_VERSION}
   command: rake compile
-bintest:
+test:
   <<: *defaults
-  command: rake test:bintest
+  command: rake test
 clean:
   <<: *defaults
   command: rake clean

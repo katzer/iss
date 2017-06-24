@@ -71,7 +71,7 @@ Affer this command finishes, you'll see the /releases for each target in the rel
 
 To run all tests:
 
-    $ scripts/bintest
+    $ scripts/test
 
 
 ## Contributing
