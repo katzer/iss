@@ -3,3 +3,5 @@
 /packages
 /bintest/logs
 /public
+
+.DS_Store

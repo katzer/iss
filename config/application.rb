@@ -27,3 +27,8 @@ ORBIT_HOME     = ENV['ORBIT_HOME']
 ORBIT_FILE     = JSON.parse(IO.read(ENV['ORBIT_FILE']))
 JOBS_FOLDER    = File.join(ORBIT_HOME, 'jobs').freeze
 REPORTS_FOLDER = File.join(ORBIT_HOME, 'reports').freeze
+
+# Folder where to find all static assets, e.g. the web app
+document_root File.join(ORBIT_HOME, 'public'), urls: ['/iss']
+# Folder where to write logs
+log_folder File.join(ORBIT_HOME, 'logs'), 'iss.log'
