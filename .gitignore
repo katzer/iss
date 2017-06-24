@@ -1,6 +1,5 @@
-mruby/
-releases/
-packages/
-bintest/logs/
-
-public
+/mruby
+/releases
+/packages
+/bintest/logs
+/public

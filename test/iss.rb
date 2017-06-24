@@ -38,7 +38,7 @@ assert 'GET /index.html', 'redirects to iss/index.html' do
   assert_equal '/iss/index.html', headers['Location']
 end
 
-assert 'GET /iss/index.html', 'redirects to iss/index.html' do
+assert 'GET /iss/index.html' do
   code, _, body = app.call env_for('/iss/index.html')
 
   assert_equal 200, code
