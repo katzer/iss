@@ -22,7 +22,7 @@
 
 root '/iss/index.html'
 
-get '/iss' do
+get '/index.html' do
   render redirect: '/iss/index.html'
 end
 

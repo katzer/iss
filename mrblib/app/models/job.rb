@@ -25,6 +25,8 @@ class Job
   #
   # @return [ Array<String> ]
   def self.find_ids
+    return [] unless Dir.exist? JOBS_FOLDER
+
     Dir.entries(JOBS_FOLDER)
        .keep_if { |f| f.end_with? '.json' }
        .map! { |f| f.chomp! '.json' }
@@ -66,13 +68,6 @@ class Job
 
   attr_reader :id
 
-  # The absolute path to the job file.
-  #
-  # @return [ String ]
-  def path
-    File.join(JOBS_FOLDER, "#{id}.json")
-  end
-
   # Converts the report into a hash struct.
   #
   # @return [ Hash ]
@@ -84,7 +79,11 @@ class Job
   #
   # @return [ Array<Report> ]
   def reports
-    Dir.entries(File.join(REPORTS_FOLDER, @id))
+    dir = File.join(REPORTS_FOLDER, @id)
+
+    return [] unless Dir.exist? dir
+
+    Dir.entries(dir)
        .keep_if { |f| f.end_with? '.json' }
        .map! { |f| Report.new(f.chomp!('.json'), @id) }
   end

@@ -25,7 +25,7 @@ class JobsController < Yeah::Controller
   #
   # @return [ Void ]
   def jobs
-    render json: Job.find_all.map!(&:to_h)
+    render json: Job.find_all.map(&:to_h)
   end
 
   # Render all reports for a given job.
@@ -36,7 +36,7 @@ class JobsController < Yeah::Controller
   def reports(job_id)
     job = Job.find(job_id)
 
-    job ? render(json: job.reports.map!(&:to_h)) : render(404)
+    job ? render(json: job.reports.map(&:to_h)) : render(404)
   end
 
   # Render all results for a given job and report.
@@ -49,6 +49,6 @@ class JobsController < Yeah::Controller
     job    = Job.find(job_id)
     report = job.reports.find { |r| r.id == report_id } if job
 
-    report ? render(json: report.results.map!(&:to_h)) : render(404)
+    report ? render(json: report.results.map(&:to_h)) : render(404)
   end
 end

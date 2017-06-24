@@ -1,31 +1,9 @@
 [
     {
-        "id": "my-app",
-        "name": "Server",
+        "id": "sample-planet",
+        "name": "Sample Planet",
         "type": "server",
         "user": "user1",
         "url": "url1.de"
-    },
-    {
-        "id": "my-db",
-        "name": "Database",
-        "server": "my-app",
-        "db": "OP_DB",
-        "type": "db",
-        "user": "user1",
-        "url": "url_url1.bla.blergh.de",
-        "host": "host1.bla",
-        "port": 666,
-        "sid": "horst1"
-    },
-    {
-        "id": "my-web",
-        "name": "Webserver",
-        "type": "web",
-        "user": "user1",
-        "url": "https://url.1.net",
-        "tags": [
-            "gfv3", "sles11"
-        ]
     }
 ]
