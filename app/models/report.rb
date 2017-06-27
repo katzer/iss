@@ -45,8 +45,11 @@ class Report
     "#{@id.gsub('_', ':')}Z" # rubocop:disable Performance/StringReplacement
   end
 
+  # Max. list of columns extracted from linked result set.
+  #
+  # @return [ Array<String> ]
   def columns
-    ['planet'] + results.sort_by { |res| res.rows.count }.last.rows.keys
+    ['planet'] + results[0].rows.keys
   end
 
   # Converts the report into a hash struct.
@@ -73,6 +76,11 @@ class Report
   #
   # @return [ Array<ReportResult> ]
   def results
-    raw_results.map! { |row| Result.new(@job_id, @id, row) }
+    res  = raw_results.map! { |row| Result.new(@job_id, @id, row) }
+    cols = {}
+
+    res.each { |r| cols.merge! r.rows }
+    res.each { |r| cols.each { |col,| r.rows[col] ||= '-' } }
+    res
   end
 end
