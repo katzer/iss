@@ -68,9 +68,22 @@ class Planet
 
   # Returns specified logfile
   #
-  # @return [Logfile]
-  def logfile(log_id)
-    Logfile.new(log_id, @id)
+  # @return [ Logfile ]
+  def logfile(file_name)
+    i = 0
+    log_file = File.join(Log_Config.logs_folder, file_name)
+    query = "ski -c=\"cat #{log_file}\"  #{@planet_id}"
+
+    output = %x[ #{query} ]
+    split_list = output.split("\n")
+    split_list.map!{ |f|
+      f = Logfile.new(log_file, @id, i, f)
+      i += 1
+      f
+      # TODO schöner?
+    }
+    # output, = Open3.capture3('ski', query)
+
   end
 
 end

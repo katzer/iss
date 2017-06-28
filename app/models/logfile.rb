@@ -25,13 +25,14 @@ class Logfile
   # Initializes a job report by id and its job id.
   #
   # @return [ Orbit::Report ]
-  def initialize(id, planet_id)
+  def initialize(id, planet_id, line, content)
     @id         = id
     @planet_id  = planet_id
-    @data       = get_data(id)
+    @line       = line
+    @content    = content
   end
 
-  attr_reader :job_id, :report_id
+  attr_reader :id, :planet_id, :line, :content
 
   # The id of the planet.
   #
@@ -47,30 +48,6 @@ class Logfile
     Orbit.find_planet(planet_id)['name']
   end
 
-  # The parsed output values.
-  #
-  # @return [ Map ]
-  def rows
-    @rows ||= JSON.parse(@data['output'])
-                  .map        { |r| r.delete_if(&:empty?) }
-                  .keep_if    { |r| r.size == 2 }
-                  .each_with_object({}) { |r, row| row[r[0]] = r[1] }
-  end
-
-  # Returns specific logfile
-  #
-  # @param [ String ] file_name of desired logfile
-  #
-  # @return [ String ]
-  def get_data(file_name)
-    query = "ski -c=\"cat #{Log_Config.logs_folder}#{file_name}\"  #{@planet_id}"
-
-    output = %x[ #{query} ]
-    # output, = Open3.capture3('ski', query)
-
-    output
-  end
-
   # Converts the report into a hash struct.
   #
   # @return [ Hash ]
@@ -78,7 +55,8 @@ class Logfile
     {
       id:         @id,
       planet_id:  @planet_id,
-      data:       get_data(@id)
+      line:       @line,
+      content:    @content
     }
   end
 end

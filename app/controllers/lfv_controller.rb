@@ -41,6 +41,6 @@ class LFVController < Yeah::Controller
     file_id = params['file_id']
     planet  = Planet.find(planet_id)
     logfile = planet.logfile(file_id) if planet
-    logfile ? render(json: logfile.to_h) : render(401)
+    logfile ? render(json: logfile.map!(&:to_h)) : render(401)
   end
 end
