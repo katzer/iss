@@ -21,10 +21,56 @@
 # @APPPLANT_LICENSE_HEADER_END@
 
 class Planet
-  # Find planet by id.
+
+  # Find a planet by id.
   #
-  # @return [ Hash ]
+  # @param [ String ] id The planet id.
+  #
+  # @return [ Planet ]
   def self.find(id)
-    ORBIT_FILE.find { |planet| planet['id'] == id }
+    new(id) if exist? id
   end
+
+  # Check if a planet exists.
+  #
+  # @param [ String ] id The planet id to check for.
+  #
+  # @return [ Boolean ]
+  def self.exist?(id)
+    planet = ORBIT_FILE.find { |planet| planet['id'] == id }
+    planet ? true : false
+  end
+
+  # Private Initializer for a planet by id.
+  #
+  # @param [ String ] id The planet id.
+  #
+  # @return [ Planet ]
+  def initialize(id)
+    @id = id.to_s
+  end
+
+  attr_reader :id
+
+  # List of reports associated to the planet.
+  #
+  # @return [ Logfile_List ]
+  def logfile_list
+      query = "ski -c=\"ls -1 #{Log_Config.logs_folder}\" #{@id}"
+
+
+      output = %x[ #{query} ]
+      # output, = Open3.capture3('ski', query)
+
+      split_list = output.split("\n")
+      split_list.map!{ |f| f = Logfile_List.new(Log_Config.logs_folder, @id, f) }
+  end
+
+  # Returns specified logfile
+  #
+  # @return [Logfile]
+  def logfile(log_id)
+    Logfile.new(log_id, @id)
+  end
+
 end

@@ -20,27 +20,21 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-class LFVController < Yeah::Controller
-  # Render a list of all log files.
-  #
-  # @param [ String ] planet_id The ID of the planet where to look for.
-  #
-  # @return [ Void ]
-  def files(planet_id)
-    planet = Planet.find(planet_id)
-    planet ? render(json: planet.logfile_list.map!(&:to_h)) : render(400)
+
+class Log_Config
+
+
+
+  def self.extension
+    CONFIG_FILE['extension']
   end
 
-  # Render the content of a log file.
-  #
-  # @param [ String ] planet_id The ID of the planet where to look for.
-  # @param [ String ] file_path   The id or path of the file to render.
-  #
-  # @return [ Void ]
-  def file(planet_id)
-    file_id = params['file_id']
-    planet  = Planet.find(planet_id)
-    logfile = planet.logfile(file_id) if planet
-    logfile ? render(json: logfile.to_h) : render(401)
+  def self.catable?
+    CONFIG_FILE['catable']
   end
+
+  def self.logs_folder
+    CONFIG_FILE['logs_folder']
+  end
+
 end

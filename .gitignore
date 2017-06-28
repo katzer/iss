@@ -3,5 +3,8 @@
 /packages
 /bintest/logs
 /public
+/utilsScripts
 
 .DS_Store
+
+/todo
