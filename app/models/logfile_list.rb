@@ -38,18 +38,7 @@ class Logfile_List
   # # @return [ String ]
   # def path
   #   File.join(REPORTS_FOLDER, @job_id, "#{id}.json")
-  # end
-  #
-  # # The timestamp when the report was created.
-  # #
-  # # @return [ String ]
-  # def timestamp
-  #   "#{@id.gsub('_', ':')}Z" # rubocop:disable Performance/StringReplacement
-  # end
-  #
-  # def columns
-  #   ['planet'] + results.sort_by { |res| res.rows.count }.last.rows.keys
-  # end
+  # end TODO reimplement
 
   # Converts the report into a hash struct.
   #
@@ -61,20 +50,5 @@ class Logfile_List
       name:       @name
     }
   end
-
-  # # The raw result rows as seen in the report file.
-  # #
-  # # @return [ Array<Hash> ]
-  # def raw_results
-  #   JSON.parse(IO.read(path))['planets']
-  # end
-
-  # # List of all report results.
-  # #
-  # # @return [ Array<Orbit::ReportResult> ]
-  # def results
-  #   raw_results.map! { |row| Result.new(@job_id, @id, row) }
-  # end
-
 
 end
