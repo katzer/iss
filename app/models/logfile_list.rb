@@ -26,7 +26,7 @@ class Logfile_List
   #
   # @return [ Orbit::Report ]
   def initialize(path, planet_id, logfile_name)
-    @id         = File.join(path, logfile_name).freeze
+    @id         = path
     @planet_id  = planet_id
     @name       = logfile_name
   end

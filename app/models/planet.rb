@@ -41,6 +41,16 @@ class Planet
     planet ? true : false
   end
 
+  # Check if a planet is valid.
+  #
+  # @param [ String ] the Planet id to check for.
+  #
+  # @return [ Boolean ]
+  def self.valid?(id)
+    planet = ORBIT_FILE.find { |planet| planet['id'] == id }
+    exclude = CONFIG_FILE['exclude_planets']
+  end
+
   # Private Initializer for a planet by id.
   #
   # @param [ String ] id The planet id.
@@ -63,7 +73,9 @@ class Planet
       # output, = Open3.capture3('ski', query)
 
       split_list = output.split("\n")
-      split_list.map!{ |f| f = Logfile_List.new(Log_Config.logs_folder, @id, f) }
+      split_list.map!{ |f|
+        tokens = f.split("/")
+        f = Logfile_List.new(f , @id, tokens[tokens.length-1]) }
   end
 
   # Returns specified logfile
@@ -76,7 +88,7 @@ class Planet
     output = %x[ #{query} ]
     split_list = output.split("\n")
     split_list.map!{ |f|
-      f = Logfile.new(log_file, @id, i, f)
+      f = Logfile.new(file_name, @id, i, f)
       i += 1
       f
       # TODO schöner?
