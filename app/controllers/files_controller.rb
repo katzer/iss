@@ -20,7 +20,14 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-class LFVController < Yeah::Controller
+class FilesController < Yeah::Controller
+  # Render a list of all planets of type server.
+  #
+  # @return [ Void ]
+  def planets
+    render json: Planet.servers.map { |p| { id: p['id'], name: p['name'] } }
+  end
+
   # Render a list of all log files.
   #
   # @param [ String ] planet_id The ID of the planet where to look for.

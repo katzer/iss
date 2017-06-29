@@ -21,8 +21,14 @@
 # @APPPLANT_LICENSE_HEADER_END@
 
 class Planet
+  # Scope for all planets of type server
+  #
+  # @return [ Array<Hash> ]
+  def servers
+    ORBIT_FILE.find_all { |planet| planet['type'] == 'server' }
+  end
 
-  # Find a planet by id.
+  # Find planet by id.
   #
   # @param [ String ] id The planet id.
   #
