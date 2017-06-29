@@ -25,7 +25,12 @@ class Planet
   #
   # @return [ Array<Hash> ]
   def servers
-    ORBIT_FILE.find_all { |planet| planet['type'] == 'server' }
+    query = "fifa"
+    CONFIG_FILE[planets].each do |param|
+      query << " " << param
+    end
+    planets = %x[ #{query} ]
+    planets.split("\n").map! { |planet| planet.chomp!}
   end
 
   # Find planet by id.
@@ -47,15 +52,6 @@ class Planet
     planet ? true : false
   end
 
-  # Check if a planet is valid.
-  #
-  # @param [ String ] the Planet id to check for.
-  #
-  # @return [ Boolean ]
-  def self.valid?(id)
-    planet = ORBIT_FILE.find { |planet| planet['id'] == id }
-    exclude = CONFIG_FILE['exclude_planets']
-  end
 
   # Private Initializer for a planet by id.
   #
@@ -72,16 +68,23 @@ class Planet
   #
   # @return [ Logfile_List ]
   def logfile_list
-      query = "ski -c=\"find #{Log_Config.find_params}\" #{@id}"
+    command = ""
+    first = true
+    CONFIG_FILE["files"].each do |cmd|
+      command << " && " unless first
+      command << "find " << cmd
+      first = false
+    end
+    query = "ski -c=\"#{command}\" #{@id}"
 
 
-      output = %x[ #{query} ]
-      # output, = Open3.capture3('ski', query)
+    output = %x[ #{query} ]
+    # output, = Open3.capture3('ski', query)
 
-      split_list = output.split("\n")
-      split_list.map!{ |f|
-        tokens = f.split("/")
-        f = Logfile_List.new(f , @id, tokens[tokens.length-1]) }
+    split_list = output.split("\n")
+    split_list.map!{ |f|
+      tokens = f.split("/")
+      f = Logfile_List.new(f , @id, tokens[tokens.length-1]) }
   end
 
   # Returns specified logfile
