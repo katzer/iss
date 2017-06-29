@@ -25,16 +25,8 @@ class Log_Config
 
 
 
-  def self.extension
-    CONFIG_FILE['extension']
-  end
-
-  def self.catable?
-    CONFIG_FILE['catable']
-  end
-
-  def self.logs_folder
-    CONFIG_FILE['logs_folder']
+  def self.find_params
+    CONFIG_FILE['find_params']
   end
 
 end

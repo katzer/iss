@@ -56,7 +56,7 @@ class Planet
   #
   # @return [ Logfile_List ]
   def logfile_list
-      query = "ski -c=\"ls -1 #{Log_Config.logs_folder}\" #{@id}"
+      query = "ski -c=\"find #{Log_Config.find_params}\" #{@id}"
 
 
       output = %x[ #{query} ]
@@ -71,8 +71,7 @@ class Planet
   # @return [ Logfile ]
   def logfile(file_name)
     i = 0
-    log_file = File.join(Log_Config.logs_folder, file_name)
-    query = "ski -c=\"cat #{log_file}\"  #{@planet_id}"
+    query = "ski -c=\"cat #{file_name}\"  #{@planet_id}"
 
     output = %x[ #{query} ]
     split_list = output.split("\n")
