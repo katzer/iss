@@ -25,7 +25,8 @@ class FilesController < Yeah::Controller
   #
   # @return [ Void ]
   def planets
-    render json: Planet.servers.map { |p| { id: p['id'], name: p['name'] } }
+    planets = Planet.servers
+    planets ? render(json: planets.map { |p| { id: "#{p}" } }) : render(400)
   end
 
   # Render a list of all log files.
@@ -34,8 +35,11 @@ class FilesController < Yeah::Controller
   #
   # @return [ Void ]
   def files(planet_id)
+    render(404) unless Planet.exist?(planet_id)
+    render(403) unless Planet.valid?(planet_id)
     planet = Planet.find(planet_id)
     planet ? render(json: planet.logfile_list.map!(&:to_h)) : render(400)
+    # planet ? render(json: planet.log_files.map!(&:to_h)) : render(400)
   end
 
   # Render the content of a log file.
@@ -45,9 +49,12 @@ class FilesController < Yeah::Controller
   #
   # @return [ Void ]
   def file(planet_id)
+    render(404) unless Planet.exist?(planet_id)
+    render(403) unless Planet.valid?(planet_id)
     file_id = params['file_id']
     planet  = Planet.find(planet_id)
     logfile = planet.logfile(file_id) if planet
     logfile ? render(json: logfile.map!(&:to_h)) : render(401)
+    # logfile ? render(json: logfile.lines.map!(&:to_h)) : render(401)
   end
 end

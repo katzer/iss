@@ -29,7 +29,7 @@ JOBS_FOLDER    = File.join(ORBIT_HOME, 'jobs').freeze
 REPORTS_FOLDER = File.join(ORBIT_HOME, 'reports').freeze
 
 CONFIG_FOLDER  = File.join(ORBIT_HOME, 'config').freeze
-CONFIG_FILE    = JSON.parse(IO.read(File.join(CONFIG_FOLDER, 'logfile_config.json')))
+LFV_CONFIG     = JSON.parse(IO.read(File.join(CONFIG_FOLDER, 'lfv.json')))
 
 # Folder where to find all static assets, e.g. the web app
 document_root File.join(ORBIT_HOME, 'public'), urls: ['/iss']

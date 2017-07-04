@@ -24,13 +24,20 @@ class Planet
   # Scope for all planets of type server
   #
   # @return [ Array<Hash> ]
-  def servers
+  def self.servers
     query = "fifa"
-    CONFIG_FILE[planets].each do |param|
+    LFV_CONFIG["planets"].each do |param|
       query << " " << param
     end
     planets = %x[ #{query} ]
-    planets.split("\n").map! { |planet| planet.chomp!}
+    planets.split("\n")
+  end
+
+  # Checks, if a planet is valid.
+  #
+  # @return [ Boolean ]
+  def self.valid?(planet_id)
+    Planet.servers.include?(%x[ fifa #{planet_id} ].chomp!)
   end
 
   # Find planet by id.
@@ -47,9 +54,8 @@ class Planet
   # @param [ String ] id The planet id to check for.
   #
   # @return [ Boolean ]
-  def self.exist?(id)
-    planet = ORBIT_FILE.find { |planet| planet['id'] == id }
-    planet ? true : false
+  def self.exist?(planet_id)
+    %x[ fifa ].split("\n").include?(%x[ fifa #{planet_id} ].chomp!)
   end
 
 
@@ -68,14 +74,16 @@ class Planet
   #
   # @return [ Logfile_List ]
   def logfile_list
-    command = ""
-    first = true
-    CONFIG_FILE["files"].each do |cmd|
-      command << " && " unless first
-      command << "find " << cmd
-      first = false
+    # command = %q{. ~/profiles/`whoami`.prof}
+    command = ". ~/profiles/`whoami`.prof"
+    LFV_CONFIG["files"].each do |cmd|
+      command << " && find " << cmd
     end
-    query = "ski -c=\"#{command}\" #{@id}"
+    # LFV_CONFIG["files"].each do |cmd|
+    #   command << " && find #{cmd}"
+    #   command << " && echo $PACKAGE_HOME"
+    # end
+    query = "ski -c='#{command}' #{@id}"
 
 
     output = %x[ #{query} ]
@@ -92,7 +100,7 @@ class Planet
   # @return [ Logfile ]
   def logfile(file_name)
     i = 0
-    query = "ski -c=\"cat #{file_name}\"  #{@planet_id}"
+    query = "ski -c=\"cat #{file_name}\"  #{@id}"
 
     output = %x[ #{query} ]
     split_list = output.split("\n")

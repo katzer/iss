@@ -53,7 +53,7 @@ class Logfile
   # @return [ Hash ]
   def to_h
     {
-      id:         @id,
+      file_id:    @id,
       planet_id:  @planet_id,
       line:       @line,
       content:    @content
