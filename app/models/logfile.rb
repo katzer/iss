@@ -25,20 +25,33 @@ class Logfile
   # Initializes a job report by id and its job id.
   #
   # @return [ Orbit::Report ]
-  def initialize(id, planet_id, line, content)
+  def initialize(id, planet_id, content)
     @id         = id
     @planet_id  = planet_id
-    @line       = line
-    @content    = content
+    @lines      = lines_init(content)
   end
 
-  attr_reader :id, :planet_id, :line, :content
+  attr_reader :id, :planet_id, :content
 
   # The id of the planet.
   #
   # @return [ String ]
   def get_planet_id
     @planet_id
+  end
+
+  # Processes the given Array, representing the lines of the logfile, into a hash
+  # with the line number as key and the content of the line as value.
+  #
+  # @return [ Hash ]
+  def lines_init(content)
+    i = 0
+    toReturn = Hash.new
+    content.map{ |line|
+      toReturn[i.to_s] = line
+      i += 1
+    }
+    toReturn
   end
 
   # The name of the planet.
@@ -48,15 +61,19 @@ class Logfile
     Orbit.find_planet(planet_id)['name']
   end
 
-  # Converts the report into a hash struct.
+  # Returns the contents of a logfile as a Hash-Array
   #
-  # @return [ Hash ]
-  def to_h
-    {
-      file_id:    @id,
-      planet_id:  @planet_id,
-      line:       @line,
-      content:    @content
-    }
+  # @return [ Array<Hash> ]
+  def lines
+    ary = Array.new(@lines.size)
+    @lines.each do |key,value|
+      ary.push({
+        file_id:    @id,
+        planet_id:  @planet_id,
+        line:       key,
+        content:    value
+      })
+    end
+    ary
   end
 end

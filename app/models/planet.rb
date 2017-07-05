@@ -66,33 +66,29 @@ class Planet
   # @return [ Planet ]
   def initialize(id)
     @id = id.to_s
+    @logfiles = init_logfiles
   end
 
   attr_reader :id
 
   # List of reports associated to the planet.
   #
-  # @return [ Logfile_List ]
-  def logfile_list
+  # @return [ Array<Hash> ]
+  def init_logfiles
     # command = %q{. ~/profiles/`whoami`.prof}
     command = ". ~/profiles/`whoami`.prof"
     LFV_CONFIG["files"].each do |cmd|
       command << " && find " << cmd
     end
-    # LFV_CONFIG["files"].each do |cmd|
-    #   command << " && find #{cmd}"
-    #   command << " && echo $PACKAGE_HOME"
-    # end
     query = "ski -c='#{command}' #{@id}"
-
-
     output = %x[ #{query} ]
-    # output, = Open3.capture3('ski', query)
 
+    h = Hash.new
     split_list = output.split("\n")
-    split_list.map!{ |f|
+    split_list.map{ |f|
       tokens = f.split("/")
-      f = Logfile_List.new(f , @id, tokens[tokens.length-1]) }
+      h[f] = tokens[tokens.length-1]}
+    h
   end
 
   # Returns specified logfile
@@ -104,14 +100,23 @@ class Planet
 
     output = %x[ #{query} ]
     split_list = output.split("\n")
-    split_list.map!{ |f|
-      f = Logfile.new(file_name, @id, i, f)
-      i += 1
-      f
-      # TODO schöner?
-    }
-    # output, = Open3.capture3('ski', query)
+    Logfile.new(file_name, @id, split_list)
 
+  end
+
+  # Returns the list of logfiles on the specified planet as a array of hashes.
+  #
+  # @return [ Array<Hash> ]
+  def logfiles
+    ary = Array.new
+    @logfiles.each do |key,value|
+      ary.push({
+        id:         key,
+        planet_id:  @id,
+        name:       value
+      })
+    end
+    ary
   end
 
 end
