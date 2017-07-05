@@ -58,6 +58,16 @@ class Planet
     %x[ fifa ].split("\n").include?(%x[ fifa #{planet_id} ].chomp!)
   end
 
+  # Check if a planet exists.
+  #
+  # @param [ String ] id The planet id to check for.
+  #
+  # @return [ Boolean ]
+  def self.logfile_exist?(file_id)
+    return false if @logfiles == nil
+    @logfiles.include?(file_id)
+  end
+
 
   # Private Initializer for a planet by id.
   #

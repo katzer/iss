@@ -76,4 +76,12 @@ class Logfile
     end
     ary
   end
+
+  def self.bad_request?(file_id)
+    return true if file_id.include?("&")
+    return true if file_id.include?("\"")
+    return true if file_id.include?("'")
+    return true if file_id.include?("\\")
+    false
+  end
 end
