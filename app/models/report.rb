@@ -80,7 +80,7 @@ class Report
     cols = {}
 
     res.each { |r| cols.merge! r.rows }
-    res.each { |r| cols.each { |col,| r.rows[col] ||= '-' } }
+    res.each { |r| cols.each_key { |col| r.rows[col] ||= '-' } }
     res
   end
 end
