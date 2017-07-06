@@ -38,7 +38,7 @@ class FilesController < Yeah::Controller
     render(404) unless Planet.exist?(planet_id)
     render(403) unless Planet.valid?(planet_id)
     planet = Planet.find(planet_id)
-    planet ? render(json: planet.logfiles) : render(400)
+    planet ? render(json: planet.logfiles) : render(404)
   end
 
   # Render the content of a log file.
@@ -49,7 +49,7 @@ class FilesController < Yeah::Controller
   # @return [ Void ]
   def file(planet_id)
     file_id = params['file_id']
-    render(400) if Logfile.bad_request?(file_id)
+    # render(400) if Logfile.bad_request?(file_id)
     render(404) unless Planet.exist?(planet_id)
     render(403) unless Planet.valid?(planet_id)
     planet  = Planet.find(planet_id)

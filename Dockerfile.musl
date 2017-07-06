@@ -22,3 +22,5 @@
 
 FROM appplant/mruby-cli:musl
 MAINTAINER Sebastian Katzer "katzer@appplant.de"
+
+env PATH $PATH:/home/mruby/code/bintest/bin

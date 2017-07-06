@@ -2,6 +2,8 @@
 /releases
 /packages
 /bintest/logs
+/bintest/bin
+/bintest/config/orbit.json
 /public
 /utilsScripts
 

@@ -1,9 +1,16 @@
 [
-    {
-        "id": "sample-planet",
-        "name": "Sample Planet",
-        "type": "server",
-        "user": "user1",
-        "url": "url1.de"
-    }
+  {
+      "id": "localhost",
+      "name": "localhost",
+      "type": "server",
+      "user": "root",
+      "url": "localhost"
+  },
+  {
+      "id": "not-valid",
+      "name": "not valid",
+      "type": "server",
+      "user": "not",
+      "url": "valid"
+  }
 ]
