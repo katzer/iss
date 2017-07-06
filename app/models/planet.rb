@@ -63,7 +63,7 @@ class Planet
   # @param [ String ] id The planet id to check for.
   #
   # @return [ Boolean ]
-  def self.logfile_exist?(file_id)
+  def logfile_exist?(file_id)
     return false if @logfiles == nil
     @logfiles.include?(file_id)
   end
