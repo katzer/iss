@@ -49,7 +49,7 @@ class FilesController < Yeah::Controller
   # @return [ Void ]
   def file(planet_id)
     file_id = params['file_id']
-    # render(400) if Logfile.bad_request?(file_id)
+    render(400) if Logfile.bad_request?(file_id)
     render(404) unless Planet.exist?(planet_id)
     render(403) unless Planet.valid?(planet_id)
     planet  = Planet.find(planet_id)

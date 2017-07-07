@@ -59,24 +59,24 @@ assert 'GET /api/lfv/planets/doesntExist/file?file_id=/home/test.log', 'planet d
 end
 
 assert 'GET /api/lfv/planets/not-valid/file', 'planet is not valid' do
-  code, headers, body = app.call env_for('/api/lfv/planets/not-valid/file')
+  code, headers, body = app.call env_for('/api/lfv/planets/not-valid/file', 'file_id=test')
 
   assert_equal 403, code
 end
 
-# assert 'GET /api/lfv/planets/{planet_id}/file', 'bad request' do
-#   code, headers, body = app.call env_for('/api/lfv/planets/not-valid/file?file_id=\ ')
-#   assert_equal 400, code
-#
-#   code, headers, body = app.call env_for('/api/lfv/planets/not_valid/file?file_id=" ')
-#   assert_equal 400, code
-#
-#   code, headers, body = app.call env_for('/api/lfv/planets/not_valid/file?file_id=\' ')
-#   assert_equal 400, code
-#
-#   code, headers, body = app.call env_for('/api/lfv/planets/not_valid/file?file_id=$ ')
-#   assert_equal 400, code
-# end
+assert 'GET /api/lfv/planets/localhost/file', 'bad request' do
+  code, headers, body = app.call env_for('/api/lfv/planets/localhost/file', "file_id=\"")
+  assert_equal 400, code
+
+  # code, headers, body = app.call env_for('/api/lfv/planets/not_valid/file', "file_id=te''st") in this case file_id is nil
+  # assert_equal 400, code
+
+  # code, headers, body = app.call env_for('/api/lfv/planets/not_valid/file', "file_id=\\")nil
+  # assert_equal 400, code
+
+  # code, headers, body = app.call env_for('/api/lfv/planets/not_valid/file', "file_id=&")nil
+  # assert_equal 400, code
+end
 
 
 # assert 'GET /api/lfv/planets/localhost/files' do
