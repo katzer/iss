@@ -6,6 +6,7 @@
 /bintest/config/orbit.json
 /public
 /utilsScripts
+/.idea
 
 .DS_Store
 
