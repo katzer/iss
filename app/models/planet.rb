@@ -25,19 +25,33 @@ class Planet
   #
   # @return [ Array<Hash> ]
   def self.servers
-    query = "fifa"
-    LFV_CONFIG["planets"].each do |param|
-      query << " " << param
+    query = 'fifa -f=ski'
+    LFV_CONFIG['planets'].each do |param|
+      query << ' ' << param
     end
-    planets = %x[ #{query} ]
-    planets.split("\n")
+    fifa_string = %x[ #{query} ]
+    planets = fifa_string.split("\n")
+    to_return = Array.new
+    planets.each do |param|
+      planet = param.split('|')
+      to_add = Hash.new
+      to_add['id'] = planet[1]
+      to_add['name'] = planet[3]
+      to_add['address'] = planet[4]
+      to_return.push to_add
+    end
+    to_return
   end
 
   # Checks, if a planet is valid.
   #
   # @return [ Boolean ]
   def self.valid?(planet_id)
-    Planet.servers.include?(%x[ fifa #{planet_id} ].chomp!)
+    Planet.servers.each do |planet|
+      return true if planet['id'].include?(planet_id)
+      return true if planet['name'].include?(planet_id)
+    end
+    false
   end
 
   # Find planet by id.

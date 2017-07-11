@@ -26,7 +26,7 @@ class FilesController < Yeah::Controller
   # @return [ Void ]
   def planets
     planets = Planet.servers
-    planets ? render(json: planets.map { |p| { id: "#{p}" } }) : render(400)
+    planets ? render(json: planets.map { |p| { id: "#{p['id']}", name: "#{p['name']}", address: "#{p['address']}" } }) : render(400)
   end
 
   # Render a list of all log files.
