@@ -44,6 +44,14 @@ end
 #   assert_equal fixture('reports'), body[0]
 # end
 
+# assert 'GET /api/jobs/reports', 'specific result' do
+#   code, headers, body = app.call env_for("/api/jobs/showver/reports/2017-05-12T10_29_03/results")
+#
+#   assert_equal 200, code
+#   assert_include headers['Content-Type'], 'application/json'
+#   assert_equal fixture('reports'), body[0]
+# end
+
 assert 'GET /api/jobs/reports', 'missing reports sub folder' do
   code, headers, body = app.call env_for('/api/jobs/hostname/reports')
 

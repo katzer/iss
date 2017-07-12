@@ -46,9 +46,9 @@ class JobsController < Yeah::Controller
   #
   # @return [ Void ]
   def results(job_id, report_id)
+    render(400)
     job    = Job.find(job_id)
     report = job.reports.find { |r| r.id == report_id } if job
-
     report ? render(json: report.results.map(&:to_h)) : render(404)
   end
 end
