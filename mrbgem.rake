@@ -38,7 +38,6 @@ MRuby::Gem::Specification.new('iss') do |spec|
   spec.add_dependency 'mruby-dir'
   spec.add_dependency 'mruby-os'
   spec.add_dependency 'mruby-json'
-  # spec.add_dependency 'mruby-open3'
   spec.add_dependency 'mruby-hash-ext'
   spec.add_dependency 'mruby-array-ext'
   spec.add_dependency 'mruby-symbol-ext'
