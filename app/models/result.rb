@@ -43,7 +43,7 @@ class Result
   #
   # @return [ String ]
   def planet
-    Planet.find(planet_id)['name']
+    Planet.find(planet_id).name
   end
 
   # The parsed output values.
@@ -65,7 +65,11 @@ class Result
   # @return [ Hash ]
   def to_h
     {
-      ha:"ha"
-    }
+      job_id:    @job_id,
+      report_id: @report_id,
+      planet_id: planet_id,
+      valid:     !@data['errored'],
+      planet:    planet
+    }.merge!(rows)
   end
 end

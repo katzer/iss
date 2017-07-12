@@ -58,8 +58,8 @@ assert 'GET /api/jobs/reports', 'missing job' do
   assert_equal 404, code
 end
 
-# assert 'GET /api/jobs/reports', 'unknown job' do
-#   code, = app.call env_for('/api/jobs/123/reports')
-#
-#   assert_equal 404, code
-# end
+assert 'GET /api/jobs/reports', 'unknown job' do
+  code, = app.call env_for('/api/jobs/123/reports')
+
+  assert_equal 404, code
+end
