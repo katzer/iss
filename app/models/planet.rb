@@ -133,6 +133,9 @@ class Planet
     query = "ski -c=\"cat #{file_name}\"  #{@id}"
 
     output = %x[ #{query} ]
+
+    return nil unless $? == 0
+    
     split_list = output.split("\n")
     Logfile.new(file_name, @id, split_list)
 
