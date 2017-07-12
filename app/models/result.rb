@@ -44,6 +44,8 @@ class Result
   # @return [ String ]
   def planet
     Planet.find(planet_id)['name']
+  rescue
+    planet_id
   end
 
   # The parsed output values.
