@@ -89,11 +89,18 @@ class Planet
   #
   # @return [ Planet ]
   def initialize(id)
+    query = "fifa -f=ski #{id}"
+
+    fifa_string = %x[ #{query} ]
+    planets = fifa_string.split("\n")
+    planet = planets[0].split('|')
     @id = id.to_s
+    @name = planet[3]
+    @address = planet[4]
     @logfiles = init_logfiles
   end
 
-  attr_reader :id
+  attr_reader :id, :name, :address
 
   # List of reports associated to the planet.
   #
@@ -141,6 +148,17 @@ class Planet
       })
     end
     ary
+  end
+
+  # Converts the planet into a hash struct.
+  #
+  # @return [ Hash ]
+  def to_h
+    {
+        id: @id,
+        name: @name,
+        address: @address
+    }
   end
 
 end
