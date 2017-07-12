@@ -28,8 +28,12 @@ def fixture(file)
   File.read File.join(File.dirname(__FILE__), "../fixtures/#{file}.json").chomp
 end
 
+def api_call(url)
+  app.call env_for("/api/#{url}")
+end
+
 assert 'GET /api/jobs' do
-  code, headers, body = app.call env_for('/api/jobs')
+  code, headers, body = api_call('jobs')
 
   assert_equal 200, code
   assert_include headers['Content-Type'], 'application/json'
@@ -37,7 +41,7 @@ assert 'GET /api/jobs' do
 end
 
 assert 'GET /api/jobs/reports' do
-  code, headers, body = app.call env_for('/api/jobs/showver/reports')
+  code, headers, body = api_call('jobs/showver/reports')
 
   assert_equal 200, code
   assert_include headers['Content-Type'], 'application/json'
@@ -45,7 +49,7 @@ assert 'GET /api/jobs/reports' do
 end
 
 assert 'GET /api/jobs/reports', 'missing reports sub folder' do
-  code, headers, body = app.call env_for('/api/jobs/hostname/reports')
+  code, headers, body = api_call('jobs/hostname/reports')
 
   assert_equal 200, code
   assert_include headers['Content-Type'], 'application/json'
@@ -53,13 +57,34 @@ assert 'GET /api/jobs/reports', 'missing reports sub folder' do
 end
 
 assert 'GET /api/jobs/reports', 'missing job' do
-  code, = app.call env_for('/api/jobs/reports')
+  code, = api_call('jobs/reports')
 
   assert_equal 404, code
 end
 
 assert 'GET /api/jobs/reports', 'unknown job' do
-  code, = app.call env_for('/api/jobs/123/reports')
+  code, = api_call('jobs/123/reports')
+
+  assert_equal 404, code
+end
+
+assert 'GET /api/jobs/reports/results' do
+  code, headers, body = \
+    api_call('jobs/showver/reports/2017-05-12T10_29_03/results')
+
+  assert_equal 200, code
+  assert_include headers['Content-Type'], 'application/json'
+  assert_equal fixture('results'), body[0]
+end
+
+assert 'GET /api/jobs/reports/results', 'unknown job' do
+  code, = api_call('jobs/123/reports/2017-05-12T10_29_03/results')
+
+  assert_equal 404, code
+end
+
+assert 'GET /api/jobs/reports/results', 'unknown report' do
+  code, = api_call('jobs/showver/reports/123/results')
 
   assert_equal 404, code
 end
