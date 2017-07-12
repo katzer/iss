@@ -91,9 +91,8 @@ class Planet
   def initialize(id)
     query = "fifa -f=ski #{id}"
 
-    return nil unless $? == 0
-
     fifa_string = %x[ #{query} ]
+    return nil unless $? == 0
     planets = fifa_string.split("\n")
     planet = planets[0].split('|')
     @id = id.to_s
@@ -135,7 +134,7 @@ class Planet
     output = %x[ #{query} ]
 
     return nil unless $? == 0
-    
+
     split_list = output.split("\n")
     Logfile.new(file_name, @id, split_list)
 
