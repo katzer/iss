@@ -91,6 +91,8 @@ class Planet
   def initialize(id)
     query = "fifa -f=ski #{id}"
 
+    return nil unless $? == 0
+
     fifa_string = %x[ #{query} ]
     planets = fifa_string.split("\n")
     planet = planets[0].split('|')
@@ -113,6 +115,7 @@ class Planet
     end
     query = "ski -c='#{command}' #{@id}"
     output = %x[ #{query} ]
+    return nil unless $? == 0
 
     h = Hash.new
     split_list = output.split("\n")
@@ -139,6 +142,7 @@ class Planet
   #
   # @return [ Array<Hash> ]
   def logfiles
+    return nil if @logfiles == nil
     ary = Array.new
     @logfiles.each do |key,value|
       ary.push({
