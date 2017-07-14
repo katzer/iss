@@ -44,6 +44,8 @@ class Result
   # @return [ String ]
   def planet
     Planet.find(planet_id).name
+  rescue
+    planet_id
   end
 
   # The parsed output values.
@@ -54,10 +56,6 @@ class Result
                   .map        { |r| r.delete_if(&:empty?) }
                   .keep_if    { |r| r.size == 2 }
                   .each_with_object({}) { |r, row| row[r[0]] = r[1] }
-  end
-
-  def gat
-    @job_id
   end
 
   # Converts the report into a hash struct.

@@ -20,43 +20,50 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-class Report
+class Result
   # Initializes a job report by id and its job id.
   #
   # @return [ Report ]
-  def initialize(id, job_id)
-    @id     = id
-    @job_id = job_id
+  def initialize(job_id, report_id, data)
+    @job_id    = job_id
+    @report_id = report_id
+    @data      = data
   end
 
-  attr_reader :id, :job_id
+  attr_reader :job_id, :report_id
 
-  # The absolute path to the report file.
+  # The id of the planet.
   #
   # @return [ String ]
-  def path
-    File.join(REPORTS_FOLDER, @job_id, "#{id}.json")
+  def planet_id
+    @data['id']
   end
 
-  def getid
-    @id
-  end
-  def getjob
-    @job
-  end
-
-  # The timestamp when the report was created.
+  # The name of the planet.
   #
   # @return [ String ]
-  def timestamp
-    "#{@id.gsub('_', ':')}Z" # rubocop:disable Performance/StringReplacement
+  def planet
+<<<<<<< HEAD
+    Planet.find(planet_id).name
+=======
+    Planet.find(planet_id)['name']
+  rescue
+    planet_id
+>>>>>>> master
   end
 
-  # Max. list of columns extracted from linked result set.
+  # The parsed output values.
   #
-  # @return [ Array<String> ]
-  def columns
-    ['planet'] + results[0].rows.keys
+  # @return [ Map ]
+  def rows
+    @rows ||= JSON.parse(@data['output'])
+                  .map        { |r| r.delete_if(&:empty?) }
+                  .keep_if    { |r| r.size == 2 }
+                  .each_with_object({}) { |r, row| row[r[0]] = r[1] }
+  end
+
+  def gat
+    @job_id
   end
 
   # Converts the report into a hash struct.
@@ -64,30 +71,11 @@ class Report
   # @return [ Hash ]
   def to_h
     {
-      id:        @id,
-      name:      timestamp,
-      timestamp: timestamp,
       job_id:    @job_id,
-      columns:   columns
-    }
-  end
-
-  # The raw result rows as seen in the report file.
-  #
-  # @return [ Array<Hash> ]
-  def raw_results
-    JSON.parse(IO.read(path))['planets']
-  end
-
-  # List of all report results.
-  #
-  # @return [ Array<ReportResult> ]
-  def results
-    res  = raw_results.map! { |row| Result.new(@job_id, @id, row) }
-    cols = {}
-
-    res.each { |r| cols.merge! r.rows }
-    res.each { |r| cols.each_key { |col| r.rows[col] ||= '-' } }
-    res
+      report_id: @report_id,
+      planet_id: planet_id,
+      valid:     !@data['errored'],
+      planet:    planet
+    }.merge!(rows)
   end
 end

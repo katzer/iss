@@ -23,7 +23,7 @@
 require 'fileutils'
 
 mruby_version = ENV['MRUBY_VERSION']
-mruby_version = '1.2.0' if !mruby_version || mruby_version.empty?
+mruby_version = '1.3.0' if !mruby_version || mruby_version.empty?
 
 file :mruby do
   if mruby_version == 'head'
@@ -48,6 +48,8 @@ load "#{mruby_root}/Rakefile"
 load File.join(File.expand_path(File.dirname(__FILE__)), "mrbgem.rake")
 
 current_gem = MRuby::Gem.current
+current_gem.build ||= MRuby::Build.current
+current_gem.setup
 app_version = current_gem.version
 APP_VERSION = (app_version.nil? || app_version.empty?) ? "unknown" : app_version
 

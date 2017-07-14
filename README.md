@@ -43,28 +43,31 @@ Make the scripts executable
 
 And then execute:
 
-```bash
-$ scripts/compile # https://docs.docker.com/engine/installation
-```
+    $ scripts/compile
+
+To compile the sources locally for the host machine only:
+
+    $ MRUBY_CLI_LOCAL=1 rake compile
 
 You'll be able to find the binaries in the following directories:
 
-- Linux (64-bit, for old distros): `mruby/build/x86_64-pc-linux-gnu-glibc-2.12/bin/iss`
-- Linux (32-bit, for old distros): `mruby/build/i686-pc-linux-gnu-glibc-2.12/bin/iss`
-- Linux (64-bit GNU): `mruby/build/x86_64-pc-linux-gnu/bin/iss`
-- Linux (32-bit GNU): `mruby/build/i686-pc-linux-gnu/bin/iss`
 - Linux (64-bit BusyBox): `mruby/build/x86_64-pc-linux-busybox/bin/iss`
+- Linux (64-bit GNU): `mruby/build/x86_64-pc-linux-gnu/bin/iss`
+- Linux (64-bit, for old distros): `mruby/build/x86_64-pc-linux-gnu-glibc-2.12/bin/iss`
+- Linux (32-bit GNU): `mruby/build/i686-pc-linux-gnu/bin/iss`
+- Linux (32-bit, for old distros): `mruby/build/i686-pc-linux-gnu-glibc-2.12/bin/iss`
 - OS X (64-bit): `mruby/build/x86_64-apple-darwin15/bin/iss`
 - OS X (32-bit): `mruby/build/i386-apple-darwin15/bin/iss`
 - Windows (64-bit): `mruby/build/x86_64-w64-mingw32/bin/iss`
 - Windows (32-bit): `mruby/build/i686-w64-mingw32/bin/iss`
+- Host: `mruby/build/host2/bin/iss`
 
 
 ## Releases
 
     $ scripts/release
 
-Affer this command finishes, you'll see the /releases for each target in the releases directory.
+After this command finishes, you'll see the /releases for each target in the releases directory.
 
 
 ## Tests

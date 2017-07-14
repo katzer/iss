@@ -20,7 +20,30 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-FROM appplant/mruby-cli:musl
-MAINTAINER Sebastian Katzer "katzer@appplant.de"
+require_relative 'mrblib/version'
 
-env PATH $PATH:/home/mruby/code/bintest/bin
+MRuby::Gem::Specification.new('iss') do |spec|
+  spec.license = 'Apache 2.0'
+  spec.author  = 'Sebastián Katzer, appPlant GmbH'
+  spec.version = ISS::VERSION
+  spec.bins    = ['iss']
+
+  spec.rbfiles += Dir.glob("#{spec.dir}/{app,config}/**/*.rb").sort
+
+  spec.add_dependency 'mruby-print'
+  spec.add_dependency 'mruby-io'
+  spec.add_dependency 'mruby-logger'
+  spec.add_dependency 'mruby-ansi-colors'
+  spec.add_dependency 'mruby-env'
+  spec.add_dependency 'mruby-dir'
+  spec.add_dependency 'mruby-os'
+  spec.add_dependency 'mruby-json'
+<<<<<<< HEAD
+  spec.add_dependency 'mruby-open3'
+=======
+>>>>>>> master
+  spec.add_dependency 'mruby-hash-ext'
+  spec.add_dependency 'mruby-array-ext'
+  spec.add_dependency 'mruby-symbol-ext'
+  spec.add_dependency 'mruby-yeah'
+end
