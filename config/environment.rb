@@ -20,35 +20,15 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-opt! :help do
-  <<-usage
+raise '$ORBIT_HOME not set' unless ENV['ORBIT_HOME']
+raise '$ORBIT_FILE not set' unless ENV['ORBIT_FILE']
 
-#{ISS::LOGO}
+ORBIT_HOME     = ENV['ORBIT_HOME']
+ORBIT_FILE     = JSON.parse(IO.read(ENV['ORBIT_FILE']))
+JOBS_FOLDER    = File.join(ORBIT_HOME, 'jobs').freeze
+REPORTS_FOLDER = File.join(ORBIT_HOME, 'reports').freeze
 
-usage: iss [options...]
-Options:
--e, --environment The environment to run the server with.
--h, --host        The host to bind the local server on.
-                  Defaults to: 0.0.0.0
--p, --port        The port number to start the local server on.
-                  Defaults to: 1974
--h, --help        This help text
--v, --version     Show version number
-usage
-end
-
-opt! :version do
-  "v#{ISS::VERSION} - #{OS.sysname} #{OS.bits(:binary)}-Bit (#{OS.machine})"
-end
-
-opt :environment, 'development' do |env|
-  ENV['SHELF_ENV'] = env
-end
-
-opt :port, 1974 do |port|
-  set :port, port.to_i
-end
-
-opt :host, 'localhost' do |host|
-  set :host, host
+configure do
+  # Folder where to find all static assets, e.g. the web app
+  document_root File.join(ORBIT_HOME, 'public'), urls: ['/iss']
 end

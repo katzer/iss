@@ -20,30 +20,7 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-def env_for(path, query = '')
-  { 'REQUEST_METHOD' => 'GET', 'PATH_INFO' => path, 'QUERY_STRING' => query }
-end
-
-Yeah.run_initializers(@initializers)
-app = Shelf::Server.new.build_app(app())
-
-assert 'GET /', 'redirects to iss/index.html' do
-  code, headers, = app.call env_for('/')
-
-  assert_equal 303, code
-  assert_equal '/iss/index.html', headers['Location']
-end
-
-assert 'GET /index.html', 'redirects to iss/index.html' do
-  code, headers, = app.call env_for('/index.html')
-
-  assert_equal 303, code
-  assert_equal '/iss/index.html', headers['Location']
-end
-
-assert 'GET /iss/index.html' do
-  code, _, body = app.call env_for('/iss/index.html')
-
-  assert_equal 200, code
-  assert_equal '<html>Yeah!</html>', body[0]
+configure :production do
+  # Folder where to write logs
+  log_folder File.join(ORBIT_HOME, 'logs'), 'iss.log'
 end
