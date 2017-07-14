@@ -50,16 +50,16 @@ MRuby::CrossBuild.new('i686-pc-linux-gnu') do |conf|
   gem_config(conf)
 end
 
-MRuby::CrossBuild.new('x86_64-pc-linux-busybox') do |conf|
-  toolchain :gcc
-
-  [conf.cc, conf.linker].each do |cc|
-    cc.command = 'musl-gcc'
-    cc.flags << '-static -Os'
-  end
-
-  gem_config(conf)
-end
+# MRuby::CrossBuild.new('x86_64-pc-linux-busybox') do |conf|
+#   toolchain :gcc
+#
+#   [conf.cc, conf.linker].each do |cc|
+#     cc.command = 'musl-gcc'
+#     cc.flags << '-static -Os'
+#   end
+#
+#   gem_config(conf)
+# end
 
 MRuby::CrossBuild.new('x86_64-apple-darwin15') do |conf|
   toolchain :clang

@@ -85,7 +85,7 @@ class Planet
     query = "fifa -f=ski #{id}"
     fifa_string = `#{query}`
 
-    return nil unless $? == 0
+    return nil unless $?.zero?
     planet = fifa_string.split("\n")[0].split('|')
     @id = id.to_s
     @name = planet[3]

@@ -25,7 +25,7 @@ def env_for(path, query = '')
 end
 
 def fixture(file)
-  File.read File.join(File.dirname(__FILE__), "fixtures/#{file}.json").chomp
+  File.read File.join(File.dirname(__FILE__), "../fixtures/#{file}.json").chomp
 end
 
 

@@ -69,8 +69,7 @@ assert 'GET /api/jobs/reports', 'unknown job' do
 end
 
 assert 'GET /api/jobs/reports/results' do
-  code, headers, body = \
-    api_call('jobs/showver/reports/2017-05-12T10_29_03/results')
+  code, headers, body = api_call('jobs/showver/reports/2017-05-12T10_29_03/results')
 
   assert_equal 200, code
   assert_include headers['Content-Type'], 'application/json'
