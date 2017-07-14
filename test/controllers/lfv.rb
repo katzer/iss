@@ -46,28 +46,13 @@ assert 'GET /api/lfv/planets/doesntExist/files', 'planet doesnt exist' do
   assert_equal 404, code
 end
 
-assert 'GET /api/lfv/planets/not-valid/files', 'planet isnt valid' do
-  code, headers, body = app.call env_for('/api/lfv/planets/not-valid/files')
-
-  assert_equal 403, code
-end
-
 assert 'GET /api/lfv/planets/doesntExist/file?file_id=/home/test.log', 'planet doesnt exist' do
-  code, headers, body = app.call env_for('/api/lfv/planets/doesntExist/logfile')
+  code, headers, body = app.call env_for('/api/lfv/planets/doesntExist/logfile', 'file_id=test')
 
   assert_equal 404, code
 end
 
-assert 'GET /api/lfv/planets/not-valid/file', 'planet is not valid' do
-  code, headers, body = app.call env_for('/api/lfv/planets/not-valid/file', 'file_id=test')
-
-  assert_equal 403, code
-end
-
 # assert 'GET /api/lfv/planets/localhost/file', 'bad request' do
-#   code, headers, body = app.call env_for('/api/lfv/planets/localhost/file', "file_id=\"")
-#   assert_equal 400, code
-#
 #   # code, headers, body = app.call env_for('/api/lfv/planets/not_valid/file', "file_id=te''st") in this case file_id is nil
 #   # assert_equal 400, code
 #
@@ -87,22 +72,3 @@ end
 #   assert_equal fixture('reports'), body[0]
 # end
 
-# assert 'GET /api/jobs/reports', 'missing reports sub folder' do
-#   code, headers, body = app.call env_for('/api/jobs/hostname/reports')
-#
-#   assert_equal 200, code
-#   assert_include headers['Content-Type'], 'application/json'
-#   assert_equal '[]', body[0]
-# end
-#
-# assert 'GET /api/jobs/reports', 'missing job' do
-#   code, = app.call env_for('/api/jobs/reports')
-#
-#   assert_equal 404, code
-# end
-#
-# assert 'GET /api/jobs/reports', 'unknown job' do
-#   code, = app.call env_for('/api/jobs/123/reports')
-#
-#   assert_equal 404, code
-# end

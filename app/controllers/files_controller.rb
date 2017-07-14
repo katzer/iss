@@ -26,7 +26,7 @@ class FilesController < Yeah::Controller
   # @return [ Void ]
   def planets
     planets = Planet.servers
-    planets ? render(json: planets.map { |p| { id: "#{p['id']}", name: "#{p['name']}", address: "#{p['address']}" } }) : render(400)
+    planets ? render(json: planets) : render(400)
   end
 
   # Render a list of all log files.
@@ -35,27 +35,42 @@ class FilesController < Yeah::Controller
   #
   # @return [ Void ]
   def files(planet_id)
-    render(404) unless Planet.exist?(planet_id)
-    render(403) unless Planet.valid?(planet_id)
+    error_code = validate_request(planet_id)
+    if error_code != 0
+      render(error_code)
+      return
+    end
     planet = Planet.find(planet_id)
     planet ? logfiles = planet.logfiles : render(404)
-    logfiles ? render(json: planet.logfiles) : render(404)
+    logfiles ? render(json: logfiles) : render(404)
   end
 
   # Render the content of a log file.
   #
   # @param [ String ] planet_id The ID of the planet where to look for.
-  # @param [ String ] file_path   The id or path of the file to render.
+  # file_id: The id or path of the file to render.
   #
   # @return [ Void ]
   def file(planet_id)
     file_id = params['file_id']
-    render(400) if Logfile.bad_request?(file_id)
-    render(404) unless Planet.exist?(planet_id)
-    render(403) unless Planet.valid?(planet_id)
-    planet  = Planet.find(planet_id)
-    render(404) unless planet.logfile_exist?(file_id)
+    error_code = validate_request(planet_id, file_id)
+    if error_code != 0
+      render(error_code)
+      return
+    end
+    planet = Planet.find(planet_id)
     logfile = planet.logfile(file_id) if planet
     logfile ? render(json: logfile.lines) : render(404)
+  end
+
+  #
+  #
+  #
+  def validate_request(planet_id, file_id = nil)
+    return 404 unless Planet.exist?(planet_id)
+    return 403 unless Planet.valid?(planet_id)
+    return 0 if file_id.nil?
+    return 400 if Logfile.bad_request?(file_id)
+    0
   end
 end

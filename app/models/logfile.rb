@@ -31,14 +31,8 @@ class Logfile
     @lines      = lines_init(content)
   end
 
-  attr_reader :id, :planet_id, :content
+  attr_reader :id, :planet_id, :lines
 
-  # The id of the planet.
-  #
-  # @return [ String ]
-  def get_planet_id
-    @planet_id
-  end
 
   # Processes the given Array, representing the lines of the logfile, into a hash
   # with the line number as key and the content of the line as value.
@@ -46,12 +40,12 @@ class Logfile
   # @return [ Hash ]
   def lines_init(content)
     i = 0
-    toReturn = Hash.new
+    to_return = {}
     content.map{ |line|
-      toReturn[i.to_s] = line
+      to_return[i.to_s] = line
       i += 1
     }
-    toReturn
+    to_return
   end
 
   # The name of the planet.
@@ -65,23 +59,23 @@ class Logfile
   #
   # @return [ Array<Hash> ]
   def lines
-    ary = Array.new(@lines.size)
-    @lines.each do |key,value|
-      ary.push({
+    ary = []
+    @lines.each do |key, value|
+      ary.push(
         file_id:    @id,
         planet_id:  @planet_id,
         line:       key,
         content:    value
-      })
+      )
     end
     ary
   end
 
   def self.bad_request?(file_id)
-    return true if file_id.include?("&")
-    return true if file_id.include?("\"")
+    return true if file_id.include?('&')
+    return true if file_id.include?('"')
     return true if file_id.include?("'")
-    return true if file_id.include?("\\")
+    return true if file_id.include?('\\')
     false
   end
 end

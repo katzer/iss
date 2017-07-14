@@ -35,7 +35,6 @@ class JobsController < Yeah::Controller
   # @return [ Void ]
   def reports(job_id)
     job = Job.find(job_id)
-
     job ? render(json: job.reports.map(&:to_h)) : render(404)
   end
 

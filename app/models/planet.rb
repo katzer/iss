@@ -25,22 +25,26 @@ class Planet
   #
   # @return [ Array<Hash> ]
   def self.servers
+    planets = fifa_planets
+    to_return = []
+    planets.each do |param|
+      planet = param.split('|')
+      to_add = { id: planet[1], name: planet[3], address: planet[4] }
+      to_return << to_add
+    end
+    to_return
+  end
+
+  # Calls fifa to get the connection details to each viable planet
+  #
+  # @return [ Array<String> ]
+  def self.fifa_planets
     query = 'fifa -f=ski'
     LFV_CONFIG['planets'].each do |param|
       query << ' ' << param
     end
-    fifa_string = %x[ #{query} ]
-    planets = fifa_string.split("\n")
-    to_return = Array.new
-    planets.each do |param|
-      planet = param.split('|')
-      to_add = Hash.new
-      to_add['id'] = planet[1]
-      to_add['name'] = planet[3]
-      to_add['address'] = planet[4]
-      to_return.push to_add
-    end
-    to_return
+    fifa_string = `#{query}`
+    fifa_string.split("\n")
   end
 
   # Checks, if a planet is valid.
@@ -48,8 +52,8 @@ class Planet
   # @return [ Boolean ]
   def self.valid?(planet_id)
     Planet.servers.each do |planet|
-      return true if planet['id'].include?(planet_id)
-      return true if planet['name'].include?(planet_id)
+      return true if planet[:id].include?(planet_id)
+      return true if planet[:name].include?(planet_id)
     end
     false
   end
@@ -69,19 +73,8 @@ class Planet
   #
   # @return [ Boolean ]
   def self.exist?(planet_id)
-    %x[ fifa ].split("\n").include?(%x[ fifa #{planet_id} ].chomp!)
+    LFV_CONFIG['planets'].include? planet_id
   end
-
-  # Check if a planet exists.
-  #
-  # @param [ String ] id The planet id to check for.
-  #
-  # @return [ Boolean ]
-  def logfile_exist?(file_id)
-    return false if @logfiles == nil
-    @logfiles.include?(file_id)
-  end
-
 
   # Private Initializer for a planet by id.
   #
@@ -90,15 +83,13 @@ class Planet
   # @return [ Planet ]
   def initialize(id)
     query = "fifa -f=ski #{id}"
+    fifa_string = `#{query}`
 
-    fifa_string = %x[ #{query} ]
     return nil unless $? == 0
-    planets = fifa_string.split("\n")
-    planet = planets[0].split('|')
+    planet = fifa_string.split("\n")[0].split('|')
     @id = id.to_s
     @name = planet[3]
     @address = planet[4]
-    @logfiles = init_logfiles
   end
 
   attr_reader :id, :name, :address
@@ -106,54 +97,40 @@ class Planet
   # List of reports associated to the planet.
   #
   # @return [ Array<Hash> ]
-  def init_logfiles
-    # command = %q{. ~/profiles/`whoami`.prof}
-    command = ". ~/profiles/`whoami`.prof"
-    LFV_CONFIG["files"].each do |cmd|
-      command << " && find " << cmd
+  def logfiles
+    raw_list = raw_logfile_list
+    a = []
+    raw_list.map { |f|
+      tokens = f.split('/')
+      entry = { id: f, name: tokens[tokens.length - 1], planet_id: @id }
+      a << entry
+    }
+    a
+  end
+
+  def raw_logfile_list
+    command = '. ~/profiles/`whoami`.prof'
+    LFV_CONFIG['files'].each do |cmd|
+      command << ' && find ' << cmd
     end
     query = "ski -c='#{command}' #{@id}"
-    output = %x[ #{query} ]
+    output = `#{query}`
     return nil unless $? == 0
-
-    h = Hash.new
-    split_list = output.split("\n")
-    split_list.map{ |f|
-      tokens = f.split("/")
-      h[f] = tokens[tokens.length-1]}
-    h
+    output.split("\n")
   end
 
   # Returns specified logfile
   #
   # @return [ Logfile ]
   def logfile(file_name)
-    i = 0
     query = "ski -c=\"cat #{file_name}\"  #{@id}"
 
-    output = %x[ #{query} ]
+    output = `#{query}`
 
-    return nil unless $? == 0
+    return nil unless $?. == 0
 
     split_list = output.split("\n")
     Logfile.new(file_name, @id, split_list)
-
-  end
-
-  # Returns the list of logfiles on the specified planet as a array of hashes.
-  #
-  # @return [ Array<Hash> ]
-  def logfiles
-    return nil if @logfiles == nil
-    ary = Array.new
-    @logfiles.each do |key,value|
-      ary.push({
-        id:         key,
-        planet_id:  @id,
-        name:       value
-      })
-    end
-    ary
   end
 
   # Converts the planet into a hash struct.
@@ -161,10 +138,9 @@ class Planet
   # @return [ Hash ]
   def to_h
     {
-        id: @id,
-        name: @name,
-        address: @address
+      id: @id,
+      name: @name,
+      address: @address
     }
   end
-
 end
