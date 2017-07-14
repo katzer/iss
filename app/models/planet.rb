@@ -29,7 +29,7 @@ class Planet
     to_return = []
     planets.each do |param|
       planet = param.split('|')
-      to_add = { id: planet[1], name: planet[3], address: planet[4] }
+      to_add = { id: planet[1], name: planet[3], type: planet[2] }
       to_return << to_add
     end
     to_return
@@ -85,14 +85,14 @@ class Planet
     query = "fifa -f=ski #{id}"
     fifa_string = `#{query}`
 
-    return nil unless $?.zero?
+    return nil unless $? == 0 # rubocop:disable Style/NumericPredicate
     planet = fifa_string.split("\n")[0].split('|')
     @id = id.to_s
     @name = planet[3]
-    @address = planet[4]
+    @type = planet[2]
   end
 
-  attr_reader :id, :name, :address
+  attr_reader :id, :name, :type
 
   # List of reports associated to the planet.
   #
@@ -100,11 +100,11 @@ class Planet
   def logfiles
     raw_list = raw_logfile_list
     a = []
-    raw_list.map { |f|
+    raw_list.map do |f|
       tokens = f.split('/')
-      entry = { id: f, name: tokens[tokens.length - 1], planet_id: @id }
+      entry = { id: f, planet_id: @id, name: tokens[tokens.length - 1] }
       a << entry
-    }
+    end
     a
   end
 
@@ -115,7 +115,7 @@ class Planet
     end
     query = "ski -c='#{command}' #{@id}"
     output = `#{query}`
-    return nil unless $? == 0
+    return nil unless $? == 0 # rubocop:disable Style/NumericPredicate
     output.split("\n")
   end
 
@@ -127,7 +127,7 @@ class Planet
 
     output = `#{query}`
 
-    return nil unless $?. == 0
+    return nil unless $? == 0 # rubocop:disable Style/NumericPredicate
 
     split_list = output.split("\n")
     Logfile.new(file_name, @id, split_list)
@@ -140,7 +140,7 @@ class Planet
     {
       id: @id,
       name: @name,
-      address: @address
+      type: @type
     }
   end
 end

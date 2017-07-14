@@ -20,7 +20,6 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-
 class Logfile
   # Initializes a job report by id and its job id.
   #
@@ -33,18 +32,17 @@ class Logfile
 
   attr_reader :id, :planet_id, :lines
 
-
-  # Processes the given Array, representing the lines of the logfile, into a hash
+  # Processes the given Array, representing the lines of the logfile, as a hash
   # with the line number as key and the content of the line as value.
   #
   # @return [ Hash ]
   def lines_init(content)
     i = 0
     to_return = {}
-    content.map{ |line|
+    content.map do |line|
       to_return[i.to_s] = line
       i += 1
-    }
+    end
     to_return
   end
 
@@ -52,7 +50,7 @@ class Logfile
   #
   # @return [ String ]
   def planet
-    Orbit.find_planet(planet_id)['name']
+    Planet.find(planet_id).name
   end
 
   # Returns the contents of a logfile as a Hash-Array

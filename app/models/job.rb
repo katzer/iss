@@ -86,11 +86,9 @@ class Job
     dir = File.join(REPORTS_FOLDER, @id)
 
     return [] unless Dir.exist? dir
-    
+
     Dir.entries(dir)
        .keep_if { |f| f.end_with? '.json' }
        .map! { |f| Report.new(f.chomp!('.json'), @id) }
   end
-
-
 end

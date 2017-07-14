@@ -20,7 +20,8 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-class FilesController < Yeah::Controller
+class FilesController < # noinspection RubyResolve,RubyResolve
+Yeah::Controller
   # Render a list of all planets of type server.
   #
   # @return [ Void ]

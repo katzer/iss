@@ -20,8 +20,10 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-class JobsController < Yeah::Controller
-  # Render all jobs foind under the jobs folder.
+# noinspection RubyResolve,RubyResolve
+class JobsController < # noinspection RubyResolve,RubyResolve
+Yeah::Controller
+  # Render all jobs found under the jobs folder.
   #
   # @return [ Void ]
   def jobs

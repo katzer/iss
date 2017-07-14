@@ -41,8 +41,9 @@ class Report
   def getid
     @id
   end
+
   def getjob
-    @job
+    @job_id
   end
 
   # The timestamp when the report was created.
