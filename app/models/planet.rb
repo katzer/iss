@@ -25,14 +25,21 @@ class Planet
   #
   # @return [ Array<Hash> ]
   def self.servers
-    Fifa.planets_raw
+    Fifa.new.servers.map{ |p| Planet.new( p[:id], p[:name], p[:type] ) }
+  end
+
+  # Scope for all planets of type server
+  #
+  # @return [ Array<Hash> ]
+  def self.servers_for_lfv
+    Fifa.new.servers_for_lfv.map{ |p| Planet.new( p[:id], p[:name], p[:type] ) }
   end
 
   # Checks, if a planet is valid.
   #
   # @return [ Boolean ]
   def self.valid?(planet_id)
-    Planet.servers.any? { |p| p[:id] == planet_id }
+    Planet.servers_for_lfv.any? { |p| p.id == planet_id }
   end
 
   # Find planet by id.
@@ -41,7 +48,7 @@ class Planet
   #
   # @return [ Planet ]
   def self.find(id)
-    new(id) if valid? id
+    Fifa.new.planet(id) if valid? id
   end
 
   # Private Initializer for a planet by id.
@@ -49,8 +56,10 @@ class Planet
   # @param [ String ] id The planet id.
   #
   # @return [ Planet ]
-  def initialize(id)
-    @id, @name, @type = Fifa.planet_raw(id)
+  def initialize(id, name, type)
+    @id   = id
+    @name = name
+    @type = type
   end
 
   attr_reader :id, :name, :type
@@ -59,9 +68,9 @@ class Planet
   #
   # @return [ Array<Hash> ]
   def logfiles
-    Ski.raw_logfile_list(@id).map do |f|
+    Ski.new.raw_logfile_list(@id).map do |f|
       tokens = f.split('/')
-      { id: f, planet_id: @id, name: tokens[tokens.length - 1] }
+      Logfile.new( f, @id, tokens[tokens.length - 1] )
     end
   end
 
@@ -69,7 +78,7 @@ class Planet
   #
   # @return [ Logfile ]
   def logfile(file_name)
-    Ski.logfile(file_name, @id)
+    Ski.new.logfile(file_name, @id)
   end
 
   # Converts the planet into a hash struct.

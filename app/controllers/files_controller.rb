@@ -26,8 +26,8 @@ Yeah::Controller
   #
   # @return [ Void ]
   def planets
-    planets = Planet.servers
-    planets ? render(json: planets) : render(400)
+    planets = Planet.servers_for_lfv
+    planets ? render(json: planets.map(&:to_h)) : render(400)
   end
 
   # Render a list of all log files.
@@ -43,7 +43,7 @@ Yeah::Controller
     end
     planet = Planet.find(planet_id)
     planet ? logfiles = planet.logfiles : render(404)
-    logfiles ? render(json: logfiles) : render(404)
+    logfiles ? render(json: logfiles.map(&:to_h)) : render(404)
   end
 
   # Render the content of a log file.

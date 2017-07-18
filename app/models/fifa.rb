@@ -20,41 +20,48 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-class Fifa
+class Fifa < Executor
   # Scope for all planets of type server
   #
-  # @return [ Array<Hash> ]
-  def self.planets_raw
-    planets = fifa_planets
-    planets.map do |param|
+  # @return [ Array<Planet> ]
+  def servers
+    planets_raw.map do |param|
       _, id, type, name, = param.split('|')
       { id: id, name: name, type: type }
     end
   end
 
+  # Scope for all planets of type server
+  #
+  # @return [ Array<Planet> ]
+  def servers_for_lfv
+    lfv_planets.map do |param|
+      _, id, type, name, = param.split('|')
+      { id: id, name: name, type: type }
+    end
+  end
+
+  # Scope for all planets of type server
+  #
+  # @return [ Array<Hash> ]
+  def planets_raw
+      planets = call( {cmd: 'fifa -f=ski type=server'})
+      planets.split("\n")
+  end
+
+  def planet(id)
+    raw = call( {cmd: "fifa -f=ski #{id}"}).chomp!
+    _, id, type, name, = raw.split('|')
+    Planet.new(id, name, type)
+  end
+
   # Calls fifa to get the connection details to each viable planet
   #
   # @return [ Array<String> ]
-  def self.fifa_planets
-    query = 'fifa -f=ski'
-    LFV_CONFIG['planets'].each do |param|
-      query << ' ' << param
-    end
-    fifa_string = `#{query}`
-    fifa_string.split("\n")
-  end
-
-  # Private Initializer for a planet by id.
-  #
-  # @param [ String ] id The planet id.
-  #
-  # @return [ Planet ]
-  def self.planet_raw(id)
-    query = "fifa -f=ski #{id}"
-    fifa_string = `#{query}`
-
-    return nil unless $? == 0 # rubocop:disable Style/NumericPredicate
-    planet = fifa_string.split("\n")[0].split('|')
-    [ id.to_s, planet[3], planet[2] ]
+  def lfv_planets
+    planets = ''
+    LFV_CONFIG['planets'].map { |p| planets << " #{p}"}
+    planet_list = call ( {cmd: "fifa -f=ski #{planets}" } ) # TODO: merge gibts ansch ned und split funktioniert in der ooo nich
+    planet_list.split("\n")
   end
 end

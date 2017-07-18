@@ -32,16 +32,6 @@ class Logfile
 
   attr_reader :id, :planet_id, :content
 
-  # Processes the given Array, representing the lines of the logfile, as a hash
-  # with the line number as key and the content of the line as value.
-  #
-  # @return [ Hash ]
-  def lines_with_index(content)
-    to_return = {}
-    content.each_with_index { |line, i| to_return[i.to_s] = line }
-    to_return
-  end
-
   # The name of the planet.
   #
   # @return [ String ]
@@ -54,8 +44,8 @@ class Logfile
   # @return [ Array<Hash> ]
   def lines
     ary = []
-    lines_with_index(@content).each do |key, value|
-      ary.push(file_id: @id, planet_id: @planet_id, line: key, content: value)
+    content.each_with_index do |line, i|
+      ary << { file_id: @id, planet_id: @planet_id, line: i.to_s, content: line }
     end
     ary
   end
@@ -66,5 +56,13 @@ class Logfile
     return true if file_id.include?("'")
     return true if file_id.include?('\\')
     false
+  end
+
+  def to_h
+    {
+      id:        @id,
+      planet_id: @planet_id,
+      name:      @name
+    }
   end
 end

@@ -20,23 +20,20 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-class Ski < Executor
-  def raw_logfile_list(id)
-    command = '. ~/profiles/`whoami`.prof'
-    LFV_CONFIG['files'].each do |cmd|
-      command << ' && find ' << cmd
-    end
-    output = call( "ski -c='#{command}' #{id}" )
-    output.split("\n")
+class Executor
+  def initialize(opts = {})
+    @opts = opts
   end
 
-  # Returns specified logfile
-  #
-  # @return [ Logfile ]
-  def logfile(file_name, id)
-    output = call( cmd: "ski -c=\"cat #{file_name}\"  #{id}" )
-
-
-    Logfile.new(file_name, id, output.split("\n"))
+  def call(hsh)
+    execute hsh[:cmd]
   end
+
+
+
+  def execute(cmd)
+    `#{cmd}`
+  end
+
+
 end
