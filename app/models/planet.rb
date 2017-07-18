@@ -25,14 +25,14 @@ class Planet
   #
   # @return [ Array<Hash> ]
   def self.servers
-    Fifa.new.servers.map{ |p| Planet.new( p[:id], p[:name], p[:type] ) }
+    Fifa.new.servers.map { |p| Planet.new(p[:id], p[:name], p[:type]) }
   end
 
   # Scope for all planets of type server
   #
   # @return [ Array<Hash> ]
   def self.servers_for_lfv
-    Fifa.new.servers_for_lfv.map{ |p| Planet.new( p[:id], p[:name], p[:type] ) }
+    Fifa.new.servers_for_lfv.map { |p| Planet.new(p[:id], p[:name], p[:type]) }
   end
 
   # Checks, if a planet is valid.
@@ -70,7 +70,7 @@ class Planet
   def logfiles
     Ski.new.raw_logfile_list(@id).map do |f|
       tokens = f.split('/')
-      Logfile.new( f, @id, tokens[tokens.length - 1] )
+      Logfile.new(f, @id, tokens[tokens.length - 1])
     end
   end
 
@@ -78,7 +78,8 @@ class Planet
   #
   # @return [ Logfile ]
   def logfile(file_name)
-    Ski.new.logfile(file_name, @id)
+    tokens = file_name.split('/')
+    Logfile.new(file_name, @id, tokens[tokens.length - 1])
   end
 
   # Converts the planet into a hash struct.

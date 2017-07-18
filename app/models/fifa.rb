@@ -45,12 +45,12 @@ class Fifa < Executor
   #
   # @return [ Array<Hash> ]
   def planets_raw
-      planets = call( {cmd: 'fifa -f=ski type=server'})
-      planets.split("\n")
+    planets = call(cmd: 'fifa -f=ski type=server')
+    planets.split("\n")
   end
 
   def planet(id)
-    raw = call( {cmd: "fifa -f=ski #{id}"}).chomp!
+    raw = call(cmd: "fifa -f=ski #{id}").chomp!
     _, id, type, name, = raw.split('|')
     Planet.new(id, name, type)
   end
@@ -60,8 +60,8 @@ class Fifa < Executor
   # @return [ Array<String> ]
   def lfv_planets
     planets = ''
-    LFV_CONFIG['planets'].map { |p| planets << " #{p}"}
-    planet_list = call ( {cmd: "fifa -f=ski #{planets}" } ) # TODO: merge gibts ansch ned und split funktioniert in der ooo nich
+    LFV_CONFIG['planets'].map { |p| planets << " #{p}" }
+    planet_list = call(cmd: "fifa -f=ski #{planets}") # TODO: merge gibts ansch ned und split funktioniert in der ooo nich
     planet_list.split("\n")
   end
 end

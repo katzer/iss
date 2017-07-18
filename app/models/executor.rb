@@ -29,11 +29,7 @@ class Executor
     execute hsh[:cmd]
   end
 
-
-
   def execute(cmd)
     `#{cmd}`
   end
-
-
 end

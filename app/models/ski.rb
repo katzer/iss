@@ -26,17 +26,15 @@ class Ski < Executor
     LFV_CONFIG['files'].each do |cmd|
       command << ' && find ' << cmd
     end
-    output = call( "ski -c='#{command}' #{id}" )
+    output = call(cmd: "ski -c='#{command}' #{id}")
     output.split("\n")
   end
 
   # Returns specified logfile
   #
   # @return [ Logfile ]
-  def logfile(file_name, id)
-    output = call( cmd: "ski -c=\"cat #{file_name}\"  #{id}" )
-
-
-    Logfile.new(file_name, id, output.split("\n"))
+  def logfile(file_name, planet_id)
+    output = call(cmd: "ski -c=\"cat #{file_name}\"  #{planet_id}")
+    output.split("\n")
   end
 end

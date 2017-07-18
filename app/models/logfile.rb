@@ -24,13 +24,13 @@ class Logfile
   # Initializes a job report by id and its job id.
   #
   # @return [ Orbit::Report ]
-  def initialize(id, planet_id, content)
+  def initialize(id, planet_id, name)
     @id         = id
     @planet_id  = planet_id
-    @content    = content
+    @name       = name
   end
 
-  attr_reader :id, :planet_id, :content
+  attr_reader :id, :planet_id, :name
 
   # The name of the planet.
   #
@@ -44,7 +44,7 @@ class Logfile
   # @return [ Array<Hash> ]
   def lines
     ary = []
-    content.each_with_index do |line, i|
+    Ski.new.logfile(@id, @planet_id).each_with_index do |line, i|
       ary << { file_id: @id, planet_id: @planet_id, line: i.to_s, content: line }
     end
     ary
