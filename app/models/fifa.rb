@@ -55,6 +55,6 @@ class Fifa
 
     return nil unless $? == 0 # rubocop:disable Style/NumericPredicate
     planet = fifa_string.split("\n")[0].split('|')
-    return id.to_s, planet[3], planet[2]
+    [ id.to_s, planet[3], planet[2] ]
   end
 end
