@@ -20,13 +20,8 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-
-class Log_Config
-
-
-
+class LogConfig
   def self.find_params
     CONFIG_FILE['find_params']
   end
-
 end
