@@ -20,28 +20,28 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-class Planet
+class Fifa
   # Scope for all planets of type server
   #
   # @return [ Array<Hash> ]
-  def self.servers
-    Fifa.planets_raw
+  def self.planets_raw
+    planets = fifa_planets
+    planets.map do |param|
+      _, id, type, name, = param.split('|')
+      { id: id, name: name, type: type }
+    end
   end
 
-  # Checks, if a planet is valid.
+  # Calls fifa to get the connection details to each viable planet
   #
-  # @return [ Boolean ]
-  def self.valid?(planet_id)
-    Planet.servers.any? { |p| p[:id] == planet_id }
-  end
-
-  # Find planet by id.
-  #
-  # @param [ String ] id The planet id.
-  #
-  # @return [ Planet ]
-  def self.find(id)
-    new(id) if valid? id
+  # @return [ Array<String> ]
+  def self.fifa_planets
+    query = 'fifa -f=ski'
+    LFV_CONFIG['planets'].each do |param|
+      query << ' ' << param
+    end
+    fifa_string = `#{query}`
+    fifa_string.split("\n")
   end
 
   # Private Initializer for a planet by id.
@@ -49,37 +49,12 @@ class Planet
   # @param [ String ] id The planet id.
   #
   # @return [ Planet ]
-  def initialize(id)
-    @id, @name, @type = Fifa.planet_raw(id)
-  end
+  def self.planet_raw(id)
+    query = "fifa -f=ski #{id}"
+    fifa_string = `#{query}`
 
-  attr_reader :id, :name, :type
-
-  # List of reports associated to the planet.
-  #
-  # @return [ Array<Hash> ]
-  def logfiles
-    Ski.raw_logfile_list(@id).map do |f|
-      tokens = f.split('/')
-      { id: f, planet_id: @id, name: tokens[tokens.length - 1] }
-    end
-  end
-
-  # Returns specified logfile
-  #
-  # @return [ Logfile ]
-  def logfile(file_name)
-    Ski.logfile(file_name, @id)
-  end
-
-  # Converts the planet into a hash struct.
-  #
-  # @return [ Hash ]
-  def to_h
-    {
-      id: @id,
-      name: @name,
-      type: @type
-    }
+    return nil unless $? == 0 # rubocop:disable Style/NumericPredicate
+    planet = fifa_string.split("\n")[0].split('|')
+    return id.to_s, planet[3], planet[2]
   end
 end

@@ -20,34 +20,25 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-def env_for(path, query = '')
-  { 'REQUEST_METHOD' => 'GET', 'PATH_INFO' => path, 'QUERY_STRING' => query }
-end
+class Ski
+  def self.raw_logfile_list(id)
+    command = '. ~/profiles/`whoami`.prof'
+    LFV_CONFIG['files'].each do |cmd|
+      command << ' && find ' << cmd
+    end
+    output = `ski -c='#{command}' #{id}`
+    return nil unless $? == 0 # rubocop:disable Style/NumericPredicate
+    output.split("\n")
+  end
 
-def fixture(file)
-  File.read File.join(File.dirname(__FILE__), "../fixtures/#{file}.json").chomp
-end
+  # Returns specified logfile
+  #
+  # @return [ Logfile ]
+  def self.logfile(file_name, id)
+    output = `ski -c=\"cat #{file_name}\"  #{id}`
 
+    return nil unless $? == 0 # rubocop:disable Style/NumericPredicate
 
-
-assert 'GET /api/lfv/planets' do
-  code, headers, body = app.call env_for('/api/lfv/planets')
-
-  assert_equal 200, code
-  assert_include headers['Content-Type'], 'application/json'
-  assert_equal fixture('planets').chomp("\n"), body[0]
-end
-
-
-
-assert 'GET /api/lfv/planets/doesntExist/files', 'planet doesnt exist' do
-  code, headers, body = app.call env_for('/api/lfv/planets/doesntExist/files')
-
-  assert_equal 403, code
-end
-
-assert 'GET /api/lfv/planets/doesntExist/file?file_id=/home/test.log', 'planet doesnt exist' do
-  code, headers, body = app.call env_for('/api/lfv/planets/doesntExist/logfile', 'file_id=test')
-
-  assert_equal 404, code
+    Logfile.new(file_name, id, output.split("\n"))
+  end
 end

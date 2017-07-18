@@ -68,7 +68,6 @@ Yeah::Controller
   #
   #
   def validate_request(planet_id, file_id = nil)
-    return 404 unless Planet.exist?(planet_id)
     return 403 unless Planet.valid?(planet_id)
     return 0 if file_id.nil?
     return 400 if Logfile.bad_request?(file_id)

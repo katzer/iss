@@ -27,22 +27,18 @@ class Logfile
   def initialize(id, planet_id, content)
     @id         = id
     @planet_id  = planet_id
-    @lines      = lines_init(content)
+    @content    = content
   end
 
-  attr_reader :id, :planet_id, :lines
+  attr_reader :id, :planet_id, :content
 
   # Processes the given Array, representing the lines of the logfile, as a hash
   # with the line number as key and the content of the line as value.
   #
   # @return [ Hash ]
-  def lines_init(content)
-    i = 0
+  def lines_with_index(content)
     to_return = {}
-    content.map do |line|
-      to_return[i.to_s] = line
-      i += 1
-    end
+    content.each_with_index { |line, i| to_return[i.to_s] = line }
     to_return
   end
 
@@ -58,7 +54,7 @@ class Logfile
   # @return [ Array<Hash> ]
   def lines
     ary = []
-    @lines.each do |key, value|
+    lines_with_index(@content).each do |key, value|
       ary.push(file_id: @id, planet_id: @planet_id, line: key, content: value)
     end
     ary
