@@ -20,35 +20,7 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-opt! :help do
-  <<-usage
-
-#{ISS::LOGO}
-
-usage: iss [options...]
-Options:
--e, --environment The environment to run the server with.
--h, --host        The host to bind the local server on.
-                  Defaults to: 0.0.0.0
--p, --port        The port number to start the local server on.
-                  Defaults to: 1974
--h, --help        This help text
--v, --version     Show version number
-usage
-end
-
-opt! :version do
-  "v#{ISS::VERSION} - #{OS.sysname} #{OS.bits(:binary)}-Bit (#{OS.machine})"
-end
-
-opt :environment, 'development' do |env|
-  ENV['SHELF_ENV'] = env
-end
-
-opt :port, 1974 do |port|
-  set :port, port.to_i
-end
-
-opt :host, 'localhost' do |host|
-  set :host, host
+configure :production do
+  # Folder where to write logs
+  log_folder File.join(ORBIT_HOME, 'logs'), 'iss.log'
 end

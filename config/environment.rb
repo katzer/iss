@@ -20,30 +20,18 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-def env_for(path, query = '')
-  { 'REQUEST_METHOD' => 'GET', 'PATH_INFO' => path, 'QUERY_STRING' => query }
-end
+raise '$ORBIT_HOME not set' unless ENV['ORBIT_HOME']
+raise '$ORBIT_FILE not set' unless ENV['ORBIT_FILE']
 
-Yeah.run_initializers(@initializers)
-app = Shelf::Server.new.build_app(app())
+ORBIT_HOME     = ENV['ORBIT_HOME']
+ORBIT_FILE     = JSON.parse(IO.read(ENV['ORBIT_FILE']))
+JOBS_FOLDER    = File.join(ORBIT_HOME, 'jobs').freeze
+REPORTS_FOLDER = File.join(ORBIT_HOME, 'reports').freeze
 
-assert 'GET /', 'redirects to iss/index.html' do
-  code, headers, = app.call env_for('/')
+CONFIG_FOLDER  = File.join(ORBIT_HOME, 'config').freeze
+LFV_CONFIG     = JSON.parse(IO.read(File.join(CONFIG_FOLDER, 'lfv.json'))).freeze #TODO remove
 
-  assert_equal 303, code
-  assert_equal '/iss/index.html', headers['Location']
-end
-
-assert 'GET /index.html', 'redirects to iss/index.html' do
-  code, headers, = app.call env_for('/index.html')
-
-  assert_equal 303, code
-  assert_equal '/iss/index.html', headers['Location']
-end
-
-assert 'GET /iss/index.html' do
-  code, _, body = app.call env_for('/iss/index.html')
-
-  assert_equal 200, code
-  assert_equal '<html>Yeah!</html>', body[0]
+configure do
+  # Folder where to find all static assets, e.g. the web app
+  document_root File.join(ORBIT_HOME, 'public'), urls: ['/iss']
 end
