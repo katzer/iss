@@ -38,14 +38,6 @@ class Report
     File.join(REPORTS_FOLDER, @job_id, "#{id}.json")
   end
 
-  def getid
-    @id
-  end
-
-  def getjob
-    @job_id
-  end
-
   # The timestamp when the report was created.
   #
   # @return [ String ]

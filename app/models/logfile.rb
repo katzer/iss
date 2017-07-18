@@ -59,12 +59,7 @@ class Logfile
   def lines
     ary = []
     @lines.each do |key, value|
-      ary.push(
-        file_id:    @id,
-        planet_id:  @planet_id,
-        line:       key,
-        content:    value
-      )
+      ary.push(file_id: @id, planet_id: @planet_id, line: key, content: value)
     end
     ary
   end
