@@ -75,10 +75,3 @@ assert 'test planet' do
   assert_equal planet.name, 'localhost'
   assert_equal planet.type, 'server'
 end
-
-
-
-
-
-
-

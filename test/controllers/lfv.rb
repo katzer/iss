@@ -28,8 +28,6 @@ def fixture(file)
   File.read File.join(File.dirname(__FILE__), "../fixtures/#{file}.json").chomp
 end
 
-
-
 assert 'GET /api/lfv/planets' do
   code, headers, body = app.call env_for('/api/lfv/planets')
 
@@ -38,16 +36,15 @@ assert 'GET /api/lfv/planets' do
   assert_equal fixture('planets').chomp("\n"), body[0]
 end
 
-
-
 assert 'GET /api/lfv/planets/doesntExist/files', 'planet doesnt exist' do
-  code, headers, body = app.call env_for('/api/lfv/planets/doesntExist/files')
+  code, = app.call env_for('/api/lfv/planets/doesntExist/files')
 
   assert_equal 403, code
 end
 
-assert 'GET /api/lfv/planets/doesntExist/file?file_id=/home/test.log', 'planet doesnt exist' do
-  code, headers, body = app.call env_for('/api/lfv/planets/doesntExist/logfile', 'file_id=test')
+assert 'GET file', 'planet doesnt exist' do
+  path = '/api/lfv/planets/doesntExist/logfile'
+  code, = app.call env_for(path, 'file_id=test')
 
   assert_equal 404, code
 end

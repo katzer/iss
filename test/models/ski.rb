@@ -41,15 +41,7 @@ assert 'test logfile' do
   end
 
   id = '/home/mrblati/workspace/orbit/config/orbit.json'
-  line = ski.logfile(id,'localhost')[0]
+  line = ski.logfile(id, 'localhost')[0]
 
   assert_equal line, 'this'
 end
-
-
-
-
-
-
-
-

@@ -34,6 +34,7 @@ end
 
 assert 'test logfiles' do
   planet = Planet.new('localhost', 'localhost', 'server')
+  id = '/home/mrblati/workspace/orbit/config/orbit.json'
   ski = planet.instance_variable_get(:@ski)
   def ski.raw_logfile_list(_)
     fixture('logfile_list').split("\n")
@@ -42,24 +43,24 @@ assert 'test logfiles' do
   logfiles = planet.logfiles
   logfile = logfiles[0]
 
-  assert_equal logfile.id,        '/home/mrblati/workspace/orbit/config/orbit.json'
+  assert_equal logfile.id,        id
   assert_equal logfile.planet_id, 'localhost'
   assert_equal logfile.name,      'orbit.json'
 end
 
 assert 'test logfile' do
+  id = '/home/mrblati/workspace/orbit/config/orbit.json'
   planet = Planet.new('localhost', 'localhost', 'server')
 
   logfile = planet.logfile('/home/mrblati/workspace/orbit/config/orbit.json')
 
-  assert_equal logfile.id,        '/home/mrblati/workspace/orbit/config/orbit.json'
+  assert_equal logfile.id,        id
   assert_equal logfile.planet_id, 'localhost'
   assert_equal logfile.name,      'orbit.json'
 end
 
 assert 'test to_h' do
   planet = Planet.new('localhost', 'localhost', 'server')
-
 
   assert_equal(planet.to_h, id: 'localhost', name: 'localhost', type: 'server')
 end

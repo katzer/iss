@@ -28,7 +28,7 @@ assert 'test init' do
   id = '/home/mrblati/workspace/orbit/config/orbit.json'
   logfile = Logfile.new(id, 'localhost', 'orbit.json')
 
-  assert_equal logfile.id,        '/home/mrblati/workspace/orbit/config/orbit.json'
+  assert_equal logfile.id,        id
   assert_equal logfile.planet_id, 'localhost'
   assert_equal logfile.name,      'orbit.json'
 end
@@ -51,7 +51,7 @@ assert 'test lines' do
   lines = logfile.lines
   line_zero = lines[0]
 
-  assert_equal line_zero[:file_id],   '/home/mrblati/workspace/orbit/config/orbit.json'
+  assert_equal line_zero[:file_id],   id
   assert_equal line_zero[:planet_id], 'localhost'
   assert_equal line_zero[:line],      '0'
   assert_equal line_zero[:content],   'this'
@@ -63,4 +63,3 @@ assert 'test to_h' do
 
   assert_equal logfile, id: id, planet_id: 'localhost', name: 'orbit.json'
 end
-
