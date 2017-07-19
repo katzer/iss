@@ -20,47 +20,36 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-class Planet
-  # Private Initializer for a planet by id.
-  #
-  # @param [ String ] id The planet id.
-  #
-  # @return [ Planet ]
-  def initialize(id, name, type)
-    @id   = id
-    @name = name
-    @type = type
-    @ski  = Ski.new
-  end
-
-  attr_reader :id, :name, :type
-
-  # List of reports associated to the planet.
-  #
-  # @return [ Array<Hash> ]
-  def logfiles
-    @ski.raw_logfile_list(@id).map do |f|
-      tokens = f.split('/')
-      Logfile.new(f, @id, tokens[tokens.length - 1])
-    end
-  end
-
-  # Returns specified logfile
-  #
-  # @return [ Logfile ]
-  def logfile(file_name)
-    tokens = file_name.split('/')
-    Logfile.new(file_name, @id, tokens[tokens.length - 1])
-  end
-
-  # Converts the planet into a hash struct.
-  #
-  # @return [ Hash ]
-  def to_h
-    {
-      id: @id,
-      name: @name,
-      type: @type
-    }
-  end
+def fixture(file)
+  File.read File.join(File.dirname(__FILE__), "../fixtures/#{file}")
 end
+
+assert 'test raw_logfile_list' do
+  ski = Ski.new
+  def ski.call(_)
+    fixture('logfile_list')
+  end
+  logfile = ski.raw_logfile_list('localhost')[0]
+
+  assert_equal logfile, '/home/mrblati/workspace/orbit/config/orbit.json'
+end
+
+assert 'test logfile' do
+  ski = Ski.new
+  def ski.call(_)
+    fixture('logfile')
+  end
+
+  id = '/home/mrblati/workspace/orbit/config/orbit.json'
+  line = ski.logfile(id,'localhost')[0]
+
+  assert_equal line, 'this'
+end
+
+
+
+
+
+
+
+

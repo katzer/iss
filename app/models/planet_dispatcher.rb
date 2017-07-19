@@ -20,49 +20,42 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-class Fifa < Executor
+class PlanetDispatcher
   # Scope for all planets of type server
   #
-  # @return [ Array<Planet> ]
+  # @return [ Array<Hash> ]
   def servers
-    planets_raw.map do |param|
-      _, id, type, name, = param.split('|')
-      { id: id, name: name, type: type }
-    end
-  end
-
-  # Scope for all planets of type server
-  #
-  # @return [ Array<Planet> ]
-  def servers_for_lfv
-    lfv_planets_raw.map do |param|
-      _, id, type, name, = param.split('|')
-      { id: id, name: name, type: type }
-    end
+    @fifa.servers.map { |p| Planet.new(p[:id], p[:name], p[:type]) }
   end
 
   # Scope for all planets of type server
   #
   # @return [ Array<Hash> ]
-  def planets_raw
-    planets = call(cmd: 'fifa -f=ski type=server')
-    planets.split("\n")
+  def servers_for_lfv
+    @fifa.servers_for_lfv.map { |p| Planet.new(p[:id], p[:name], p[:type]) }
   end
 
-  # Calls fifa to get the connection details to each viable planet
+  # Checks, if a planet is valid.
   #
-  # @return [ Array<String> ]
-  def lfv_planets_raw
-    planets = ''
-    LFV_CONFIG['planets'].map { |p| planets << " #{p}" }
-    planet_list = call(cmd: "fifa -f=ski #{planets}") # TODO: merge gibts ansch ned und split funktioniert in der ooo nich
-    planet_list.split("\n")
+  # @return [ Boolean ]
+  def valid?(planet_id)
+    servers_for_lfv.any? { |p| p.id == planet_id }
   end
 
-  def planet(id)
-    raw = call(cmd: "fifa -f=ski #{id}").chomp!
-    _, id, type, name, = raw.split('|')
-    Planet.new(id, name, type)
+  # Find planet by id.
+  #
+  # @param [ String ] id The planet id.
+  #
+  # @return [ Planet ]
+  def find(id)
+    @fifa.planet(id) if valid? id
   end
 
+  # Private Initializer for a planet dispatcher
+  #
+  # @return [ PlanetDispatcher ]
+  def initialize()
+    @ski  = Ski.new
+    @fifa = Fifa.new
+  end
 end

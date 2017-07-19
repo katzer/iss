@@ -28,6 +28,7 @@ class Logfile
     @id         = id
     @planet_id  = planet_id
     @name       = name
+    @ski        = Ski.new
   end
 
   attr_reader :id, :planet_id, :name
@@ -36,7 +37,7 @@ class Logfile
   #
   # @return [ String ]
   def planet
-    Planet.find(planet_id).name
+    PlanetDispatcher.new.find(planet_id).name
   end
 
   # Returns the contents of a logfile as a Hash-Array
@@ -44,7 +45,7 @@ class Logfile
   # @return [ Array<Hash> ]
   def lines
     ary = []
-    Ski.new.logfile(@id, @planet_id).each_with_index do |line, i|
+    @ski.logfile(@id, @planet_id).each_with_index do |line, i|
       ary << { file_id: @id, planet_id: @planet_id, line: i.to_s, content: line }
     end
     ary

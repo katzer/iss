@@ -1,0 +1,7 @@
+[{"file_id":"/home/mrblati/workspace/orbit/config/lfv.json","planet_id":"localhost","line":"0","content":"{"},
+  {"file_id":"/home/mrblati/workspace/orbit/config/lfv.json","planet_id":"localhost","line":"1","content":"  \"planets\": [\"localhost\",\"p07-mcv-prod\"],"},
+  {"file_id":"/home/mrblati/workspace/orbit/config/lfv.json","planet_id":"localhost","line":"2","content":"  \"files\": ["},
+  {"file_id":"/home/mrblati/workspace/orbit/config/lfv.json","planet_id":"localhost","line":"3","content":"    \"$PACKAGE_HOME/km/log -type f -path *tcp* -not -path *sys\","},
+  {"file_id":"/home/mrblati/workspace/orbit/config/lfv.json","planet_id":"localhost","line":"4","content":"    \"$ORBIT_HOME -type f -path *.json\""},
+  {"file_id":"/home/mrblati/workspace/orbit/config/lfv.json","planet_id":"localhost","line":"5","content":"  ]"},
+  {"file_id":"/home/mrblati/workspace/orbit/config/lfv.json","planet_id":"localhost","line":"6","content":"}"}]
