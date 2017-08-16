@@ -26,7 +26,7 @@ Yeah::Controller
   #
   # @return [ Void ]
   def planets
-    planets = PlanetDispatcher.new.servers_for_lfv
+    planets = Planet.servers_for_lfv
     planets ? render(json: planets.map(&:to_h)) : render(400)
   end
 
@@ -41,7 +41,7 @@ Yeah::Controller
       render(error_code)
       return
     end
-    planet = PlanetDispatcher.new.find(planet_id)
+    planet = Planet.find(planet_id)
     planet ? logfiles = planet.logfiles : render(404)
     logfiles ? render(json: logfiles.map(&:to_h)) : render(404)
   end
@@ -53,13 +53,13 @@ Yeah::Controller
   #
   # @return [ Void ]
   def file(planet_id)
-    file_id = params['file_id']
+    file_id = params['file_id'].gsub('%2F', '/')
     error_code = validate_request(planet_id, file_id)
     if error_code != 0
       render(error_code)
       return
     end
-    planet = PlanetDispatcher.new.find(planet_id)
+    planet = Planet.find(planet_id)
     logfile = planet.logfile(file_id) if planet
     logfile ? render(json: logfile.lines) : render(404)
   end
@@ -68,7 +68,7 @@ Yeah::Controller
   #
   #
   def validate_request(planet_id, file_id = nil)
-    return 403 unless PlanetDispatcher.new.valid?(planet_id)
+    return 403 unless Planet.valid?(planet_id)
     return 0 if file_id.nil?
     return 400 if Logfile.bad_request?(file_id)
     0

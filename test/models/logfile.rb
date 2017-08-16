@@ -40,13 +40,25 @@ assert 'test planet' do
   assert_equal planet, 'localhost'
 end
 
+assert 'test to_h' do
+  id = '/home/mrblati/workspace/orbit/config/orbit.json'
+  logfile = Logfile.new(id, 'localhost', 'orbit.json').to_h
+
+  assert_equal logfile, id: id, planet_id: 'localhost', name: 'orbit.json'
+end
+
+module ISS
+  # Override for fifa
+  class Ski
+    def exec(_)
+      [fixture('logfile').split("\n"), 0]
+    end
+  end
+end
+
 assert 'test lines' do
   id = '/home/mrblati/workspace/orbit/config/orbit.json'
   logfile = Logfile.new(id, 'localhost', 'orbit.json')
-  ski = logfile.instance_variable_get(:@ski)
-  def ski.logfile(_, _)
-    fixture('logfile').split("\n")
-  end
 
   lines = logfile.lines
   line_zero = lines[0]
@@ -55,11 +67,4 @@ assert 'test lines' do
   assert_equal line_zero[:planet_id], 'localhost'
   assert_equal line_zero[:line],      '0'
   assert_equal line_zero[:content],   'this'
-end
-
-assert 'test to_h' do
-  id = '/home/mrblati/workspace/orbit/config/orbit.json'
-  logfile = Logfile.new(id, 'localhost', 'orbit.json').to_h
-
-  assert_equal logfile, id: id, planet_id: 'localhost', name: 'orbit.json'
 end

@@ -20,37 +20,56 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
+
 def fixture(file)
   File.read File.join(File.dirname(__FILE__), "../fixtures/#{file}")
 end
 
-assert 'test init' do
-  planet = Planet.new('localhost', 'localhost', 'server')
+assert 'test find' do
+  planet = Planet.find('localhost')
 
   assert_equal planet.id,   'localhost'
   assert_equal planet.name, 'localhost'
   assert_equal planet.type, 'server'
 end
 
-assert 'test logfiles' do
-  planet = Planet.new('localhost', 'localhost', 'server')
-  id = '/home/mrblati/workspace/orbit/config/orbit.json'
-  ski = planet.instance_variable_get(:@ski)
-  def ski.raw_logfile_list(_)
-    fixture('logfile_list').split("\n")
+module ISS
+  # Override for fifa
+  class Fifa
+    def exec(_)
+      [fixture('servers').split("\n"), 0]
+    end
   end
+end
 
-  logfiles = planet.logfiles
-  logfile = logfiles[0]
+assert 'test servers' do
+  planet = Planet.servers[0]
 
-  assert_equal logfile.id,        id
-  assert_equal logfile.planet_id, 'localhost'
-  assert_equal logfile.name,      'orbit.json'
+  assert_equal planet.id,   'localhost'
+  assert_equal planet.name, 'localhost'
+  assert_equal planet.type, 'server'
+end
+
+assert 'test servers_for_lfv' do
+
+  planet = Planet.servers_for_lfv[0]
+
+  assert_equal planet.id,   'localhost'
+  assert_equal planet.name, 'localhost'
+  assert_equal planet.type, 'server'
+end
+
+assert 'test init' do
+  planet = Planet.new({'id'=>'localhost', 'name'=>'localhost', 'type'=>'server'})
+
+  assert_equal planet.id,   'localhost'
+  assert_equal planet.name, 'localhost'
+  assert_equal planet.type, 'server'
 end
 
 assert 'test logfile' do
   id = '/home/mrblati/workspace/orbit/config/orbit.json'
-  planet = Planet.new('localhost', 'localhost', 'server')
+  planet = Planet.new({'id'=>'localhost', 'name'=>'localhost', 'type'=>'server'})
 
   logfile = planet.logfile('/home/mrblati/workspace/orbit/config/orbit.json')
 
@@ -60,7 +79,28 @@ assert 'test logfile' do
 end
 
 assert 'test to_h' do
-  planet = Planet.new('localhost', 'localhost', 'server')
+  planet = Planet.new({'id'=>'localhost', 'name'=>'localhost', 'type'=>'server'})
 
   assert_equal(planet.to_h, id: 'localhost', name: 'localhost', type: 'server')
+end
+
+module ISS
+  # Override for fifa
+  class Ski
+    def exec(_)
+      [fixture('logfile_list').split("\n"), 0]
+    end
+  end
+end
+
+assert 'test logfiles' do
+  planet = Planet.new({'id'=>'localhost', 'name'=>'localhost', 'type'=>'server'})
+  id = '/home/mrblati/workspace/orbit/config/orbit.json'
+
+  logfiles = planet.logfiles
+  logfile = logfiles[0]
+
+  assert_equal logfile.id,        id
+  assert_equal logfile.planet_id, 'localhost'
+  assert_equal logfile.name,      'orbit.json'
 end

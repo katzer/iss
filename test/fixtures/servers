@@ -1,2 +1,2 @@
-1|localhost|server|localhost|mrblati@localhost
-1|locust|server|locust|mrblati@locust
+{"id":"localhost","name":"localhost","type":"server","user":"mrblati","url":"localhost","env":"prod","location":["pxx","leipzig","sachsen","deutschland","europa"]}
+{"id":"locust","name":"locallocust","type":"server","user":"locust","url":"localhost"}

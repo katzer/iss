@@ -89,7 +89,7 @@ module ISS
     #
     # @return [ String, Process::Status ] The result and the process status.
     def exec(cmd)
-      [`#{cmd}`, $?]
+      [`#{cmd}`.split("\n"), $?]
     end
 
     # Merge the flags into the args without overriding existing ones.

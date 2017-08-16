@@ -23,3 +23,8 @@
 assert 'ISS::Ski' do
   assert_equal 'ski', ISS::Ski.bin
 end
+
+
+def fixture(file)
+  File.read File.join(File.dirname(__FILE__), "../fixtures/#{file}")
+end

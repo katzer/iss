@@ -25,26 +25,28 @@ def env_for(path, query = '')
 end
 
 def fixture(file)
-  File.read File.join(File.dirname(__FILE__), "../fixtures/#{file}.json").chomp
+  File.read File.join(File.dirname(__FILE__), "../fixtures/#{file}").chomp
 end
 
-assert 'GET /api/lfv/planets' do
-  code, headers, body = app.call env_for('/api/lfv/planets')
+scope = app.dup
 
-  assert_equal 200, code
-  assert_include headers['Content-Type'], 'application/json'
-  assert_equal fixture('planets').chomp("\n"), body[0]
+module MockupTest
+  def `(uri)
+    # puts "asdr"
+  end
 end
 
-assert 'GET /api/lfv/planets/doesntExist/files', 'planet doesnt exist' do
-  code, = app.call env_for('/api/lfv/planets/doesntExist/files')
-
-  assert_equal 403, code
+scope.instance_exec do
+  extend MockupTest
+  # `test`
 end
 
-assert 'GET file', 'planet doesnt exist' do
-  path = '/api/lfv/planets/doesntExist/logfile'
-  code, = app.call env_for(path, 'file_id=test')
+  assert 'GET /api/lfv/planets' do
+    code, headers, body = scope.call env_for('/api/lfv/planets')
 
-  assert_equal 404, code
-end
+    # puts body.inspect
+
+    assert_equal 200, code
+    assert_include headers['Content-Type'], 'application/json'
+    assert_equal fixture('planets.json').chomp("\n"), body[0]
+  end

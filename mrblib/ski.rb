@@ -24,5 +24,24 @@ module ISS
   # Wrapper around Orbit ski tool
   class Ski < Tool
     self.bin = 'ski'
+
+    def raw_logfile_list(id)
+      command = '. ~/profiles/`whoami`.prof'
+      LFV_CONFIG['files'].each do |cmd|
+        command << ' && find ' << cmd
+      end
+       raw = call(tail: "-c='#{command}' #{id}")
+       return nil if raw[1] != 0
+       raw[0]
+    end
+
+    # Returns specified logfile
+    #
+    # @return [ Logfile ]
+    def logfile(file_name, planet_id)
+      raw = call(tail: "-c=\"cat #{file_name}\"  #{planet_id}")
+      return nil if raw[1] != 0
+      raw[0]
+    end
   end
 end

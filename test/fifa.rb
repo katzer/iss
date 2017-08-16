@@ -24,3 +24,7 @@ assert 'ISS::Fifa' do
   assert_equal 'fifa', ISS::Fifa.bin
   assert_include ISS::Fifa.servers.command, 'type=server'
 end
+
+def fixture(file)
+  File.read File.join(File.dirname(__FILE__), "../fixtures/#{file}")
+end
