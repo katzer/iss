@@ -59,9 +59,7 @@ Yeah::Controller
       render(error_code)
       return
     end
-    planet = Planet.find(planet_id)
-    logfile = planet.logfile(file_id) if planet
-    logfile ? render(json: logfile.lines) : render(404)
+    file_process(planet_id, file_id)
   end
 
   #
@@ -72,5 +70,11 @@ Yeah::Controller
     return 0 if file_id.nil?
     return 400 if Logfile.bad_request?(file_id)
     0
+  end
+
+  def file_process(planet_id, file_id)
+    planet = Planet.find(planet_id)
+    logfile = planet.logfile(file_id) if planet
+    logfile ? render(json: logfile.lines) : render(404)
   end
 end

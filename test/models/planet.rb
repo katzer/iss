@@ -20,7 +20,6 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-
 def fixture(file)
   File.read File.join(File.dirname(__FILE__), "../fixtures/#{file}")
 end
@@ -51,7 +50,6 @@ assert 'test servers' do
 end
 
 assert 'test servers_for_lfv' do
-
   planet = Planet.servers_for_lfv[0]
 
   assert_equal planet.id,   'localhost'
@@ -60,7 +58,8 @@ assert 'test servers_for_lfv' do
 end
 
 assert 'test init' do
-  planet = Planet.new({'id'=>'localhost', 'name'=>'localhost', 'type'=>'server'})
+  planet = Planet.new('id' => 'localhost',
+                      'name' => 'localhost', 'type' => 'server')
 
   assert_equal planet.id,   'localhost'
   assert_equal planet.name, 'localhost'
@@ -69,7 +68,8 @@ end
 
 assert 'test logfile' do
   id = '/home/mrblati/workspace/orbit/config/orbit.json'
-  planet = Planet.new({'id'=>'localhost', 'name'=>'localhost', 'type'=>'server'})
+  planet = Planet.new('id' => 'localhost',
+                      'name' => 'localhost', 'type' => 'server')
 
   logfile = planet.logfile('/home/mrblati/workspace/orbit/config/orbit.json')
 
@@ -79,7 +79,8 @@ assert 'test logfile' do
 end
 
 assert 'test to_h' do
-  planet = Planet.new({'id'=>'localhost', 'name'=>'localhost', 'type'=>'server'})
+  planet = Planet.new('id' => 'localhost',
+                      'name' => 'localhost', 'type' => 'server')
 
   assert_equal(planet.to_h, id: 'localhost', name: 'localhost', type: 'server')
 end
@@ -94,7 +95,8 @@ module ISS
 end
 
 assert 'test logfiles' do
-  planet = Planet.new({'id'=>'localhost', 'name'=>'localhost', 'type'=>'server'})
+  planet = Planet.new('id' => 'localhost',
+                      'name' => 'localhost', 'type' => 'server')
   id = '/home/mrblati/workspace/orbit/config/orbit.json'
 
   logfiles = planet.logfiles

@@ -58,10 +58,7 @@ class Planet
   # @return [ Array<Hash> ]
   def self.servers
     raw = ISS::Fifa.servers.call
-    return nil if raw[1] != 0
-    raw[0].map do |param|
-      Planet.new(JSON.parse(param))
-    end
+    Planet.parse_planets(raw)
   end
 
   # Scope for all planets of type server
@@ -69,8 +66,12 @@ class Planet
   # @return [ Array<Hash> ]
   def self.servers_for_lfv
     raw = ISS::Fifa.lfv.call
-    return nil if raw[1] != 0
-    raw[0].map do |param|
+    Planet.parse_planets(raw)
+  end
+
+  def self.parse_planets(planet_list)
+    return nil if planet_list[1] != 0
+    planet_list[0].map do |param|
       Planet.new(JSON.parse(param))
     end
   end

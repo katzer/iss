@@ -30,9 +30,9 @@ module ISS
       LFV_CONFIG['files'].each do |cmd|
         command << ' && find ' << cmd
       end
-       raw = call(tail: "-c='#{command}' #{id}")
-       return nil if raw[1] != 0
-       raw[0]
+      raw = call(tail: "-c='#{command}' #{id}")
+      return nil if raw[1] != 0
+      raw[0]
     end
 
     # Returns specified logfile

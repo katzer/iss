@@ -41,12 +41,12 @@ scope.instance_exec do
   # `test`
 end
 
-  assert 'GET /api/lfv/planets' do
-    code, headers, body = scope.call env_for('/api/lfv/planets')
+assert 'GET /api/lfv/planets' do
+  code, headers, body = scope.call env_for('/api/lfv/planets')
 
-    # puts body.inspect
+  # puts body.inspect
 
-    assert_equal 200, code
-    assert_include headers['Content-Type'], 'application/json'
-    assert_equal fixture('planets.json').chomp("\n"), body[0]
-  end
+  assert_equal 200, code
+  assert_include headers['Content-Type'], 'application/json'
+  assert_equal fixture('planets.json').chomp("\n"), body[0]
+end
