@@ -20,6 +20,12 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
+class ISS::Tool
+  def exec(cmd)
+    cmd
+  end
+end
+
 class TestTool1 < ISS::Tool
   self.bin = 'testtool1'
 end
@@ -85,9 +91,12 @@ end
 assert 'ISS::Tool.call' do
   tool = TestTool4.servers
 
-  def tool.exec(cmd)
-    cmd
-  end
-
   assert_equal 'fifa type=server', tool.call
+end
+
+assert 'ISS::Tool#call' do
+  tool = TestTool1.new
+
+  assert_equal 'testtool1', tool.call
+  assert_equal tool.class.call, tool.call
 end

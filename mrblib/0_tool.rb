@@ -33,6 +33,15 @@ module ISS
       define_singleton_method(name) { new(blk.call) }
     end
 
+    # Shortcut for Tool.new.call(...).
+    #
+    # @param [ Hash ] flags The flags how to call the tool.
+    #
+    # @return [ String, Process::Status ] The result and the process status.
+    def self.call(flags = '')
+      new.call(flags)
+    end
+
     # Initializes the tool with addition fixed args.
     #
     # @param [ String ] flags Fixed string of args.
@@ -74,7 +83,6 @@ module ISS
     # Execute a command specified by the flags.
     #
     # @param [ Hash ] flags The flags how to call the tool.
-    # @param [ Array ] opts List of single key opts.
     #
     # @return [ String, Process::Status ] The result and the process status.
     def call(flags = '')
