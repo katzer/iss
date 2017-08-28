@@ -25,23 +25,11 @@ module ISS
   class Ski < Tool
     self.bin = 'ski'
 
-    def raw_logfile_list(id)
-      command = '. ~/profiles/`whoami`.prof'
-      LFV_CONFIG['files'].each do |cmd|
-        command << ' && find ' << cmd
-      end
-      raw = call(tail: "-c='#{command}' #{id}")
-      return nil if raw[1] != 0
-      raw[0]
-    end
+    scope :logfiles, lambda {
+      load_profile = '. ~/profiles/`whoami`.prof'
+      find_files   = LFV_CONFIG['files'].map { |f| "find #{f}" }.join('&&')
 
-    # Returns specified logfile
-    #
-    # @return [ Logfile ]
-    def logfile(file_name, planet_id)
-      raw = call(tail: "-c=\"cat #{file_name}\"  #{planet_id}")
-      return nil if raw[1] != 0
-      raw[0]
-    end
+      "-c='#{load_profile} && #{find_files}'"
+    }
   end
 end

@@ -20,11 +20,14 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-assert 'ISS::Fifa' do
+assert 'ISS::Fifa#bin' do
   assert_equal 'fifa', ISS::Fifa.bin
+end
+
+assert 'ISS::Fifa#servers' do
   assert_include ISS::Fifa.servers.command, 'type=server'
 end
 
-def fixture(file)
-  File.read File.join(File.dirname(__FILE__), "../fixtures/#{file}")
+assert 'ISS::Fifa#lfv' do
+  assert_include ISS::Fifa.lfv.command, LFV_CONFIG['planets'].join(' ')
 end

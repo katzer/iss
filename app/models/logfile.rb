@@ -21,48 +21,60 @@
 # @APPPLANT_LICENSE_HEADER_END@
 
 class Logfile
-  # Initializes a job report by id and its job id.
+  # If the file_id goes along with the rules for file id syntax.
   #
-  # @return [ Orbit::Report ]
-  def initialize(id, planet_id, name)
-    @id         = id
-    @planet_id  = planet_id
-    @name       = name
+  # @param [ String ] file_id The ID of the file to check for.
+  #
+  # @return [ Boolean ]
+  def self.valid?(file_id)
+    %w[& " ' \\ \ ].none? { |token| file_id.include? token }
   end
 
-  attr_reader :id, :planet_id, :name
+  # Initializes a log file.
+  #
+  # @param [ String ] id        The Id (e.g. path) of the file.
+  # @param [ String ] planet_id The ID of the planet where the file is located.
+  #
+  # @return [ Void ]
+  def initialize(id, planet_id)
+    @id         = id
+    @planet_id  = planet_id
+  end
 
-  # The name of the planet.
+  attr_reader :id, :planet_id
+
+  # The name of the file
   #
   # @return [ String ]
-  def planet
-    Planet.find(@planet_id).name
+  alias name id
+
+  # If the id of the file goes along with the rules for file id syntax.
+  #
+  # @return [ Boolean ]
+  def valid?
+    self.class.valid? id
   end
 
   # Returns the contents of a logfile as a Hash-Array
   #
   # @return [ Array<Hash> ]
   def lines
-    ary = []
-    ISS::Ski.new.logfile(@id, @planet_id).each_with_index do |l, i|
-      ary << { file_id: @id, planet_id: @planet_id, line: i.to_s, content: l }
+    lines              = []
+    output, successful = ISS::Ski.call tail: %(-c="cat #{id}" #{planet_id})
+
+    return lines unless successful
+
+    output.each_with_index do |l, i|
+      lines << { file_id: id, planet_id: planet_id, line: i, content: l }
     end
-    ary
+
+    lines
   end
 
-  def self.bad_request?(file_id)
-    return true if file_id.include?('&')
-    return true if file_id.include?('"')
-    return true if file_id.include?("'")
-    return true if file_id.include?('\\')
-    false
-  end
-
+  # Converts the object into a hash struct.
+  #
+  # @return [ Hash ]
   def to_h
-    {
-      id:        @id,
-      planet_id: @planet_id,
-      name:      @name
-    }
+    { id: id, planet_id: planet_id, name: name }
   end
 end

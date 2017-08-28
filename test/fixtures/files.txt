@@ -1,0 +1,2 @@
+/log/file1.txt
+/log/file2.txt

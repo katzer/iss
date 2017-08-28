@@ -21,94 +21,82 @@
 # @APPPLANT_LICENSE_HEADER_END@
 
 class Planet
-  # Private Initializer for a planet by id.
+  # Find a planet by its ID.
   #
-  # @param [ Hash ] h The hash containing all information about the planet.
+  # @param [ String ] id The id of the planet to find for.
   #
-  # @return [ Planet ]
-  def initialize(h)
-    @data = h
+  # @return [ Planet ] nil if not found.
+  def self.find(id)
+    items, successful = ISS::Fifa.call(tail: id)
+
+    return nil unless items.any? && successful
+
+    Planet.new(JSON.parse(items[0]))
+  end
+
+  # Scope for all planets of type server
+  #
+  # @return [ Array<Hash> ]
+  def self.find_all(scope = ISS::Fifa)
+    items, successful = scope.call
+
+    return [] unless successful
+
+    items.map! { |json| new JSON.parse(json) }
+  end
+
+  # Initializes a planet.
+  #
+  # @param [ Hash ] data The hash containing all information about the planet.
+  #
+  # @return [ Void ]
+  def initialize(data)
+    @data = data
   end
 
   attr_reader :data
 
-  # def [](key)
-  #   @data[key]
-  # end
+  # Hash-like access to all properties.
+  #
+  # @param [ String ] The name of the property.
+  #
+  # @return [ Object ] The value.
+  def [](key)
+    @data[key]
+  end
 
+  # The id of the planet.
+  #
+  # @return [ String ]
   def id
     @data['id']
   end
 
+  # The name of the planet.
+  #
+  # @return [ String ]
   def name
     @data['name']
   end
 
+  # The type of the planet.
+  #
+  # @return [ String ]
   def type
     @data['type']
   end
 
-  def self.find(id)
-    json = JSON.parse(ISS::Fifa.new.call(tail: id)[0][0])
-    Planet.new(json)
-  end
-
-  # Scope for all planets of type server
+  # Proxy instance of the LFV module.
   #
-  # @return [ Array<Hash> ]
-  def self.servers
-    raw = ISS::Fifa.servers.call
-    Planet.parse_planets(raw)
-  end
-
-  # Scope for all planets of type server
-  #
-  # @return [ Array<Hash> ]
-  def self.servers_for_lfv
-    raw = ISS::Fifa.lfv.call
-    Planet.parse_planets(raw)
-  end
-
-  def self.parse_planets(planet_list)
-    return nil if planet_list[1] != 0
-    planet_list[0].map do |param|
-      Planet.new(JSON.parse(param))
-    end
-  end
-
-  # Checks, if a planet is valid.
-  #
-  # @return [ Boolean ]
-  def self.valid?(planet_id)
-    Planet.servers_for_lfv.any? { |p| p.data['id'] == planet_id }
-  end
-
-  # List of reports associated to the planet.
-  #
-  # @return [ Array<Hash> ]
+  # @return [ ISS::LFV ]
   def logfiles
-    ISS::Ski.new.raw_logfile_list(@data['id']).map do |f|
-      tokens = f.split('/')
-      Logfile.new(f, @data['id'], tokens[tokens.length - 1])
-    end
+    ISS::LFV.new(id)
   end
 
-  # Returns specified logfile
-  #
-  # @return [ Logfile ]
-  def logfile(file_name)
-    tokens = file_name.split('/')
-    Logfile.new(file_name, @data['id'], tokens[tokens.length - 1])
-  end
-
-  # Converts the planet into a hash struct.
+  # Converts the object into a hash struct.
   #
   # @return [ Hash ]
   def to_h
-    {
-      id:   @data['id'],
-      name: @data['name'],
-      type: @data['type']
-    }
+    { id: id, name: name, type: type }
   end
 end

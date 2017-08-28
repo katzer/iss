@@ -20,10 +20,13 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-assert 'ISS::Ski' do
+assert 'ISS::Ski#bin' do
   assert_equal 'ski', ISS::Ski.bin
 end
 
-def fixture(file)
-  File.read File.join(File.dirname(__FILE__), "../fixtures/#{file}")
+assert 'ISS::Ski#logfiles' do
+  cmd = ISS::Ski.logfiles.command
+
+  assert_include cmd, 'ski -c'
+  LFV_CONFIG['files'].each { |file| assert_include cmd, "find #{file}" }
 end

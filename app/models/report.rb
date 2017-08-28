@@ -35,7 +35,7 @@ class Report
   #
   # @return [ String ]
   def path
-    File.join(REPORTS_FOLDER, @job_id, "#{id}.json")
+    File.join(REPORTS_FOLDER, job_id, "#{id}.json")
   end
 
   # The timestamp when the report was created.
@@ -52,35 +52,37 @@ class Report
     ['planet'] + results[0].rows.keys
   end
 
-  # Converts the report into a hash struct.
+  # List of all report results.
+  #
+  # @return [ Array<ReportResult> ]
+  def results
+    res  = raw_results.map! { |row| Result.new(job_id, id, row) }
+    cols = {}
+
+    res.each { |r| cols.merge! r.rows }
+    res.each { |r| cols.each_key { |col| r.rows[col] ||= '-' } }
+    res
+  end
+
+  # Converts the object into a hash struct.
   #
   # @return [ Hash ]
   def to_h
     {
-      id:        @id,
+      id:        id,
       name:      timestamp,
       timestamp: timestamp,
-      job_id:    @job_id,
+      job_id:    job_id,
       columns:   columns
     }
   end
+
+  private
 
   # The raw result rows as seen in the report file.
   #
   # @return [ Array<Hash> ]
   def raw_results
     JSON.parse(IO.read(path))['planets']
-  end
-
-  # List of all report results.
-  #
-  # @return [ Array<ReportResult> ]
-  def results
-    res  = raw_results.map! { |row| Result.new(@job_id, @id, row) }
-    cols = {}
-
-    res.each { |r| cols.merge! r.rows }
-    res.each { |r| cols.each_key { |col| r.rows[col] ||= '-' } }
-    res
   end
 end

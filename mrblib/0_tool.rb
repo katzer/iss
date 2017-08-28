@@ -30,7 +30,7 @@ module ISS
     #
     # @return [ ISS::Tool::Base ]
     def self.scope(name, blk)
-      define_singleton_method(name) { new(blk.call) }
+      define_singleton_method(name) { |*args| new(blk.call(*args)) }
     end
 
     # Shortcut for Tool.new.call(...).
@@ -95,9 +95,9 @@ module ISS
     #
     # @param [ String ] cmd A bash command.
     #
-    # @return [ String, Process::Status ] The result and the process status.
+    # @return [ String, Boolean ] The result and the process status.
     def exec(cmd)
-      [`#{cmd}`.split("\n"), $?]
+      [`#{cmd}`.split("\n"), $? == 0]
     end
 
     # Merge the flags into the args without overriding existing ones.

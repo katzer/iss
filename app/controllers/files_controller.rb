@@ -20,14 +20,13 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-class FilesController < # noinspection RubyResolve,RubyResolve
-Yeah::Controller
+class FilesController < Yeah::Controller # noinspection RubyResolve,RubyResolve
   # Render a list of all planets of type server.
   #
   # @return [ Void ]
   def planets
-    planets = Planet.servers_for_lfv
-    planets ? render(json: planets.map(&:to_h)) : render(400)
+    planets = Planet.find_all(ISS::Fifa.lfv)
+    planets ? render(json: planets.map(&:to_h)) : render(404)
   end
 
   # Render a list of all log files.
@@ -36,45 +35,47 @@ Yeah::Controller
   #
   # @return [ Void ]
   def files(planet_id)
-    error_code = validate_request(planet_id)
-    if error_code != 0
-      render(error_code)
-      return
-    end
+    code = validate_request(planet_id)
+
+    return render(code) unless code == 0
+
     planet = Planet.find(planet_id)
-    planet ? logfiles = planet.logfiles : render(404)
-    logfiles ? render(json: logfiles.map(&:to_h)) : render(404)
+
+    return render(404) unless planet
+
+    render json: planet.logfiles.find_all.map(&:to_h)
   end
 
   # Render the content of a log file.
   #
   # @param [ String ] planet_id The ID of the planet where to look for.
-  # file_id: The id or path of the file to render.
+  # @param [ String ] file_id   The id or path of the file to render.
   #
   # @return [ Void ]
   def file(planet_id)
-    file_id = params['file_id'].gsub('%2F', '/')
-    error_code = validate_request(planet_id, file_id)
-    if error_code != 0
-      render(error_code)
-      return
-    end
-    file_process(planet_id, file_id)
+    file_id = params['file_id']&.gsub('%2F', '/')
+    code    = validate_request(planet_id, file_id)
+
+    return render(code) unless code == 0
+
+    file = Planet.find(planet_id)&.logfiles&.find(file_id)
+
+    file ? render(json: file.lines) : render(404)
   end
 
+  private
+
+  # Validate if planet and file specified by id are allowed to access.
   #
+  # @param [ String ] planet_id The ID of the planet.
+  # @param [ String ] file_id   The ID of the file.
   #
-  #
+  # @return [ Number ] HTTP Status Code
   def validate_request(planet_id, file_id = nil)
-    return 403 unless Planet.valid?(planet_id)
-    return 0 if file_id.nil?
-    return 400 if Logfile.bad_request?(file_id)
+    return 404 unless ISS::LFV.include? planet_id
+    return 0   unless file_id
+    return 400 unless Logfile.valid?(file_id)
+    return 404 unless ISS::LFV.new(planet_id).include? file_id
     0
-  end
-
-  def file_process(planet_id, file_id)
-    planet = Planet.find(planet_id)
-    logfile = planet.logfile(file_id) if planet
-    logfile ? render(json: logfile.lines) : render(404)
   end
 end

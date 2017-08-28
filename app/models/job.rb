@@ -66,29 +66,25 @@ class Job
     @id = id.to_s
   end
 
-  def getid
-    @id
-  end
-
   attr_reader :id
-
-  # Converts the report into a hash struct.
-  #
-  # @return [ Hash ]
-  def to_h
-    { id: @id, name: @id }
-  end
 
   # List of reports associated to the job.
   #
   # @return [ Array<Report> ]
   def reports
-    dir = File.join(REPORTS_FOLDER, @id)
+    dir = File.join(REPORTS_FOLDER, id)
 
     return [] unless Dir.exist? dir
 
     Dir.entries(dir)
        .keep_if { |f| f.end_with? '.json' }
-       .map! { |f| Report.new(f.chomp!('.json'), @id) }
+       .map! { |f| Report.new(f.chomp!('.json'), id) }
+  end
+
+  # Converts the object into a hash struct.
+  #
+  # @return [ Hash ]
+  def to_h
+    { id: id, name: id }
   end
 end
