@@ -25,11 +25,13 @@ module ISS
   class Ski < Tool
     self.bin = 'ski'
 
+    scope :logfile, ->(file) { %(-c="cat #{file}") }
+
     scope :logfiles, lambda {
       load_profile = '. ~/profiles/`whoami`.prof'
       find_files   = LFV_CONFIG['files'].map { |f| "find #{f}" }.join('&&')
 
-      "-c='#{load_profile} && #{find_files}'"
+      { tail: "-c='#{load_profile} && #{find_files}'" }
     }
   end
 end

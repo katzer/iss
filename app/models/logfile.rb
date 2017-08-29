@@ -60,7 +60,7 @@ class Logfile
   # @return [ Array<Hash> ]
   def lines
     lines              = []
-    output, successful = ISS::Ski.call tail: %(-c="cat #{id}" #{planet_id})
+    output, successful = ISS::Ski.logfile(id).call(tail: planet_id)
 
     return lines unless successful
 

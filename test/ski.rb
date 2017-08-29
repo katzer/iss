@@ -24,9 +24,16 @@ assert 'ISS::Ski#bin' do
   assert_equal 'ski', ISS::Ski.bin
 end
 
+assert 'ISS::Ski#logfile' do
+  assert_include ISS::Ski.logfile('file.log').command, 'cat file.log'
+end
+
+assert 'ISS::Ski#logfile', 'without a file' do
+  assert_raise(ArgumentError) { ISS::Ski.logfile }
+end
+
 assert 'ISS::Ski#logfiles' do
   cmd = ISS::Ski.logfiles.command
 
-  assert_include cmd, 'ski -c'
   LFV_CONFIG['files'].each { |file| assert_include cmd, "find #{file}" }
 end
