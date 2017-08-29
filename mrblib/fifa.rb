@@ -20,35 +20,13 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-# noinspection RubyResolve,RubyResolve
-class JobsController < # noinspection RubyResolve,RubyResolve
-Yeah::Controller
-  # Render all jobs found under the jobs folder.
-  #
-  # @return [ Void ]
-  def jobs
-    render(json: Job.find_all.map(&:to_h))
-  end
+module ISS
+  # Wrapper around Orbit fifa tool
+  class Fifa < Tool
+    self.bin  = 'fifa'
+    self.args = '-f=json'
 
-  # Render all reports for a given job.
-  #
-  # @param [ String ] job_id The ID of the job to look for.
-  #
-  # @return [ Void ]
-  def reports(job_id)
-    job = Job.find(job_id)
-    job ? render(json: job.reports.map(&:to_h)) : render(404)
-  end
-
-  # Render all results for a given job and report.
-  #
-  # @param [ String ] job_id    The ID of the job to look for.
-  # @param [ String ] report_id The ID of the report to look for.
-  #
-  # @return [ Void ]
-  def results(job_id, report_id)
-    job    = Job.find(job_id)
-    report = job.reports.find { |r| r.id == report_id } if job
-    report ? render(json: report.results.map(&:to_h)) : render(404)
+    scope :servers, -> { 'type=server' }
+    scope :lfv,     -> { LFV_CONFIG['planets'].join(' ') }
   end
 end

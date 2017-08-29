@@ -20,35 +20,18 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-# noinspection RubyResolve,RubyResolve
-class JobsController < # noinspection RubyResolve,RubyResolve
-Yeah::Controller
-  # Render all jobs found under the jobs folder.
-  #
-  # @return [ Void ]
-  def jobs
-    render(json: Job.find_all.map(&:to_h))
-  end
+module ISS
+  # Wrapper around Orbit ski tool
+  class Ski < Tool
+    self.bin = 'ski'
 
-  # Render all reports for a given job.
-  #
-  # @param [ String ] job_id The ID of the job to look for.
-  #
-  # @return [ Void ]
-  def reports(job_id)
-    job = Job.find(job_id)
-    job ? render(json: job.reports.map(&:to_h)) : render(404)
-  end
+    scope :logfile, ->(file) { %(-c="cat #{file}") }
 
-  # Render all results for a given job and report.
-  #
-  # @param [ String ] job_id    The ID of the job to look for.
-  # @param [ String ] report_id The ID of the report to look for.
-  #
-  # @return [ Void ]
-  def results(job_id, report_id)
-    job    = Job.find(job_id)
-    report = job.reports.find { |r| r.id == report_id } if job
-    report ? render(json: report.results.map(&:to_h)) : render(404)
+    scope :logfiles, lambda {
+      load_profile = '. ~/profiles/`whoami`.prof'
+      find_files   = LFV_CONFIG['files'].map { |f| "find #{f}" }.join('&&')
+
+      { tail: "-c='#{load_profile} && #{find_files}'" }
+    }
   end
 end

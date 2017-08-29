@@ -2,6 +2,14 @@
 /releases
 /packages
 /bintest/logs
+/bintest/bin
+/bintest/config/orbit.json
 /public
+/utilsScripts
+/.idea
+/orbit
 
 .DS_Store
+
+/todo
+/todo.bmw

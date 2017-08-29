@@ -20,35 +20,20 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-# noinspection RubyResolve,RubyResolve
-class JobsController < # noinspection RubyResolve,RubyResolve
-Yeah::Controller
-  # Render all jobs found under the jobs folder.
-  #
-  # @return [ Void ]
-  def jobs
-    render(json: Job.find_all.map(&:to_h))
-  end
+assert 'ISS::Ski#bin' do
+  assert_equal 'ski', ISS::Ski.bin
+end
 
-  # Render all reports for a given job.
-  #
-  # @param [ String ] job_id The ID of the job to look for.
-  #
-  # @return [ Void ]
-  def reports(job_id)
-    job = Job.find(job_id)
-    job ? render(json: job.reports.map(&:to_h)) : render(404)
-  end
+assert 'ISS::Ski#logfile' do
+  assert_include ISS::Ski.logfile('file.log').command, 'cat file.log'
+end
 
-  # Render all results for a given job and report.
-  #
-  # @param [ String ] job_id    The ID of the job to look for.
-  # @param [ String ] report_id The ID of the report to look for.
-  #
-  # @return [ Void ]
-  def results(job_id, report_id)
-    job    = Job.find(job_id)
-    report = job.reports.find { |r| r.id == report_id } if job
-    report ? render(json: report.results.map(&:to_h)) : render(404)
-  end
+assert 'ISS::Ski#logfile', 'without a file' do
+  assert_raise(ArgumentError) { ISS::Ski.logfile }
+end
+
+assert 'ISS::Ski#logfiles' do
+  cmd = ISS::Ski.logfiles.command
+
+  LFV_CONFIG['files'].each { |file| assert_include cmd, "find #{file}" }
 end

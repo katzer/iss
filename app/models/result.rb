@@ -43,7 +43,7 @@ class Result
   #
   # @return [ String ]
   def planet
-    Planet.find(planet_id)['name']
+    Planet.find(planet_id).name
   rescue
     planet_id
   end
@@ -58,13 +58,13 @@ class Result
                   .each_with_object({}) { |r, row| row[r[0]] = r[1] }
   end
 
-  # Converts the report into a hash struct.
+  # Converts the object into a hash struct.
   #
   # @return [ Hash ]
   def to_h
     {
-      job_id:    @job_id,
-      report_id: @report_id,
+      job_id:    job_id,
+      report_id: report_id,
       planet_id: planet_id,
       valid:     !@data['errored'],
       planet:    planet

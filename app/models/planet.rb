@@ -21,17 +21,82 @@
 # @APPPLANT_LICENSE_HEADER_END@
 
 class Planet
+  # Find a planet by its ID.
+  #
+  # @param [ String ] id The id of the planet to find for.
+  #
+  # @return [ Planet ] nil if not found.
+  def self.find(id)
+    items, successful = ISS::Fifa.call(tail: id)
+
+    return nil unless items.any? && successful
+
+    Planet.new(JSON.parse(items[0]))
+  end
+
   # Scope for all planets of type server
   #
   # @return [ Array<Hash> ]
-  def servers
-    ORBIT_FILE.find_all { |planet| planet['type'] == 'server' }
+  def self.find_all(scope = ISS::Fifa)
+    items, successful = scope.call
+
+    return [] unless successful
+
+    items.map! { |json| new JSON.parse(json) }
   end
 
-  # Find planet by id.
+  # Initializes a planet.
+  #
+  # @param [ Hash ] data The hash containing all information about the planet.
+  #
+  # @return [ Void ]
+  def initialize(data)
+    @data = data
+  end
+
+  attr_reader :data
+
+  # Hash-like access to all properties.
+  #
+  # @param [ String ] The name of the property.
+  #
+  # @return [ Object ] The value.
+  def [](key)
+    @data[key]
+  end
+
+  # The id of the planet.
+  #
+  # @return [ String ]
+  def id
+    @data['id']
+  end
+
+  # The name of the planet.
+  #
+  # @return [ String ]
+  def name
+    @data['name']
+  end
+
+  # The type of the planet.
+  #
+  # @return [ String ]
+  def type
+    @data['type']
+  end
+
+  # Proxy instance of the LFV module.
+  #
+  # @return [ ISS::LFV ]
+  def logfiles
+    ISS::LFV.new(id)
+  end
+
+  # Converts the object into a hash struct.
   #
   # @return [ Hash ]
-  def self.find(id)
-    ORBIT_FILE.find { |planet| planet['id'] == id }
+  def to_h
+    { id: id, name: name, type: type }
   end
 end

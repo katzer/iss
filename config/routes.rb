@@ -48,5 +48,5 @@ get '/api/jobs/{job_id}/reports', controller: JobsController, action: 'reports'
 get '/api/jobs/{job_id}/reports/{report_id}/results', controller: JobsController, action: 'results'
 
 get '/api/lfv/planets', controller: FilesController, action: 'planets'
-get '/api/lfv/{planet_id}/files', controller: FilesController, action: 'files'
-get '/api/lfv/{planet_id}/files/{file_path}', controller: FilesController, action: 'file'
+get '/api/lfv/planets/{planet_id}/files', controller: FilesController, action: 'files'
+get '/api/lfv/planets/{planet_id}/file', controller: FilesController, action: 'file'

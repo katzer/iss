@@ -20,30 +20,8 @@
 #
 # @APPPLANT_LICENSE_HEADER_END@
 
-class FilesController < Yeah::Controller
-  # Render a list of all planets of type server.
-  #
-  # @return [ Void ]
-  def planets
-    render json: Planet.servers.map { |p| { id: p['id'], name: p['name'] } }
-  end
-
-  # Render a list of all log files.
-  #
-  # @param [ String ] planet_id The ID of the planet where to look for.
-  #
-  # @return [ Void ]
-  def files(planet_id)
-    render 'TODO'
-  end
-
-  # Render the content of a log file.
-  #
-  # @param [ String ] planet_id The ID of the planet where to look for.
-  # @param [ String ] file_path   The id or path of the file to render.
-  #
-  # @return [ Void ]
-  def file(planet_id, file_path)
-    render 'TODO'
+class LogConfig
+  def self.find_params
+    CONFIG_FILE['find_params']
   end
 end

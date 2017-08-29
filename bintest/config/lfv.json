@@ -1,0 +1,6 @@
+{
+  "planets": ["localhost","p07-mcv-prod"],
+  "files": [
+    "$ORBIT_HOME -type f -path \"*.log\""
+  ]
+}

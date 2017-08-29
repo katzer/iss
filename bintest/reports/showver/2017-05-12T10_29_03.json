@@ -21,7 +21,7 @@
             "created_at": "2017-05-12T08:29:03Z"
         },
         {
-            "id": "sample-planet",
+            "id": "localhost",
             "output": "[\n[\"Version\", \"Section\", \"Suse\", \"UnixVersion\", \"UnixPatch\", \"Key\", \"Value\", \"Key2\", \"Value2\", \"Os\", \"OracleDb\"]\n]\n",
             "errored": true,
             "created_at": "2017-05-12T08:29:03Z"
