@@ -22,7 +22,7 @@
 
 module ISS
   # Colorized ORBIT logo
-  LOGO = <<-logo.set_color(OS.posix? ? 208 : :light_yellow).freeze
+  LOGO = <<-LOGO.set_color(OS.posix? ? 208 : :light_yellow).freeze
           `-/++++++/:-`
       `/yhyo/:....-:/+syyy+:`
     .yd+`                `-+yds:     `
@@ -46,5 +46,5 @@ module ISS
            `od+
              `od+`
                `+ds
-logo
+LOGO
 end
