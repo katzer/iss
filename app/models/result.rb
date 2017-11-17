@@ -52,10 +52,7 @@ class Result
   #
   # @return [ Map ]
   def rows
-    @rows ||= JSON.parse(@data['output'])
-                  .map        { |r| r.delete_if(&:empty?) }
-                  .keep_if    { |r| r.size == 2 }
-                  .each_with_object({}) { |r, row| row[r[0]] = r[1] }
+    @data[:output]
   end
 
   # Converts the object into a hash struct.

@@ -49,19 +49,22 @@ class Report
   #
   # @return [ Array<String> ]
   def columns
-    ['planet'] + results[0].rows.keys
+    ['planet'] + content['Keys'].split(', ')
   end
 
   # List of all report results.
   #
   # @return [ Array<ReportResult> ]
   def results
-    res  = raw_results.map! { |row| Result.new(job_id, id, row) }
-    cols = {}
+    content['planets'].each_with_object([]) do |item, items|
+      keys, *values = JSON.parse(item['output'])
 
-    res.each { |r| cols.merge! r.rows }
-    res.each { |r| cols.each_key { |col| r.rows[col] ||= '-' } }
-    res
+      values << ([''] * keys.size) if values.empty?
+
+      values.each do |row|
+        items << Result.new(job_id, id, item.merge(output: keys.zip(row).to_h))
+      end
+    end
   end
 
   # Converts the object into a hash struct.
@@ -79,10 +82,10 @@ class Report
 
   private
 
-  # The raw result rows as seen in the report file.
+  # The parsed report json file.
   #
-  # @return [ Array<Hash> ]
-  def raw_results
-    JSON.parse(IO.read(path))['planets']
+  # @return [ Hash ]
+  def content
+    JSON.parse(IO.read(path))
   end
 end
