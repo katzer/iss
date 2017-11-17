@@ -21,7 +21,7 @@
 # @APPPLANT_LICENSE_HEADER_END@
 
 opt! :help do
-  <<-usage
+  <<-USAGE
 
 #{ISS::LOGO}
 
@@ -34,7 +34,7 @@ Options:
                   Defaults to: 1974
 -h, --help        This help text
 -v, --version     Show version number
-usage
+USAGE
 end
 
 opt! :version do
