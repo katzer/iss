@@ -21,5 +21,5 @@
 # @APPPLANT_LICENSE_HEADER_END@
 
 module ISS
-  VERSION = '1.4.3-dev'.freeze
+  VERSION = '1.4.4-dev'.freeze
 end
