@@ -38,7 +38,7 @@ USAGE
 end
 
 opt! :version do
-  "v#{ISS::VERSION} - #{OS.sysname} #{OS.bits(:binary)}-Bit (#{OS.machine})"
+  "iss v#{ISS::VERSION} - #{OS.sysname} #{OS.bits(:binary)}-Bit (#{OS.machine})"
 end
 
 opt :environment, 'development' do |env|
