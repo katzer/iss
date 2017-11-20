@@ -102,9 +102,11 @@ class Report
   #
   # @return [ Void ]
   def with_each_converted_row(rows)
+    cols = columns
+
     rows.each do |row|
       row.each_with_index do |val, i|
-        case columns[i][:type]
+        case cols[i][:type]
         when :int   then row[i] = val.to_i
         when :float then row[i] = val.to_f
         end
