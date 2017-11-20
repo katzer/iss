@@ -44,7 +44,7 @@ class Result
   # @return [ String ]
   def planet
     Planet.find(planet_id).name
-  rescue
+  rescue StandardError => _
     planet_id
   end
 
