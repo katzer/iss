@@ -47,9 +47,16 @@ class Report
 
   # Max. list of columns extracted from linked result set.
   #
-  # @return [ Array<String> ]
+  # @return [ Array<Hash> ]
   def columns
-    ['planet'] + content['Keys'].split(', ')
+    @columns ||= content['Keys'].split(', ').map! do |name|
+      case name[-2, 2]
+      when '_s' then { id: name, name: name[0...-2], type: :string }
+      when '_i' then { id: name, name: name[0...-2], type: :int    }
+      when '_f' then { id: name, name: name[0...-2], type: :float  }
+      else           { id: name, name: name,         type: :string }
+      end
+    end
   end
 
   # List of all report results.
@@ -57,12 +64,12 @@ class Report
   # @return [ Array<ReportResult> ]
   def results
     content['planets'].each_with_object([]) do |item, items|
-      keys, *values = JSON.parse(item['output'])
+      keys, *rows = JSON.parse(item['output'])
 
-      values << ([''] * keys.size) if values.empty?
+      rows << Array.new(keys.size, '') if rows.empty?
 
-      values.each do |row|
-        items << Result.new(job_id, id, item.merge(output: keys.zip(row).to_h))
+      with_each_converted_row(rows) do |row|
+        items << Result.new(job_id, id, item.merge(output: keys.zip(row)))
       end
     end
   end
@@ -86,6 +93,24 @@ class Report
   #
   # @return [ Hash ]
   def content
-    JSON.parse(IO.read(path))
+    @content ||= JSON.parse(IO.read(path))
+  end
+
+  # Convert each cell by column type.
+  #
+  # @param [ Array] rows The list of rows.
+  #
+  # @return [ Void ]
+  def with_each_converted_row(rows)
+    rows.each do |row|
+      row.each_with_index do |val, i|
+        case columns[i][:type]
+        when :int   then row[i] = val.to_i
+        when :float then row[i] = val.to_f
+        end
+      end
+
+      yield(row)
+    end
   end
 end

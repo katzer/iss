@@ -52,7 +52,7 @@ class Result
   #
   # @return [ Map ]
   def rows
-    @data[:output]
+    @data[:output].to_h
   end
 
   # Converts the object into a hash struct.
