@@ -50,7 +50,7 @@ MRuby::CrossBuild.new('i686-pc-linux-gnu') do |conf|
   gem_config(conf)
 end
 
-MRuby::CrossBuild.new('x86_64-pc-linux-busybox') do |conf|
+MRuby::CrossBuild.new('x86_64-alpine-linux-musl') do |conf|
   toolchain :gcc
 
   [conf.cc, conf.linker].each do |cc|
