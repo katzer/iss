@@ -25,6 +25,8 @@ version: "{build}"
 environment:
   global:
     COMPILER: C:\mingw-w64\x86_64-6.3.0-posix-seh-rt_v5-rev1
+    ORBIT_HOME: '%APPVEYOR_BUILD_FOLDER%\bintest'
+    ORBIT_FILE: '%APPVEYOR_BUILD_FOLDER%\bintest\config\orbit.json'
     MRUBY_CLI_LOCAL: 1
     TOOLCHAIN: gcc
   matrix:
@@ -36,6 +38,8 @@ matrix:
   - MRUBY_VERSION: head
 
 init:
+- ECHO %ORBIT_HOME%
+- ECHO %ORBIT_FILE%
 - SET PATH=C:\Windows\system32;C:\Windows;C:\Program Files\Git\cmd;%PATH%
 - SET PATH=%COMPILER%\bin;C:\Ruby24-x64\bin;%PATH%;C:\cygwin\bin;
 - gcc --version
@@ -48,4 +52,4 @@ build_script:
 - rake compile
 
 test_script:
-- rake test:test
+- rake test
