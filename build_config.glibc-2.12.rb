@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 def gem_config(conf)
-  conf.gem File.expand_path(File.dirname(__FILE__))
+  conf.gem __dir__
 end
 
 MRuby::Build.new do |conf|
