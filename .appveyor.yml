@@ -41,8 +41,11 @@ init:
 - gcc --version
 
 build_script:
+- rake mruby
+- DEL /F /Q mruby\mrbgems\mruby-compiler\bintest\*.rb
+- DEL /F /Q mruby\build\mrbgems\mruby-io\test\file.rb
+- DEL /F /Q mruby\build\mrbgems\mruby-socket\test
 - rake compile
 
 test_script:
-- DEL mruby\mrbgems\mruby-compiler\bintest\*.rb
-- rake test:bintest
+- rake test:test
