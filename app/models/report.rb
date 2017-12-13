@@ -23,6 +23,9 @@
 class Report
   # Initializes a job report by id and its job id.
   #
+  # @param [ String ] id     The id of the report.
+  # @param [ String ] job_id The id of the job.
+  #
   # @return [ Report ]
   def initialize(id, job_id)
     @id     = id

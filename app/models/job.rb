@@ -30,6 +30,7 @@ class Job
     Dir.entries(JOBS_FOLDER)
        .keep_if { |f| f.end_with? '.json' }
        .map! { |f| f.chomp! '.json' }
+       .sort!
   end
 
   # Find of all jobs.
@@ -78,6 +79,7 @@ class Job
 
     Dir.entries(dir)
        .keep_if { |f| f.end_with? '.json' }
+       .sort!
        .map! { |f| Report.new(f.chomp!('.json'), id) }
   end
 
