@@ -1,6 +1,6 @@
 # Apache 2.0 License
 #
-# Copyright (c) Copyright 2016 Sebastian Katzer, appPlant GmbH
+# Copyright (c) 2016 Sebastian Katzer, appPlant GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -43,8 +43,8 @@ before_script:
 - chmod u+x scripts/*
 
 script:
-- "[[ $TRAVIS_COMMIT_MESSAGE == *\\[ci-compile\\]* ]] && scripts/compile || echo 'skip compile'"
-- "[[ -z $TRAVIS_TAG ]] && scripts/bintest || echo 'skip bintest'"
+- if [[ $TRAVIS_COMMIT_MESSAGE == *\\[ci-compile\\]* ]]; then scripts/compile; else echo 'skip compile'; fi;
+- if [[ $TRAVIS_TAG ]]; then echo 'skip bintest'; else scripts/bintest; fi;
 
 before_deploy:
 - scripts/release
