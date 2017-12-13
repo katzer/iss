@@ -1,6 +1,6 @@
-# iss [![GitHub release](https://img.shields.io/github/release/appPlant/iss.svg)](https://github.com/appPlant/iss/releases) [![Build Status](https://travis-ci.org/appPlant/iss.svg?branch=master)](https://travis-ci.org/appPlant/iss) [![Build status](https://ci.appveyor.com/api/projects/status/ihdgs8rtuexwtiv7/branch/master?svg=true)](https://ci.appveyor.com/project/katzer/iss/branch/master) [![codebeat badge](https://codebeat.co/badges/e8186575-89a2-4bb3-867f-257069891488)](https://codebeat.co/projects/github-com-appplant-iss-master)
+# iss <br> [![GitHub release](https://img.shields.io/github/release/appPlant/iss.svg)](https://github.com/appPlant/iss/releases) [![Build Status](https://travis-ci.org/appPlant/iss.svg?branch=master)](https://travis-ci.org/appPlant/iss) [![Build status](https://ci.appveyor.com/api/projects/status/ihdgs8rtuexwtiv7/branch/master?svg=true)](https://ci.appveyor.com/project/katzer/iss/branch/master) [![codebeat badge](https://codebeat.co/badges/e8186575-89a2-4bb3-867f-257069891488)](https://codebeat.co/projects/github-com-appplant-iss-master)
 
-Web frontend and API endpoint for _Orbit_.
+A web frontend and API endpoint for _Orbit_.
 
     $ usage: iss [options...]
     Options:
@@ -12,7 +12,6 @@ Web frontend and API endpoint for _Orbit_.
     -h, --help        This help text
     -v, --version     Show version number
 
-
 ## Prerequisites
 
 You'll need to add your `ORBIT_HOME` and `ORBIT_FILE` first to your profile:
@@ -20,16 +19,13 @@ You'll need to add your `ORBIT_HOME` and `ORBIT_FILE` first to your profile:
     $ export ORBIT_HOME=/path/to/orbit
     $ export ORBIT_FILE=/path/to/orbit/config/orbit.json
 
-
 ## Installation
 
 Download the latest version from the [release page][releases] and add the executable to your `PATH`.
 
-
 ## Basic Usage
 
 TODO
-
 
 ## Development
 
@@ -37,7 +33,7 @@ Clone the repo:
     
     $ git clone https://github.com/appPlant/iss.git && cd iss/
 
-Make the scripts executable
+Make the scripts executable:
 
     $ chmod u+x scripts/*
 
@@ -62,20 +58,9 @@ You'll be able to find the binaries in the following directories:
 - Windows (32-bit): `mruby/build/i686-w64-mingw32/bin/iss`
 - Host: `mruby/build/host2/bin/iss`
 
+For the complete list of build tasks:
 
-## Releases
-
-    $ scripts/release
-
-After this command finishes, you'll see the /releases for each target in the releases directory.
-
-
-## Tests
-
-To run all tests:
-
-    $ scripts/test
-
+    $ rake -T
 
 ## Contributing
 
@@ -86,7 +71,6 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/apppla
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
-
 
 ## License
 
