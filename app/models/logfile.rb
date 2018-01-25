@@ -65,7 +65,7 @@ class Logfile
     return lines unless successful
 
     output.each_with_index do |l, i|
-      lines << { file_id: id, planet_id: planet_id, line: i, content: l }
+      lines << { file_id: id, planet_id: planet_id, line: i + 1, content: l }
     end
 
     lines
