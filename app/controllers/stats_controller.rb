@@ -20,34 +20,60 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# noinspection RubyResolve
-class JobsController < Yeah::Controller
-  # Render all jobs found under the jobs folder.
+class StatsController < Yeah::Controller
+  # Default result set for the stats action
+  STATS = [
+    { id: 'server', name: 'Instances' }.freeze,
+    { id: 'db',     name: 'Databases' }.freeze,
+    { id: 'web',    name: 'Webserver' }.freeze,
+    { id: 'tool',   name: 'Tools'     }.freeze
+  ].freeze
+
+  # Render stats about how many planets of each type are defined.
   #
   # @return [ Void ]
-  def jobs
-    render(json: Job.find_all.map(&:to_h))
+  def stats
+    stats, ok = fifa tail: '-c type=server type=db type=web type=tool'
+
+    return render(500) unless ok
+
+    render(json: STATS.zip(stats).map! { |s, c = 0| s.merge count: c.to_i })
   end
 
-  # Render all reports for a given job.
+  # Render count of planets who have the specified type.
   #
-  # @param [ String ] job_id The ID of the job to look for.
+  # @param [ String ] type The name of the type to search for.
   #
   # @return [ Void ]
-  def reports(job_id)
-    job = Job.find(job_id)
-    job ? render(json: job.reports.map(&:to_h)) : render(404)
+  def count(type)
+    count, ok = fifa "-c type=#{type}"
+
+    return render(500) unless ok
+
+    render(json: count[0].to_i)
   end
 
-  # Render all results for a given job and report.
+  # Render list of ids who have the specified type.
   #
-  # @param [ String ] job_id    The ID of the job to look for.
-  # @param [ String ] report_id The ID of the report to look for.
+  # @param [ String ] type The name of the type to search for.
   #
   # @return [ Void ]
-  def results(job_id, report_id)
-    job    = Job.find(job_id)
-    report = job.reports.find { |r| r.id == report_id } if job
-    report ? render(json: report.results.map(&:to_h)) : render(404)
+  def list(type)
+    ids, ok = fifa "type=#{type}"
+
+    return render(500) unless ok
+
+    render(json: ids)
+  end
+
+  private
+
+  # Invoke fifa with the specified query string.
+  #
+  # @param [ String ] query The query to ask for.
+  #
+  # @return [ Array<String, Boolean> ]
+  def fifa(query)
+    ISS::Fifa.call(query)
   end
 end

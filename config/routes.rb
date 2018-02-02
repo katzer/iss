@@ -43,6 +43,10 @@ end
 #   end
 # end
 
+get '/api/stats',              controller: StatsController, action: 'stats'
+get '/api/stats/{type}/count', controller: StatsController, action: 'count'
+get '/api/stats/{type}/list',  controller: StatsController, action: 'list'
+
 get '/api/jobs', controller: JobsController, action: 'jobs'
 get '/api/jobs/{job_id}/reports', controller: JobsController, action: 'reports'
 get '/api/jobs/{job_id}/reports/{report_id}/results', controller: JobsController, action: 'results'
