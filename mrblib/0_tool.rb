@@ -49,7 +49,7 @@ module ISS
     # @return [ Void ]
     def initialize(flags = '')
       @args = merge_args(flags, self.class.args || '')
-      @tail = flags.is_a?(String) ? '' : flags[:tail]
+      @tail = flags.is_a?(String) ? '' : flags.fetch(:tail, '')
     end
 
     attr_reader :args

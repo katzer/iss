@@ -26,8 +26,10 @@ end
 
 assert 'ISS::Fifa#servers' do
   assert_include ISS::Fifa.servers.command, 'type=server'
+  assert_include ISS::Fifa.servers.command, '-f=json'
 end
 
 assert 'ISS::Fifa#lfv' do
   assert_include ISS::Fifa.lfv.command, LFV_CONFIG['planets'].join(' ')
+  assert_include ISS::Fifa.lfv.command, '-f=json'
 end

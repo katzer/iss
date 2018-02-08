@@ -23,10 +23,9 @@
 module ISS
   # Wrapper around Orbit fifa tool
   class Fifa < Tool
-    self.bin  = 'fifa'
-    self.args = '-f=json'
+    self.bin = 'fifa'
 
-    scope :servers, -> { 'type=server' }
-    scope :lfv,     -> { LFV_CONFIG['planets'].join(' ') }
+    scope :servers, -> { { args: '-f=json', tail: 'type=server' } }
+    scope :lfv,     -> { { args: '-f=json', tail: LFV_CONFIG['planets'].join(' ') } }
   end
 end
