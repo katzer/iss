@@ -29,7 +29,7 @@ module ISS
 
     scope :logfiles, lambda {
       load_profile = '. ~/profiles/`whoami`.prof'
-      find_files   = LFV_CONFIG['files'].map { |f| "find #{f}" }.join('&&')
+      find_files   = LFV.config['files'].map { |f| "find #{f}" }.join('&&')
 
       { tail: "-c='#{load_profile} && #{find_files}'" }
     }

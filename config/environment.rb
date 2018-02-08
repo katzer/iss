@@ -23,15 +23,7 @@
 raise '$ORBIT_HOME not set' unless ENV['ORBIT_HOME']
 raise '$ORBIT_FILE not set' unless ENV['ORBIT_FILE']
 
-ORBIT_HOME     = ENV['ORBIT_HOME']
-ORBIT_FILE     = JSON.parse(IO.read(ENV['ORBIT_FILE']))
-JOBS_FOLDER    = File.join(ORBIT_HOME, 'jobs').freeze
-REPORTS_FOLDER = File.join(ORBIT_HOME, 'reports').freeze
-
-CONFIG_FOLDER  = File.join(ORBIT_HOME, 'config').freeze
-LFV_CONFIG     = JSON.parse(IO.read(File.join(CONFIG_FOLDER, 'lfv.json'))).freeze
-
 configure do
   # Folder where to find all static assets, e.g. the web app
-  document_root File.join(ORBIT_HOME, 'public'), urls: ['/iss']
+  document_root File.join(ENV['ORBIT_HOME'], 'public'), urls: ['/iss']
 end

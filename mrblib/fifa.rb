@@ -26,6 +26,6 @@ module ISS
     self.bin = 'fifa'
 
     scope :servers, -> { { args: '-f=json', tail: 'type=server' } }
-    scope :lfv,     -> { { args: '-f=json', tail: LFV_CONFIG['planets'].join(' ') } }
+    scope :lfv,     -> { { args: '-f=json', tail: LFV.config['planets'].join(' ') } }
   end
 end

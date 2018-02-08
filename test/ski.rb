@@ -35,5 +35,5 @@ end
 assert 'ISS::Ski#logfiles' do
   cmd = ISS::Ski.logfiles.command
 
-  LFV_CONFIG['files'].each { |file| assert_include cmd, "find #{file}" }
+  ISS::LFV.config['files'].each { |file| assert_include cmd, "find #{file}" }
 end

@@ -21,13 +21,16 @@
 # SOFTWARE.
 
 class Job
+  # Path where to find all jobs
+  FOLDER = File.join(ENV['ORBIT_HOME'], 'jobs').freeze
+
   # Find of all jobs and return their ids.
   #
   # @return [ Array<String> ]
   def self.find_ids
-    return [] unless Dir.exist? JOBS_FOLDER
+    return [] unless Dir.exist? FOLDER
 
-    Dir.entries(JOBS_FOLDER)
+    Dir.entries(FOLDER)
        .keep_if { |f| f.end_with? '.json' }
        .map! { |f| f.chomp! '.json' }
        .sort!
@@ -73,7 +76,7 @@ class Job
   #
   # @return [ Array<Report> ]
   def reports
-    dir = File.join(REPORTS_FOLDER, id)
+    dir = File.join(Report::FOLDER, id)
 
     return [] unless Dir.exist? dir
 

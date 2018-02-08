@@ -41,6 +41,15 @@ module ISS
       planet_ids.include? planet_id
     end
 
+    # The parsed JSON config file.
+    #
+    # @return [ Hash ]
+    def self.config
+      @config ||= begin
+        JSON.parse(IO.read(File.join(ENV['ORBIT_HOME'], 'config/lfv.json')))
+      end
+    end
+
     # Initializes a LFV instance for the specified planet.
     #
     # @param [ String ] planet_id  The ID of the planet.

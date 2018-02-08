@@ -22,5 +22,5 @@
 
 configure :production do
   # Folder where to write logs
-  log_folder File.join(ORBIT_HOME, 'logs'), 'iss.log'
+  log_folder File.join(ENV['ORBIT_HOME'], 'logs'), 'iss.log'
 end

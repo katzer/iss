@@ -21,6 +21,9 @@
 # SOFTWARE.
 
 class Report
+  # Path where to find all the reports
+  FOLDER = File.join(ENV['ORBIT_HOME'], 'reports').freeze
+
   # Initializes a job report by id and its job id.
   #
   # @param [ String ] id     The id of the report.
@@ -38,7 +41,7 @@ class Report
   #
   # @return [ String ]
   def path
-    File.join(REPORTS_FOLDER, job_id, "#{id}.json")
+    File.join(FOLDER, job_id, "#{id}.json")
   end
 
   # The timestamp when the report was created.
