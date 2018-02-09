@@ -38,11 +38,15 @@ All endpoints have the `/api/` prefix and usually return a JSON encoded result s
     GET /api/lfv/planets/{id}/files
     GET /api/lfv/planets/{id}/file
 
-For example to get the total number of webserver:
+For example to get the total number of planets with type of _web_:
 
     $ curl localhost:1974/api/stats/web/count
 
 ## Web App
+
+The tool expects to find the index.html file and related ressources under `$ORBIT_HOME/public/iss`. The file `$ORBIT_HOME/public/iss/index.html` maps to `localhost:1974/iss/index.html`.
+
+All static assets placed under the document root will become available. Please don't put sensitive data there!
 
 ## Development
 
