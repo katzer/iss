@@ -4,28 +4,45 @@ A web frontend and API endpoint for _Orbit_.
 
     $ usage: iss [options...]
     Options:
-    -e, --environment The environment to run the server with.
-    -h, --host        The host to bind the local server on.
+    -e, --environment The environment to run the server with
+    -h, --host        The host to bind the local server on
                       Defaults to: 0.0.0.0
-    -p, --port        The port number to start the local server on.
+    -p, --port        The port number to start the local server on
                       Defaults to: 1974
+    -r, --routes      Print out all defined routes
     -h, --help        This help text
     -v, --version     Show version number
 
 ## Prerequisites
 
-You'll need to add your `ORBIT_HOME` and `ORBIT_FILE` first to your profile:
+You'll need to add `ORBIT_HOME` first to your profile:
 
     $ export ORBIT_HOME=/path/to/orbit
-    $ export ORBIT_FILE=/path/to/orbit/config/orbit.json
 
 ## Installation
 
 Download the latest version from the [release page][releases] and add the executable to your `PATH`.
 
-## Basic Usage
+## API
 
-TODO
+All endpoints have the `/api/` prefix and usually return a JSON encoded result set.
+
+    $ iss --routes
+    GET /api/stats
+    GET /api/stats/{type}/count
+    GET /api/stats/{type}/list
+    GET /api/jobs
+    GET /api/jobs/{job_id}/reports
+    GET /api/jobs/{job_id}/reports/{id}/results
+    GET /api/lfv/planets
+    GET /api/lfv/planets/{id}/files
+    GET /api/lfv/planets/{id}/file
+
+For example to get the total number of webserver:
+
+    $ curl localhost:1974/api/stats/web/count
+
+## Web App
 
 ## Development
 

@@ -21,7 +21,6 @@
 # SOFTWARE.
 
 raise '$ORBIT_HOME not set' unless ENV['ORBIT_HOME']
-raise '$ORBIT_FILE not set' unless ENV['ORBIT_FILE']
 
 configure do
   # Folder where to find all static assets, e.g. the web app

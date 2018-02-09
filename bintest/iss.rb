@@ -56,6 +56,16 @@ assert('usage [--help]') do
   assert_include output, 'usage'
 end
 
+assert('usage [-p]') do
+  begin
+    _, output, status = Open3.popen2(BINARY, '-p', '8889')
+
+    assert_include output.gets, 'http://localhost:8889'
+  ensure
+    Process.kill :KILL, status.pid
+  end
+end
+
 assert('usage [--port]') do
   begin
     _, output, status = Open3.popen2(BINARY, '--port', '8888')
@@ -66,14 +76,18 @@ assert('usage [--port]') do
   end
 end
 
-assert('usage [-p]') do
-  begin
-    _, output, status = Open3.popen2(BINARY, '-p', '8889')
+assert('usage [-r]') do
+  output, status = Open3.capture2(BINARY, '-r')
 
-    assert_include output.gets, 'http://localhost:8889'
-  ensure
-    Process.kill :KILL, status.pid
-  end
+  assert_true status.success?, 'Process did not exit cleanly'
+  assert_include output, 'GET /'
+end
+
+assert('usage [--routes]') do
+  output, status = Open3.capture2(BINARY, '--routes')
+
+  assert_true status.success?, 'Process did not exit cleanly'
+  assert_include output, 'GET /'
 end
 
 assert('usage [--host]') do

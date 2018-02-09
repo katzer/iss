@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-class FilesController < Yeah::Controller
+class LFVController < Yeah::Controller
   # Render a list of all planets of type server.
   #
   # @return [ Void ]
