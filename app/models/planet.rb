@@ -27,7 +27,7 @@ class Planet
   #
   # @return [ Planet ] nil if not found.
   def self.find(id)
-    items, successful = ISS::Fifa.call(tail: id)
+    items, successful = ISS::Fifa.call(args: '-f=json', tail: id)
 
     return nil unless items.any? && successful
 
@@ -38,7 +38,7 @@ class Planet
   #
   # @return [ Array<Hash> ]
   def self.find_all(scope = ISS::Fifa)
-    items, successful = scope.call
+    items, successful = scope.call(args: '-f=json')
 
     return [] unless successful
 
