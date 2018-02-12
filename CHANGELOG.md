@@ -1,6 +1,6 @@
 ## Release Notes: _iss_
 
-### 1.4.4 - Initial release (not yet released)
+### 1.4.4 - Initial release (12.02.2018)
 
 A web frontend and API endpoint for _Orbit_.
 
