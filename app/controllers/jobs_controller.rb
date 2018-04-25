@@ -20,7 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# noinspection RubyResolve
 class JobsController < Yeah::Controller
   # Render all jobs found under the jobs folder.
   #
