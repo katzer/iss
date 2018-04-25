@@ -31,7 +31,7 @@ MRuby::Gem::Specification.new('iss') do |spec|
   spec.rbfiles += Dir.glob("#{spec.dir}/{app,config}/**/*.rb").sort
 
   spec.add_dependency 'mruby-print'
-  spec.add_dependency 'mruby-io'
+  spec.add_dependency 'mruby-io', core: 'mruby-io'
   spec.add_dependency 'mruby-logger'
   spec.add_dependency 'mruby-ansi-colors'
   spec.add_dependency 'mruby-env'
