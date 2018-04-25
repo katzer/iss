@@ -72,10 +72,10 @@ class LFVController < Yeah::Controller
   #
   # @return [ Number ] HTTP Status Code
   def validate_request(planet_id, file_id = nil)
-    return 404 unless ISS::LFV.include? planet_id
-    return 0   unless file_id
-    return 400 unless Logfile.valid?(file_id)
-    return 404 unless ISS::LFV.new(planet_id).include? file_id
+    # return 404 unless ISS::LFV.include? planet_id
+    # return 0   unless file_id
+    # return 400 unless Logfile.valid?(file_id)
+    # return 404 unless ISS::LFV.new(planet_id).include? file_id
     0
   end
 end
