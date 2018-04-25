@@ -24,8 +24,8 @@ raise '$ORBIT_HOME not set'   unless ENV['ORBIT_HOME']
 raise '$ORBIT_HOME not a dir' unless File.directory? ENV['ORBIT_HOME']
 
 configure do
-  # Additional settings passed to the shelf handler
-  settings.merge!(nonblock: true, timeout: 1)
+  # Tells the server to receive data in non-blocking mode
+  enable :nonblock
   # Folder where to find all static assets, e.g. the web app
   document_root File.join(ENV['ORBIT_HOME'], 'public'), urls: ['/iss']
 end

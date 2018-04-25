@@ -33,6 +33,8 @@ Options:
 -p, --port        The port number to start the local server on
                   Defaults to: 1974
 -r, --routes      Print out all defined routes
+-t, --timeout     Receive timeout before socket will be closed
+                  Defaults to: 1 (sec)
 -h, --help        This help text
 -v, --version     Show version number
 USAGE
@@ -56,4 +58,8 @@ end
 
 opt :host, 'localhost' do |host|
   set :host, host
+end
+
+opt :timeout, 1 do |timeout|
+  set :timeout, timeout.to_i
 end
