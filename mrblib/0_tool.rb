@@ -77,7 +77,7 @@ module ISS
       opts = merge_args(flags, args)
       tail = flags.is_a?(String) ? @tail : "#{@tail} #{flags.fetch(:tail, '')}"
 
-      "#{path} #{opts} #{tail.strip}".strip
+      "#{path} #{opts} #{tail.to_s.strip}".strip
     end
 
     # Execute a command specified by the flags.

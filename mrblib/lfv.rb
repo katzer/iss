@@ -96,7 +96,9 @@ module ISS
     #
     # @return [ Array<Logfile> ]
     def files
-      file_ids.map! { |id| Logfile.new(id, planet_id) }
+      file_ids.map! do |id|
+        Logfile.new(id, planet_id, node_to_akz(id.split('/tcp_trace.')[1]))
+      end
     end
 
     alias find_all files
@@ -109,6 +111,31 @@ module ISS
     def find(file_id)
       return nil unless valid?
       Logfile.new(file_id, planet_id) if include? file_id
+    end
+
+    def node_to_akz(node)
+      return nil unless node
+      return @node_to_akz[node] if @node_to_akz
+
+      lines, successful = ISS::Ski.tcp_config.call(tail: planet_id)
+
+      return nil unless successful
+
+      @node_to_akz = {}
+
+      lines.each_with_index do |line, index|
+        next unless line[0...3] == 'TCP'
+        next if line.include? '#'
+
+        id  = line.split[1]
+        akz = lines[index - 1][1..-1].split(';')[0].strip
+
+        @node_to_akz[id] = akz
+      end
+
+      @node_to_akz[node]
+    rescue
+      nil
     end
   end
 end

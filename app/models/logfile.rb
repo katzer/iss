@@ -34,19 +34,16 @@ class Logfile
   #
   # @param [ String ] id        The Id (e.g. path) of the file.
   # @param [ String ] planet_id The ID of the planet where the file is located.
+  # @param [ String ] plc_id    Optional PLC identifier (AKZ).
   #
   # @return [ Void ]
-  def initialize(id, planet_id)
+  def initialize(id, planet_id, plc_id = nil)
     @id         = id
+    @name       = plc_id ? "#{id} [#{plc_id}]" : id
     @planet_id  = planet_id
   end
 
-  attr_reader :id, :planet_id
-
-  # The name of the file
-  #
-  # @return [ String ]
-  alias name id
+  attr_reader :id, :name, :planet_id
 
   # If the id of the file goes along with the rules for file id syntax.
   #
