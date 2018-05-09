@@ -128,7 +128,7 @@ module ISS
         next if line.include? '#'
 
         id  = line.split[1]
-        akz = lines[index - 1][1..-1].split(';')[0].strip
+        akz = lines[index - 1][1..-1].to_s.split(';')[0]&.strip
 
         @node_to_akz[id] = akz
       end
