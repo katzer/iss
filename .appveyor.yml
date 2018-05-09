@@ -45,6 +45,7 @@ build_script:
 - rake mruby
 - DEL /F /Q mruby\mrbgems\mruby-compiler\bintest\*.rb
 - DEL /F /Q mruby\build\mrbgems\mruby-simplehttpserver\test
+- DEL /F /Q mruby\build\mrbgems\mruby-process\test
 - DEL /F /Q mruby\mrbgems\mruby-io\test
 - DEL /F /Q mruby\mrbgems\mruby-socket\test
 - rake compile
