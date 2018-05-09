@@ -52,14 +52,14 @@ opt :environment, 'development' do |env|
   ENV['SHELF_ENV'] = env
 end
 
-opt :port, 1974 do |port|
-  set :port, port.to_i
+opt :port, :int, 1974 do |port|
+  set :port, port
 end
 
 opt :host, 'localhost' do |host|
   set :host, host
 end
 
-opt :timeout, 1 do |timeout|
-  set :timeout, timeout.to_i
+opt :timeout, :int, 1 do |timeout|
+  set :timeout, timeout
 end
