@@ -20,46 +20,34 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-opt! :help do
-  <<-USAGE
-
-#{ISS::LOGO}
-
-usage: iss [options...]
-Options:
--e, --environment The environment to run the server with
--h, --host        The host to bind the local server on
-                  Defaults to: 0.0.0.0
--p, --port        The port number to start the local server on
-                  Defaults to: 1974
--r, --routes      Print out all defined routes
--t, --timeout     Receive timeout before socket will be closed
-                  Defaults to: 1 (sec)
--h, --help        This help text
--v, --version     Show version number
-USAGE
+def parse_flags(opt, flags = [])
+  parser.parse(flags) && settings[opt]
 end
 
-opt! :version do
-  "iss v#{ISS::VERSION} - #{OS.sysname} #{OS.bits(:binary)}-Bit (#{OS.machine})"
+assert '--port' do
+  assert_equal 1974, parse_flags(:port)
+  assert_equal 2018, parse_flags(:port, %w[--port 2018])
+  assert_equal 2018, parse_flags(:port, %w[-p 2018])
 end
 
-opt! :routes do
-  routes.join("\n")
+assert '--timeout' do
+  assert_kind_of Integer, parse_flags(:timeout)
+  assert_true parse_flags(:timeout) > 0
+  assert_equal 10, parse_flags(:timeout, %w[--timeout 10])
+  assert_equal 10, parse_flags(:timeout, %w[-t 10])
 end
 
-opt :environment, 'development' do |env|
-  ENV['SHELF_ENV'] = env
+assert '--environment' do
+  assert_equal 'development', parser.parse                  && ENV['SHELF_ENV']
+  assert_equal 'test', parser.parse(%w[--environment test]) && ENV['SHELF_ENV']
+  assert_equal 'test', parser.parse(%w[-e test])            && ENV['SHELF_ENV']
 end
 
-opt :host do |host|
-  set :host, ENV['SHELF_ENV'] == 'production' ? '0.0.0.0' : host || 'localhost'
-end
-
-opt :port, :int, 1974 do |port|
-  set :port, port
-end
-
-opt :timeout, :int, 1 do |timeout|
-  set :timeout, timeout
+assert '--host' do
+  assert_equal 'localhost', parse_flags(:host)
+  assert_equal 'localhost', parse_flags(:host, %w[-e test])
+  assert_equal '127.0.0.1', parse_flags(:host, %w[--host 127.0.0.1])
+  assert_equal '0.0.0.0',   parse_flags(:host, %w[-e production])
+  assert_equal '0.0.0.0',   parse_flags(:host, %w[--host host -e production])
+  assert_equal 'host',      parse_flags(:host, %w[--host host -e development])
 end
