@@ -41,8 +41,9 @@ matrix:
 
 before_script:
 - chmod u+x scripts/*
-# - MRUBY_CLI_LOCAL=1 rake mruby
-# - rm -rf mruby/mrbgems/mruby-socket/test
+- MRUBY_CLI_LOCAL=1 rake mruby
+- rm -rf mruby/mrbgems/mruby-socket/test
+- rm -rf mruby/build/mrbgems/mruby-process/test
 
 script:
 - if [[ $TRAVIS_COMMIT_MESSAGE == *\\[ci-compile\\]* ]]; then scripts/compile; else echo 'skip compile'; fi;

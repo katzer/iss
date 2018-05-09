@@ -27,11 +27,9 @@ end
 MRuby::Build.new do |conf|
   toolchain ENV.fetch('TOOLCHAIN', :clang)
 
-  if ARGV.any?(/test/)
-    conf.enable_debug
-    conf.enable_test
-    conf.enable_bintest
-  end
+  conf.enable_debug
+  conf.enable_test
+  conf.enable_bintest
 
   gem_config(conf)
 end
