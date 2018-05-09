@@ -25,24 +25,24 @@ def env_for(path, query = '')
 end
 
 Yeah.run_initializers(@initializers)
-app = Shelf::Server.new.build_app(app())
+@app = Shelf::Server.new.build_app(app())
 
 assert 'GET /', 'redirects to iss/index.html' do
-  code, headers, = app.call env_for('/')
+  code, headers, = @app.call env_for('/')
 
   assert_equal 303, code
   assert_equal '/iss/index.html', headers['Location']
 end
 
 assert 'GET /index.html', 'redirects to iss/index.html' do
-  code, headers, = app.call env_for('/index.html')
+  code, headers, = @app.call env_for('/index.html')
 
   assert_equal 303, code
   assert_equal '/iss/index.html', headers['Location']
 end
 
 assert 'GET /iss/index.html' do
-  code, _, body = app.call env_for('/iss/index.html')
+  code, _, body = @app.call env_for('/iss/index.html')
 
   assert_equal 200, code
   assert_equal '<html>Yeah!</html>', body[0]
