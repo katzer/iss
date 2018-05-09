@@ -30,7 +30,7 @@ environment:
     ORBIT_HOME: '%APPVEYOR_BUILD_FOLDER%\bintest'
     ORBIT_FILE: '%APPVEYOR_BUILD_FOLDER%\bintest\config\orbit.json'
   matrix:
-  - MRUBY_VERSION: 1.4.0
+  - MRUBY_VERSION: 1.4.1
   - MRUBY_VERSION: head
 
 matrix:
