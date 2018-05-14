@@ -25,7 +25,7 @@ def env_for(path, query = '')
 end
 
 Yeah.run_initializers(@initializers)
-@app = Shelf::Server.new.build_app(app())
+@app = Shelf::Server.new.build_app(app)
 
 assert 'GET /', 'redirects to iss/index.html' do
   code, headers, = @app.call env_for('/')
