@@ -20,11 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-version: "{build}"
+image: Visual Studio 2017
 
 environment:
   global:
-    COMPILER: C:\mingw-w64\x86_64-6.3.0-posix-seh-rt_v5-rev1
+    COMPILER: C:\mingw-w64\x86_64-7.2.0-posix-seh-rt_v5-rev1\mingw64
     TOOLCHAIN: gcc
     MRUBY_CLI_LOCAL: 1
     ORBIT_HOME: '%APPVEYOR_BUILD_FOLDER%\bintest'
