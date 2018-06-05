@@ -34,6 +34,11 @@ module ISS
       @sessions = {}
     end
 
+    # The pool size.
+    #
+    # @return [ Int ]
+    attr_reader :size
+
     # Returns the SFTP session for the given id. Might initate a session first
     # and/or clean up the oldest one first to keep the size.
     #

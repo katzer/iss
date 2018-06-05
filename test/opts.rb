@@ -24,8 +24,12 @@ def parser
   Yeah.application.opts.parser
 end
 
+def settings
+  Yeah.application.settings
+end
+
 def parse_flags(opt, flags = [])
-  parser.parse(flags) && Yeah.application.settings[opt]
+  parser.parse(flags) && settings[opt]
 end
 
 assert '--port' do
@@ -39,6 +43,12 @@ assert '--timeout' do
   assert_true parse_flags(:timeout) > 0
   assert_equal 10, parse_flags(:timeout, %w[--timeout 10])
   assert_equal 10, parse_flags(:timeout, %w[-t 10])
+end
+
+assert '--size' do
+  assert_kind_of Integer, parser.parse         && settings[:pool].size
+  assert_equal 10, parser.parse(%w[--size 10]) && settings[:pool].size
+  assert_equal 10, parser.parse(%w[-s 10])     && settings[:pool].size
 end
 
 assert '--environment' do
