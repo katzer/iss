@@ -20,46 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-opt! :help do
-  <<-USAGE
+raise '$ORBIT_HOME not set'   unless ENV['ORBIT_HOME']
+raise '$ORBIT_HOME not a dir' unless File.directory? ENV['ORBIT_HOME']
 
-#{ISS::LOGO}
-
-usage: iss [options...]
-Options:
--e, --environment The environment to run the server with
--h, --host        The host to bind the local server on
-                  Defaults to: 0.0.0.0
--p, --port        The port number to start the local server on
-                  Defaults to: 1974
--r, --routes      Print out all defined routes
--t, --timeout     Receive timeout before socket will be closed
-                  Defaults to: 1 (sec)
--h, --help        This help text
--v, --version     Show version number
-USAGE
-end
-
-opt! :version do
-  "iss v#{ISS::VERSION} - #{OS.sysname} #{OS.bits(:binary)}-Bit (#{OS.machine})"
-end
-
-opt! :routes do
-  routes.join("\n")
-end
-
-opt :environment, 'development' do |env|
-  ENV['SHELF_ENV'] = env
-end
-
-opt :host do |host|
-  set :host, ENV['SHELF_ENV'] == 'production' ? '0.0.0.0' : host || 'localhost'
-end
-
-opt :port, :int, 1974 do |port|
-  set :port, port
-end
-
-opt :timeout, :int, 1 do |timeout|
-  set :timeout, timeout
+Yeah.application.configure do
+  enable :nonblock
+  document_root File.join(ENV['ORBIT_HOME'], 'public'), urls: ['/iss']
 end

@@ -20,17 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-module ISS
-  # Wrapper around Orbit ski tool
-  class Ski < Tool
-    self.bin = 'ski'
-
-    scope :tcp_config, -> { %(-c="cat km/cfg/tcp_config") }
-
-    scope :logfile, ->(file) { %(-c="cat #{file}") }
-
-    scope :logfiles, lambda {
-      { tail: "-c='#{LFV.config['files'].map { |f| "find #{f}" }.join('&&')}'" }
-    }
+class Symbol
+  def to_proc
+    ->(obj, *args, &block) { obj.__send__(self, *args, &block) }
   end
 end

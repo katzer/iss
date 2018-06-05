@@ -20,37 +20,26 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-root '/iss/index.html'
+Yeah.application.routes.draw do
+  root '/iss/index.html'
 
-get '/index.html' do
-  render redirect: '/iss/index.html'
+  redirect '/index.html' => '/iss/index.html'
+
+  get '/embed/lfv/{planet}' do |id|
+    render redirect: "/iss/index.html#!lfv/#{id}"
+  end
+
+  get '/stats',                              to: 'stats'
+  get '/stats/{type}/count',                 to: 'stats#count'
+  get '/stats/{type}/list',                  to: 'stats#list'
+
+  get '/jobs',                               to: 'jobs#jobs'
+  get '/jobs/{job_id}/reports',              to: 'jobs#reports'
+  get '/jobs/{job_id}/reports/{id}/results', to: 'jobs#results'
+
+  get '/planets',      to: 'planets'
+  get '/planets/{id}', to: 'planets#show'
+
+  get '/planets/{id}/logs',        to: 'logs'
+  get '/planets/{id}/logs/{path}', to: 'logs#show'
 end
-
-# get '/fifa' do |r|
-#   query = ['--no-color'] + r.query.split(/&|%20/)
-#   query.unshift '-f=json' unless r.query.include? '-f='
-
-#   output, = Open3.capture3('fifa', *query)
-
-#   if query - %w[-p -v -h] != query
-#     html output
-#   elsif query - %w[-c -t] != query
-#     json output.split("\n")
-#   elsif !query.include?('-f=json')
-#     json output.split("\n")
-#   else
-#     json "[#{output.split("\n").join(',')}]"
-#   end
-# end
-
-get '/api/stats',              controller: StatsController, action: 'stats'
-get '/api/stats/{type}/count', controller: StatsController, action: 'count'
-get '/api/stats/{type}/list',  controller: StatsController, action: 'list'
-
-get '/api/jobs',                  controller: JobsController, action: 'jobs'
-get '/api/jobs/{job_id}/reports', controller: JobsController, action: 'reports'
-get '/api/jobs/{job_id}/reports/{id}/results', controller: JobsController, action: 'results'
-
-get '/api/lfv/planets',            controller: LFVController, action: 'planets'
-get '/api/lfv/planets/{id}/files', controller: LFVController, action: 'files'
-get '/api/lfv/planets/{id}/file',  controller: LFVController, action: 'file'

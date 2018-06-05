@@ -29,47 +29,43 @@ def fixture(file)
 end
 
 def api_call(url)
-  app.call env_for("/api/#{url}")
+  Yeah.application.app.call env_for(url)
 end
 
-assert 'GET /api/jobs' do
-  code, headers, body = api_call('jobs')
+assert 'GET /jobs' do
+  code, headers, body = api_call('/jobs')
 
   assert_equal 200, code
   assert_include headers['Content-Type'], 'application/json'
   assert_equal fixture('jobs'), body[0]
 end
 
-assert 'GET /api/jobs/reports' do
-  code, headers, body = api_call('jobs/showver/reports')
+assert 'GET /jobs/reports' do
+  code, headers, body = api_call('/jobs/showver/reports')
 
   assert_equal 200, code
   assert_include headers['Content-Type'], 'application/json'
   assert_equal fixture('reports'), body[0]
 end
 
-assert 'GET /api/jobs/reports', 'missing reports sub folder' do
-  code, headers, body = api_call('jobs/hostname/reports')
+assert 'GET /jobs/reports', 'missing reports sub folder' do
+  code, headers, body = api_call('/jobs/hostname/reports')
 
   assert_equal 200, code
   assert_include headers['Content-Type'], 'application/json'
   assert_equal '[]', body[0]
 end
 
-assert 'GET /api/jobs/reports', 'missing job' do
-  code, = api_call('jobs/reports')
-
-  assert_equal 404, code
+assert 'GET /jobs/reports', 'missing job' do
+  assert_equal 404, api_call('/jobs/reports')[0]
 end
 
-assert 'GET /api/jobs/reports', 'unknown job' do
-  code, = api_call('jobs/123/reports')
-
-  assert_equal 404, code
+assert 'GET /jobs/reports', 'unknown job' do
+  assert_equal 404, api_call('/jobs/123/reports')[0]
 end
 
-assert 'GET /api/jobs/reports/results' do
-  job = 'jobs/showver/reports/2017-05-12T10_29_03/results'
+assert 'GET /jobs/reports/results' do
+  job = '/jobs/showver/reports/2017-05-12T10_29_03/results'
   code, headers, body = api_call(job)
 
   assert_equal 200, code
@@ -77,14 +73,10 @@ assert 'GET /api/jobs/reports/results' do
   assert_equal fixture('results'), body[0]
 end
 
-assert 'GET /api/jobs/reports/results', 'unknown job' do
-  code, = api_call('jobs/123/reports/2017-05-12T10_29_03/results')
-
-  assert_equal 404, code
+assert 'GET /jobs/reports/results', 'unknown job' do
+  assert_equal 404, api_call('/jobs/123/reports/2017-05-12T10_29_03/results')[0]
 end
 
-assert 'GET /api/jobs/reports/results', 'unknown report' do
-  code, = api_call('jobs/showver/reports/123/results')
-
-  assert_equal 404, code
+assert 'GET /jobs/reports/results', 'unknown report' do
+  assert_equal 404, api_call('/jobs/showver/reports/123/results')[0]
 end

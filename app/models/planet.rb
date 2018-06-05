@@ -27,22 +27,23 @@ class Planet
   #
   # @return [ Planet ] nil if not found.
   def self.find(id)
-    items, successful = ISS::Fifa.call(args: '-f=json', tail: id)
+    item = `fifa -f=json '#{id}'`.chomp
 
-    return nil unless items.any? && successful
-
-    Planet.new(JSON.parse(items[0]))
+    Planet.new(JSON.parse(item)) unless item.empty?
+  ensure
+    raise "fifa failed with exit code #{$?}" unless $? == 0
   end
 
-  # Scope for all planets of type server
+  # Scope for all planets of type server.
+  #
+  # @param [ String ] ids The ids of the planets to find for.
+  #                       Defaults to: 'id:.*'
   #
   # @return [ Array<Hash> ]
-  def self.find_all(scope = ISS::Fifa)
-    items, successful = scope.call(args: '-f=json')
-
-    return [] unless successful
-
-    items.map! { |json| new JSON.parse(json) }
+  def self.find_all(ids = 'id:.*')
+    `fifa -f=json '#{ids}'`.split("\n").map! { |json| new JSON.parse(json) }
+  ensure
+    raise "fifa failed with exit code #{$?}" unless $? == 0
   end
 
   # Initializes a planet.
@@ -86,11 +87,18 @@ class Planet
     @data['type']
   end
 
+  # A connected SFTP session to the planet.
+  #
+  # @return [ SFTP::Session ]
+  def sftp
+    Yeah.application.settings[:pool][id]
+  end
+
   # Proxy instance of the LFV module.
   #
   # @return [ ISS::LFV ]
-  def logfiles
-    ISS::LFV.new(id)
+  def logs
+    LogFileProxy.new(id, sftp)
   end
 
   # Converts the object into a hash struct.

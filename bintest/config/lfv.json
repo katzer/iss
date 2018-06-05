@@ -1,6 +1,6 @@
 {
-  "planets": ["localhost","p07-mcv-prod"],
+  "planets": "localhost otherhost",
   "files": [
-    "$ORBIT_HOME -type f -path \"*.log\""
+    ["/home/mruby/code", "*.md"]
   ]
 }

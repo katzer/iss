@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 AllCops:
-  TargetRubyVersion: 2.3
+  TargetRubyVersion: 2.5
 
 Style/FrozenStringLiteralComment:
   Enabled: false
@@ -48,3 +48,6 @@ Documentation:
 
 Style/NumericPredicate:
   EnforcedStyle: comparison
+
+Performance/StringReplacement:
+  Enabled: false

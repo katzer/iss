@@ -1,1 +1,0 @@
-{"id":"localhost","name":"localhost","type":"server","location":"local"}

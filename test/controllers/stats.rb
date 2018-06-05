@@ -24,49 +24,47 @@ def env_for(path, query = '')
   { 'REQUEST_METHOD' => 'GET', 'PATH_INFO' => path, 'QUERY_STRING' => query }
 end
 
-def fixture(file)
-  File.read File.join(File.dirname(__FILE__), "../fixtures/#{file}.json").chomp
-end
-
-def override_fifa(status = 0)
-  ISS::Fifa.define_method(:exec) { |cmd| [yield(cmd).split("\n"), status == 0] }
-end
-
-def configure_tools
-  override_fifa do |cmd|
-    if cmd.split('=').count > 3
-      "41\n82\n84\n85"
-    elsif cmd.include? '-c'
-      '41'
-    else
-      "planet@1\nplanet@2"
-    end
+def `(cmd)
+  if cmd.split('=').count > 3
+    "41\n82\n84\n85\n"
+  elsif cmd.include? '-c'
+    "41\n"
+  else
+    "planet@1\nplanet@2\n"
   end
+ensure
+  $? = 0
 end
 
 def api_call(url, query = '')
-  configure_tools
-  app.call env_for("/api/#{url}", query)
+  Yeah.application.app.call env_for(url, query)
 end
 
-assert 'GET /api/stats' do
-  code, headers, body = api_call('stats')
+assert 'GET /stats' do
+  code, headers, body = api_call('/stats')
+
+  result = [
+    { 'id' => 'server', 'name' => 'Instances', 'count' => 41 },
+    { 'id' => 'db',     'name' => 'Databases', 'count' => 82 },
+    { 'id' => 'web',    'name' => 'Webserver', 'count' => 84 },
+    { 'id' => 'tool',   'name' => 'Tools',     'count' => 85 }
+  ]
 
   assert_equal 200, code
   assert_include headers['Content-Type'], 'application/json'
-  assert_equal fixture('stats'), body[0]
+  assert_equal result, JSON.parse(body[0])
 end
 
-assert 'GET /api/stats/{type}/count' do
-  code, headers, body = api_call('stats/server/count')
+assert 'GET /stats/{type}/count' do
+  code, headers, body = api_call('/stats/server/count')
 
   assert_equal 200, code
   assert_include headers['Content-Type'], 'application/json'
   assert_equal '41', body[0]
 end
 
-assert 'GET /api/stats/{type}/list' do
-  code, headers, body = api_call('stats/server/list')
+assert 'GET /stats/{type}/list' do
+  code, headers, body = api_call('/stats/server/list')
 
   assert_equal 200, code
   assert_include headers['Content-Type'], 'application/json'

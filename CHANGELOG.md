@@ -10,6 +10,7 @@
 - [iss] Map PLC identifier with tcp_trace files via tcp_config.
 - [iss] Fix 404 return code even the URL exist due to a memory leak.
 - [iss] Fix potential endless loop when client opens a socket connection but does not send anything resulting in a frozen behaivor and slow load time of the web app.
+- [iss] Fix connection closed on server side but client requested a keep-alive.
 - [iss] New -t flag to customize the recv timeout.
 
 ### 1.4.4 - Initial release (12.02.2018)

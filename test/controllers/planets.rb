@@ -20,37 +20,51 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+ISS::LFV.config['planets'] = 'otherhost'
+
 def env_for(path, query = '')
   { 'REQUEST_METHOD' => 'GET', 'PATH_INFO' => path, 'QUERY_STRING' => query }
 end
 
-Yeah.application.initialize!
-@app = Shelf::Server.new.build_app(Yeah.application.app)
-
-assert 'GET /' do
-  code, headers, = @app.call env_for('/')
-
-  assert_equal 303, code
-  assert_equal '/iss/index.html', headers['Location']
+def api_call(url, query = '')
+  Yeah.application.app.call env_for(url, query)
 end
 
-assert 'GET /index.html' do
-  code, headers, = @app.call env_for('/index.html')
-
-  assert_equal 303, code
-  assert_equal '/iss/index.html', headers['Location']
+def `(cmd)
+  case cmd
+  when "fifa -f=json 'id:.*'"
+    %({"id":"localhost","name":"localhost","type":"server"}\n{"id":"otherhost","name":"otherhost","type":"db"}\n)
+  when "fifa -f=json 'id=localhost'"
+    %({"id":"localhost","name":"localhost","type":"server"}\n)
+  when "fifa -f=json 'otherhost'"
+    %({"id":"otherhost","name":"otherhost","type":"server"}\n)
+  else
+    ''
+  end
+ensure
+  $? = 0
 end
 
-assert 'GET /embed/lfv/p07-int' do
-  code, headers, = @app.call env_for('/embed/lfv/p07-int')
-
-  assert_equal 303, code
-  assert_equal '/iss/index.html#!lfv/p07-int', headers['Location']
-end
-
-assert 'GET /iss/index.html' do
-  code, _, body = @app.call env_for('/iss/index.html')
+assert 'GET /planets' do
+  code, headers, body = api_call('/planets')
 
   assert_equal 200, code
-  assert_equal '<html>Yeah!</html>', body[0]
+  assert_include headers['Content-Type'], 'application/json'
+  assert_equal "[#{`fifa -f=json 'id:.*'`.chomp.sub("\n", ',')}]", body[0]
+end
+
+assert 'GET /planets?scope=lfv' do
+  code, headers, body = api_call('/planets', 'scope=lfv')
+
+  assert_equal 200, code
+  assert_include headers['Content-Type'], 'application/json'
+  assert_equal "[#{`fifa -f=json 'otherhost'`.chomp}]", body[0]
+end
+
+assert 'GET /planets/{id}' do
+  code, headers, body = api_call('/planets/localhost')
+
+  assert_equal 200, code
+  assert_include headers['Content-Type'], 'application/json'
+  assert_equal `fifa -f=json 'id=localhost'`.chomp, body[0]
 end

@@ -20,20 +20,38 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-assert 'ISS::Ski#bin' do
-  assert_equal 'ski', ISS::Ski.bin
-end
+class PlanetsController < Yeah::Controller
+  # Render a list of planets that matches the scope.
+  #
+  # @param [ String ] scope The scope (lfv, server, etc.)
+  #
+  # @return [ Void ]
+  def index
+    render json: Planet.find_all(scope).map!(&:to_h)
+  end
 
-assert 'ISS::Ski#logfile' do
-  assert_include ISS::Ski.logfile('file.log').command, 'cat file.log'
-end
+  # Render the data of a planet.
+  #
+  # @param [ String ] id The ID of the planet.
+  #
+  # @return [ Void ]
+  def show(id)
+    planet = Planet.find("id=#{id}")
 
-assert 'ISS::Ski#logfile', 'without a file' do
-  assert_raise(ArgumentError) { ISS::Ski.logfile }
-end
+    planet ? render(json: planet.data) : render(404)
+  end
 
-assert 'ISS::Ski#logfiles' do
-  cmd = ISS::Ski.logfiles.command
+  private
 
-  ISS::LFV.config['files'].each { |file| assert_include cmd, "find #{file}" }
+  # The pattern to match the specified scope.
+  #
+  # @return [ String ]
+  def scope
+    case params['scope']
+    when 'lfv'                 then ISS::LFV.config['planets'].to_s
+    when 'server', 'db', 'web' then "type=#{params['scope']}"
+    when nil                   then 'id:.*'
+    else raise 'Unknown scope'
+    end
+  end
 end

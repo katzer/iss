@@ -26,12 +26,12 @@ compile: &defaults
     - .:/home/mruby/code:rw
   environment:
     ORBIT_HOME: /home/mruby/code/bintest
-    ORBIT_FILE: /home/mruby/code/bintest/config/orbit.json
+    ORBIT_KEY: /root/.ssh/dev.key
     MRUBY_VERSION: ${MRUBY_VERSION}
   command: rake compile
 test:
   <<: *defaults
-  command: rake test
+  command: rake sshd test
 clean:
   <<: *defaults
   command: rake clean

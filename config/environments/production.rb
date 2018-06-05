@@ -20,7 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-configure :production do
-  # Folder where to write logs
+Yeah.application.configure :production do
   log_folder File.join(ENV['ORBIT_HOME'], 'logs'), 'iss.log'
 end

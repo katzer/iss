@@ -21,44 +21,34 @@
 # SOFTWARE.
 
 require 'open3'
-require_relative '../mrblib/version'
+require_relative '../mrblib/iss/version'
 
 ENV['ORBIT_HOME'] = __dir__
 ENV['ORBIT_FILE'] = File.expand_path('config/orbit.json', __dir__)
 
 BINARY = File.expand_path('../mruby/bin/iss', __dir__)
 
-assert('version [-v]') do
-  output, status = Open3.capture2(BINARY, '-v')
+%w[-v --version].each do |flag|
+  assert("version [#{flag}]") do
+    output, status = Open3.capture2(BINARY, flag)
 
-  assert_true status.success?, 'Process did not exit cleanly'
-  assert_include output, ISS::VERSION
+    assert_true status.success?, 'Process did not exit cleanly'
+    assert_include output, ISS::VERSION
+  end
 end
 
-assert('version [--version]') do
-  output, status = Open3.capture2(BINARY, '--version')
+%w[-h --help].each do |flag|
+  assert("usage [#{flag}]") do
+    output, status = Open3.capture2(BINARY, flag)
 
-  assert_true status.success?, 'Process did not exit cleanly'
-  assert_include output, ISS::VERSION
+    assert_true status.success?, 'Process did not exit cleanly'
+    assert_include output, 'usage'
+  end
 end
 
-assert('usage [-h]') do
-  output, status = Open3.capture2(BINARY, '-h')
-
-  assert_true status.success?, 'Process did not exit cleanly'
-  assert_include output, 'usage'
-end
-
-assert('usage [--help]') do
-  output, status = Open3.capture2(BINARY, '--help')
-
-  assert_true status.success?, 'Process did not exit cleanly'
-  assert_include output, 'usage'
-end
-
-assert('usage [-p]') do
-  begin
-    _, output, status = Open3.popen2(BINARY, '-p', '8889')
+%w[-p --port].each do |flag|
+  assert("usage [#{flag}]") do
+    _, output, status = Open3.popen2(BINARY, flag, '8889')
 
     assert_include output.gets, 'http://localhost:8889'
   ensure
@@ -66,13 +56,24 @@ assert('usage [-p]') do
   end
 end
 
-assert('usage [--port]') do
-  begin
-    _, output, status = Open3.popen2(BINARY, '--port', '8888')
+%w[-e --environment].each do |flag|
+  assert("usage [#{flag}]") do
+    _, out, status = Open3.popen2(BINARY, flag, 'production')
+    output         = out.gets
 
-    assert_include output.gets, 'http://localhost:8888'
+    assert_include output, 'production'
+    assert_include output, '0.0.0.0'
   ensure
     Process.kill :KILL, status.pid
+  end
+end
+
+%w[-t --timeout -s --size].each do |flag|
+  assert("usage [#{flag}]") do
+    _, output, status = Open3.capture3(BINARY, flag, '0')
+
+    assert_false status.success?, 'Process did exit cleanly'
+    assert_include output, 'cannot be zero'
   end
 end
 
@@ -91,13 +92,11 @@ assert('usage [--routes]') do
 end
 
 assert('usage [--host]') do
-  begin
-    _, output, status = Open3.popen2(BINARY, '--host', '0.0.0.0')
+  _, output, status = Open3.popen2(BINARY, '--host', '0.0.0.0')
 
-    assert_include output.gets, 'http://0.0.0.0:'
-  ensure
-    Process.kill :KILL, status.pid
-  end
+  assert_include output.gets, 'http://0.0.0.0:'
+ensure
+  Process.kill :KILL, status.pid
 end
 
 assert('unknown flag') do

@@ -32,10 +32,8 @@ class StatsController < Yeah::Controller
   # Render stats about how many planets of each type are defined.
   #
   # @return [ Void ]
-  def stats
-    stats, ok = fifa tail: '-c type=server type=db type=web type=tool'
-
-    return render(500) unless ok
+  def index
+    stats = fifa '-c type=server type=db type=web type=tool'
 
     render(json: STATS.zip(stats).map! { |s, c = 0| s.merge count: c.to_i })
   end
@@ -46,11 +44,7 @@ class StatsController < Yeah::Controller
   #
   # @return [ Void ]
   def count(type)
-    count, ok = fifa "-c type=#{type}"
-
-    return render(500) unless ok
-
-    render(json: count[0].to_i)
+    render json: fifa("-c type=#{type}")[0].to_i
   end
 
   # Render list of ids who have the specified type.
@@ -59,11 +53,7 @@ class StatsController < Yeah::Controller
   #
   # @return [ Void ]
   def list(type)
-    ids, ok = fifa "type=#{type}"
-
-    return render(500) unless ok
-
-    render(json: ids)
+    render json: fifa("type=#{type}")
   end
 
   private
@@ -72,8 +62,10 @@ class StatsController < Yeah::Controller
   #
   # @param [ String ] query The query to ask for.
   #
-  # @return [ Array<String, Boolean> ]
+  # @return [ Array<String> ]
   def fifa(query)
-    ISS::Fifa.call(query)
+    `fifa #{query}`.split("\n")
+  ensure
+    render 500 unless $? == 0
   end
 end

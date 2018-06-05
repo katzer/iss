@@ -1,2 +1,0 @@
-localhost
-p07-mcv-prod

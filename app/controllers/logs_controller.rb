@@ -20,62 +20,73 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-class LFVController < Yeah::Controller
-  # Render a list of all planets of type server.
-  #
-  # @return [ Void ]
-  def planets
-    planets = Planet.find_all(ISS::Fifa.lfv)
-    planets ? render(json: planets.map(&:to_h)) : render(404)
-  end
-
+class LogsController < Yeah::Controller
   # Render a list of all log files.
   #
   # @param [ String ] planet_id The ID of the planet where to look for.
   #
   # @return [ Void ]
-  def files(planet_id)
-    code = validate_request(planet_id)
-
-    return render(code) unless code == 0
-
-    planet = Planet.find(planet_id)
-
-    return render(404) unless planet
-
-    render json: planet.logfiles.find_all.map(&:to_h)
+  def index(*)
+    render json: planet.logs.find_all.map(&:to_h) if planet
   end
 
   # Render the content of a log file.
   #
   # @param [ String ] planet_id The ID of the planet where to look for.
-  # @param [ String ] file_id   The id or path of the file to render.
+  # @param [ String ] id        The id of the file to render.
   #
   # @return [ Void ]
-  def file(planet_id)
-    file_id = params['file_id']&.gsub('%2F', '/')
-    code    = validate_request(planet_id, file_id)
-
-    return render(code) unless code == 0
-
-    file = Planet.find(planet_id)&.logfiles&.find(file_id)
-
-    file ? render(json: file.lines) : render(404)
+  def show(*)
+    render json: file.content(params['size'].to_i) if file
   end
 
   private
 
-  # Validate if planet and file specified by id are allowed to access.
+  # The requested planet. Validates first if its allowed to ask for.
   #
-  # @param [ String ] planet_id The ID of the planet.
-  # @param [ String ] file_id   The ID of the file.
+  # @return [ Planet ]
+  def planet
+    planet = Planet.find(params[:id]) if valid_planet?
+  ensure
+    render 404 unless planet
+  end
+
+  # The requested log file. Validates first if its allowed to ask for.
   #
-  # @return [ Number ] HTTP Status Code
-  def validate_request(planet_id, file_id = nil)
-    # return 404 unless ISS::LFV.include? planet_id
-    # return 0   unless file_id
-    # return 400 unless Logfile.valid?(file_id)
-    # return 404 unless ISS::LFV.new(planet_id).include? file_id
-    0
+  # @return [ LogFile ]
+  def file
+    file = planet&.logs&.find_by_path(path) if valid_path? && file_exist?
+  ensure
+    render 404 unless file
+  end
+
+  # The converted file path.
+  #
+  # @return [ String ]
+  def path
+    @path ||= LogFile.id2path(params[:path])
+  end
+
+  # Validate if planet is allowed to access.
+  #
+  # @return [ Boolean ]
+  def valid_planet?
+    `fifa -a=id '#{params[:id]}'`.length > 1
+  end
+
+  # Validate if planet is allowed to access.
+  #
+  # @return [ Boolean ]
+  def valid_path?
+    ISS::LFV.config['files'].any? do |p|
+      File.fnmatch?("#{p[0]}/#{p[1]}", path, p[2].to_i)
+    end
+  end
+
+  # Test if the remote path does exist.
+  #
+  # @return [ Boolean ]
+  def file_exist?
+    planet&.logs&.exist?(path)
   end
 end
