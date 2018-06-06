@@ -23,6 +23,9 @@
 raise '$ORBIT_HOME not set'   unless ENV['ORBIT_HOME']
 raise '$ORBIT_HOME not a dir' unless File.directory? ENV['ORBIT_HOME']
 
+raise '$ORBIT_KEY not set'    unless ENV['ORBIT_KEY']
+raise '$ORBIT_KEY not a file' unless File.file? ENV['ORBIT_KEY']
+
 Yeah.application.configure do
   enable :nonblock
   document_root File.join(ENV['ORBIT_HOME'], 'public'), urls: ['/iss']
