@@ -78,7 +78,7 @@ class LogsController < Yeah::Controller
   #
   # @return [ Boolean ]
   def valid_path?
-    ISS::LFV.config['files'].any? do |p|
+    Yeah.application.settings[:lfv][:files].any? do |p|
       File.fnmatch?("#{p[0]}/#{p[1]}", path, p[2].to_i)
     end
   end

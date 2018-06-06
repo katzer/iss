@@ -48,7 +48,7 @@ class PlanetsController < Yeah::Controller
   # @return [ String ]
   def scope
     case params['scope']
-    when 'lfv'                 then ISS::LFV.config['planets'].to_s
+    when 'lfv'                 then Yeah.application.settings[:lfv][:planets]
     when 'server', 'db', 'web' then "type=#{params['scope']}"
     when nil                   then 'id:.*'
     else raise 'Unknown scope'

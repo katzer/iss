@@ -96,7 +96,7 @@ class Planet
 
   # Proxy instance of the LFV module.
   #
-  # @return [ ISS::LFV ]
+  # @return [ LogFileProxy ]
   def logs
     LogFileProxy.new(id, sftp)
   end

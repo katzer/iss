@@ -22,10 +22,10 @@
 
 @file_id = __FILE__.gsub('/', '~')
 
-ISS::LFV.config.merge!(
-  'files'   => [[File.dirname(__FILE__), '{logs,stats}.rb*', 16]],
-  'planets' => 'localhost otherhost'
-)
+Yeah.application.settings[:lfv] = {
+  files:   [[File.dirname(__FILE__), '{logs,stats}.rb*', 16]],
+  planets: 'localhost otherhost'
+}
 
 Yeah.application.opts.parser.parse
 

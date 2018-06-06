@@ -20,7 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-ISS::LFV.config['planets'] = 'otherhost'
+Yeah.application.initialize!
+Yeah.application.settings[:lfv][:planets] = 'otherhost'
 
 def env_for(path, query = '')
   { 'REQUEST_METHOD' => 'GET', 'PATH_INFO' => path, 'QUERY_STRING' => query }

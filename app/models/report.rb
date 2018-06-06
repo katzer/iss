@@ -48,7 +48,7 @@ class Report
   #
   # @return [ String ]
   def timestamp
-    "#{@id.gsub('_', ':')}Z" # rubocop:disable Performance/StringReplacement
+    "#{@id.gsub('_', ':')}Z"
   end
 
   # Max. list of columns extracted from linked result set.

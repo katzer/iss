@@ -77,7 +77,7 @@ class LogFileProxy
   #
   # @return [ Array<Array<String>> ]
   def folders
-    ISS::LFV.config['files']
+    Yeah.application.settings[:lfv][:files]
   end
 
   # The content of the tcp_config file on the planet.

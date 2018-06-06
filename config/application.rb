@@ -29,4 +29,5 @@ raise '$ORBIT_KEY not a file' unless File.file? ENV['ORBIT_KEY']
 Yeah.application.configure do
   enable :nonblock
   document_root File.join(ENV['ORBIT_HOME'], 'public'), urls: ['/iss']
+  settings[:lfv] = JSON.parse(IO.read(File.join(ENV['ORBIT_HOME'], 'config/lfv.json'))).transform_keys!(&:to_sym)
 end
