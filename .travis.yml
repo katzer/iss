@@ -26,6 +26,10 @@ sudo: false
 os:
 - linux
 
+env:
+  global:
+  - SSH2_VERSION: head
+
 matrix:
   include:
   - env: MRUBY_VERSION=1.4.1
