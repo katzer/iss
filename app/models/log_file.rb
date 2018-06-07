@@ -49,9 +49,9 @@ class LogFile
   # @return [ Void ]
   def initialize(entry, planet_id, sftp, plc_id = nil)
     @id         = LogFile.path2id(entry.name)
-    @name       = plc_id ? "#{entry.name} [#{plc_id}]" : entry.name
-    @entry      = entry
     @planet_id  = planet_id
+    @plc_id     = plc_id
+    @entry      = entry
     @sftp       = sftp
   end
 
@@ -78,9 +78,10 @@ class LogFile
     {
       id:        @id,
       planet_id: @planet_id,
-      name:      @name,
-      size:      @entry&.stats&.size,
-      mtime:     @entry&.stats&.mtime
+      plc_id:    @plc_id,
+      name:      @entry.name,
+      size:      @entry.stats&.size,
+      mtime:     @entry.stats&.mtime
     }
   end
 

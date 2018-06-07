@@ -23,8 +23,8 @@
 @file_id = __FILE__.gsub('/', '~')
 
 Yeah.application.settings[:lfv] = {
-  files:   [[File.dirname(__FILE__), '{logs,stats}.rb*', 16]],
-  planets: 'localhost otherhost'
+  planets: 'localhost otherhost',
+  files: [["#{File.dirname(__FILE__)}/{logs,stats}.rb*", 16]]
 }
 
 Yeah.application.opts.parser.parse

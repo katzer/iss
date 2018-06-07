@@ -79,7 +79,7 @@ class LogsController < Yeah::Controller
   # @return [ Boolean ]
   def valid_path?
     Yeah.application.settings[:lfv][:files].any? do |p|
-      File.fnmatch?("#{p[0]}/#{p[1]}", path, p[2].to_i)
+      File.fnmatch?(p[0], path, p[1].to_i)
     end
   end
 

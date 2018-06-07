@@ -30,7 +30,6 @@ class LogFileProxy
   def initialize(planet_id, sftp)
     @planet_id = planet_id
     @sftp      = sftp
-    @plc_ids   = {}
   end
 
   # Find all log files on the planet.
@@ -39,7 +38,7 @@ class LogFileProxy
   def find_all
     folders.each_with_object([]) do |args, files|
       files.concat(@sftp.dir.glob(*args).map! do |e|
-        LogFile.new(e, @planet_id, @sftp, plc_id(e.name))
+        LogFile.new(e, @planet_id, @sftp, find_plc_id(e.name))
       end)
     end
   end
@@ -94,19 +93,21 @@ class LogFileProxy
   # @param [ String ] path The file path of the tcp_trace file.
   #
   # @return [ String ] nil if not found.
-  def plc_id(path)
-    node   = path.split('/tcp_trace.')[-1]
-    plc_id = @plc_ids[node]
+  def find_plc_id(path)
+    node   = path.split('/tcp_trace.')[1]&.split('.')&.first
+    plc_id = @plc_ids[node] if @plc_ids
 
-    return plc_id if plc_id || @plc_ids.any?
+    return plc_id if plc_id || @plc_ids
+
+    @plc_ids = {}
 
     (lines = tcp_config).each_with_index do |line, index|
       next if line[0...3] != 'TCP' || line.include?('#')
 
       id  = line.split[1]
-      akz = lines[index - 1][1..-1].to_s.split(';')[0]&.strip
+      akz = lines[index - 1][1..-1].to_s.split(';')[0]&.gsub('#', '')&.strip
 
-      @plc_ids[id] = akz
+      @plc_ids[id] = akz unless akz.length > 8
     end
 
     @plc_ids[node]

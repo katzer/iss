@@ -1,6 +1,4 @@
 {
-  "planets": "localhost otherhost",
-  "files": [
-    ["/home/mruby/code", "*.md"]
-  ]
+  "planets": ["localhost", "otherhost"],
+  "files":   ["/home/mruby/code/*.md"]
 }

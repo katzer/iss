@@ -42,6 +42,7 @@ MRuby::Gem::Specification.new('iss') do |spec|
   spec.add_dependency 'mruby-json',            mgem: 'mruby-json'
   spec.add_dependency 'mruby-hash-ext',        core: 'mruby-hash-ext'
   spec.add_dependency 'mruby-array-ext',       core: 'mruby-array-ext'
+  spec.add_dependency 'mruby-object-ext',      core: 'mruby-object-ext'
   spec.add_dependency 'mruby-yeah',            mgem: 'mruby-yeah'
   spec.add_dependency 'mruby-sftp',            mgem: 'mruby-sftp'
   spec.add_dependency 'mruby-sftp-glob',       mgem: 'mruby-sftp-glob'

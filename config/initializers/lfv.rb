@@ -20,13 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-raise '$ORBIT_HOME not set'   unless ENV['ORBIT_HOME']
-raise '$ORBIT_HOME not a dir' unless File.directory? ENV['ORBIT_HOME']
+lfv = JSON.parse(IO.read("#{ENV['ORBIT_HOME']}/config/lfv.json"))
+          .transform_keys!(&:to_sym)
+          .tap { |cfg| cfg[:planets] = [cfg[:planets]].flatten.join(' ') }
+          .tap { |cfg| cfg[:files].map! { |f| f.is_a?(Array) ? f : [f, 0] } }
 
-raise '$ORBIT_KEY not set'    unless ENV['ORBIT_KEY']
-raise '$ORBIT_KEY not a file' unless File.file? ENV['ORBIT_KEY']
-
-Yeah.application.configure do
-  enable :nonblock
-  document_root "#{ENV['ORBIT_HOME']}/public", urls: ['/iss']
-end
+Yeah.application.settings[:lfv] = lfv
