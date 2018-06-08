@@ -47,8 +47,8 @@ build_script:
 - rake mruby
 - DEL /F /Q mruby\mrbgems\mruby-compiler\bintest\*.rb
 - DEL /F /Q mruby\build\mrbgems\mruby-dir\test
-- ps: (Get-Content mruby\mrbgems\mruby-socket\src\socket.c) | ForEach-Object { $_ -replace "int inet_pton",          "static int inet_pton" }         | Set-Content mruby\mrbgems\mruby-socket\src\socket.c
-- ps: (Get-Content mruby\mrbgems\mruby-socket\src\socket.c) | ForEach-Object { $_ -replace "const char \*inet_ntop", "static const char *inet_ntop" } | Set-Content mruby\mrbgems\mruby-socket\src\socket.c
+- ps: If ($env:MRUBY_VERSION -ne "head") { (Get-Content mruby\mrbgems\mruby-socket\src\socket.c) | ForEach-Object { $_ -replace "int inet_pton",          "static int inet_pton" }         | Set-Content mruby\mrbgems\mruby-socket\src\socket.c }
+- ps: If ($env:MRUBY_VERSION -ne "head") { (Get-Content mruby\mrbgems\mruby-socket\src\socket.c) | ForEach-Object { $_ -replace "const char \*inet_ntop", "static const char *inet_ntop" } | Set-Content mruby\mrbgems\mruby-socket\src\socket.c }
 - rake compile
 
 test_script:
