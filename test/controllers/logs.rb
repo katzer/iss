@@ -100,7 +100,19 @@ assert 'GET /planets/localhost/logs/{path}', '?size=int' do
   assert_equal 200, code
   assert_include headers['Content-Type'], 'application/json'
 
-  assert_equal 3, JSON.parse(body[0]).first['content'].length
+  assert_equal IO.read(__FILE__)[0, 3].strip, JSON.parse(body[0])[0]['content']
+rescue RuntimeError => e
+  ENV['OS'] == 'Windows_NT' ? skip : raise(e)
+end
+
+assert 'GET /planets/localhost/logs/{path}', '?size=-int' do
+  code, headers, body = \
+    api_call("/planets/localhost/logs/#{@file_id}", 'size=-3')
+
+  assert_equal 200, code
+  assert_include headers['Content-Type'], 'application/json'
+
+  assert_equal IO.read(__FILE__)[-3, 3].strip, JSON.parse(body[0])[0]['content']
 rescue RuntimeError => e
   ENV['OS'] == 'Windows_NT' ? skip : raise(e)
 end

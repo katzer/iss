@@ -93,6 +93,10 @@ class LogFile
   #
   # @return [ Array<String> ]
   def read(size)
-    @sftp.read(@entry.name, size == 0 ? nil : size).to_s.split("\n")
+    case size <=> 0
+    when 0  then @sftp.read(@entry.name)
+    when 1  then @sftp.read(@entry.name, size)
+    when -1 then @sftp.read(@entry.name, -size, size)
+    end.to_s.split("\n")
   end
 end
