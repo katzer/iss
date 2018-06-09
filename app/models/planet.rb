@@ -101,6 +101,6 @@ class Planet
   #
   # @return [ Hash ]
   def to_h
-    { id: id, name: @data['name'], host: @data['host'], type: type }
+    { id: id, name: @data['name'], url: @data['url'], type: type }
   end
 end

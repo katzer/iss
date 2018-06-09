@@ -34,11 +34,11 @@ end
 def `(cmd)
   case cmd
   when "fifa -f=json 'id:.*'"
-    %({"id":"localhost","name":"name","host":"host","type":"server"}\n{"id":"otherhost","name":"name","host":"host","type":"db"}\n)
+    %({"id":"localhost","name":"name","url":"url","type":"server"}\n{"id":"otherhost","name":"name","url":"url","type":"db"}\n)
   when "fifa -f=json 'id=localhost'"
-    %({"id":"localhost","name":"name","host":"host","type":"server"}\n)
+    %({"id":"localhost","name":"name","url":"url","type":"server"}\n)
   when "fifa -f=json 'otherhost'"
-    %({"id":"otherhost","name":"name","host":"host","type":"server"}\n)
+    %({"id":"otherhost","name":"name","url":"url","type":"server"}\n)
   else
     ''
   end
