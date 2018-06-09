@@ -41,7 +41,7 @@ class Planet
   #
   # @return [ Array<Hash> ]
   def self.find_all(ids = 'id:.*')
-    `fifa -f=json '#{ids}'`.split("\n").map! { |json| new JSON.parse(json) }
+    `fifa -f=json '#{ids}'`.split("\n").map! { |js| new JSON.parse(js) }
   ensure
     raise "fifa failed with exit code #{$?}" unless $? == 0
   end
@@ -55,6 +55,9 @@ class Planet
     @data = data
   end
 
+  # The patsed JSON content returned from fifa.
+  #
+  # @return [ Hash<String, Object> ]
   attr_reader :data
 
   # Hash-like access to all properties.
@@ -71,13 +74,6 @@ class Planet
   # @return [ String ]
   def id
     @data['id']
-  end
-
-  # The name of the planet.
-  #
-  # @return [ String ]
-  def name
-    @data['name']
   end
 
   # The type of the planet.
@@ -105,6 +101,6 @@ class Planet
   #
   # @return [ Hash ]
   def to_h
-    { id: id, name: name, type: type }
+    { id: id, name: @data['name'], host: @data['host'], type: type }
   end
 end
