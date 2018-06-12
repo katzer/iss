@@ -56,12 +56,12 @@ assert 'GET /planets/{id}/logs' do
   assert_equal 200, code
   assert_include headers['Content-Type'], 'application/json'
 
-  assert_equal 2, logs.size
-
-  assert_equal @file_id,                logs.first['id']
-  assert_equal __FILE__,                logs.first['name']
-  assert_equal File.size(__FILE__),     logs.first['size']
-  assert_kind_of Integer,               logs.first['mtime']
+  assert_equal 2,                   logs.size
+  assert_equal @file_id,            logs.first[0]
+  assert_equal 'localhost',         logs.first[1]
+  assert_equal __FILE__,            logs.first[3]
+  assert_equal File.size(__FILE__), logs.first[4]
+  assert_kind_of Integer,           logs.first[5]
 rescue RuntimeError => e
   ENV['OS'] == 'Windows_NT' ? skip : raise(e)
 end
@@ -78,16 +78,16 @@ assert 'GET /planets/localhost/logs/{path}' do
   code, headers, body = \
     api_call("/planets/localhost/logs/#{@file_id}")
 
-  lines               = JSON.parse(body[0])
-  readme              = File.read(__FILE__).chomp.split("\n")
+  lines  = JSON.parse(body[0])
+  readme = File.read(__FILE__).chomp.split("\n")
 
   assert_equal 200, code
   assert_include headers['Content-Type'], 'application/json'
 
-  assert_equal 'localhost',  lines.first['planet_id']
-  assert_equal @file_id,     lines.first['file_id']
-  assert_equal 1,            lines.first['line']
-  assert_equal readme.first, lines.first['content']
+  assert_equal @file_id,     lines.first[0]
+  assert_equal 'localhost',  lines.first[1]
+  assert_equal 1,            lines.first[2]
+  assert_equal readme.first, lines.first[3]
   assert_equal readme.count, lines.count
 rescue RuntimeError => e
   ENV['OS'] == 'Windows_NT' ? skip : raise(e)
@@ -100,7 +100,7 @@ assert 'GET /planets/localhost/logs/{path}', '?size=int' do
   assert_equal 200, code
   assert_include headers['Content-Type'], 'application/json'
 
-  assert_equal IO.read(__FILE__)[0, 3].strip, JSON.parse(body[0])[0]['content']
+  assert_equal IO.read(__FILE__)[0, 3].strip, JSON.parse(body[0])[0].last
 rescue RuntimeError => e
   ENV['OS'] == 'Windows_NT' ? skip : raise(e)
 end
@@ -112,7 +112,7 @@ assert 'GET /planets/localhost/logs/{path}', '?size=-int' do
   assert_equal 200, code
   assert_include headers['Content-Type'], 'application/json'
 
-  assert_equal IO.read(__FILE__)[-3, 3].strip, JSON.parse(body[0])[0]['content']
+  assert_equal IO.read(__FILE__)[-3, 3].strip, JSON.parse(body[0])[0].last
 rescue RuntimeError => e
   ENV['OS'] == 'Windows_NT' ? skip : raise(e)
 end

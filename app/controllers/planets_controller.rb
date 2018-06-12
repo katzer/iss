@@ -27,7 +27,7 @@ class PlanetsController < Yeah::Controller
   #
   # @return [ Void ]
   def index
-    render json: Planet.find_all(scope).map!(&:to_h)
+    render json: Planet.find_all(scope).map!(&:to_a)
   end
 
   # Render the data of a planet.

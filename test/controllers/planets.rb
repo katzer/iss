@@ -51,7 +51,7 @@ assert 'GET /planets' do
 
   assert_equal 200, code
   assert_include headers['Content-Type'], 'application/json'
-  assert_equal "[#{`fifa -f=json 'id:.*'`.chomp.sub("\n", ',')}]", body[0]
+  assert_equal '[["localhost","name","url","server"],["otherhost","name","url","db"]]', body[0]
 end
 
 assert 'GET /planets?scope=lfv' do
@@ -59,7 +59,7 @@ assert 'GET /planets?scope=lfv' do
 
   assert_equal 200, code
   assert_include headers['Content-Type'], 'application/json'
-  assert_equal "[#{`fifa -f=json 'otherhost'`.chomp}]", body[0]
+  assert_equal '[["otherhost","name","url","server"]]', body[0]
 end
 
 assert 'GET /planets/{id}' do

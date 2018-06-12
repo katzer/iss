@@ -44,10 +44,8 @@ assert 'GET /stats' do
   code, headers, body = api_call('/stats')
 
   result = [
-    { 'id' => 'server', 'name' => 'Instances', 'count' => 41 },
-    { 'id' => 'db',     'name' => 'Databases', 'count' => 82 },
-    { 'id' => 'web',    'name' => 'Webserver', 'count' => 84 },
-    { 'id' => 'tool',   'name' => 'Tools',     'count' => 85 }
+    ['server', 'Instances', 41], ['db', 'Databases', 82],
+    ['web', 'Webserver', 84], ['tool', 'Tools', 85]
   ]
 
   assert_equal 200, code

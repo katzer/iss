@@ -100,7 +100,7 @@ class Planet
   # Converts the object into a hash struct.
   #
   # @return [ Hash ]
-  def to_h
-    { id: id, name: @data['name'], url: @data['url'], type: type }
+  def to_a
+    [id, @data['name'], @data['url'], type]
   end
 end

@@ -34,36 +34,36 @@ MRuby::Build.new do |conf|
   gem_config(conf)
 end
 
-MRuby::Build.new('x86_64-pc-linux-gnu') do |conf|
-  toolchain :clang
+# MRuby::Build.new('x86_64-pc-linux-gnu') do |conf|
+#   toolchain :clang
 
-  [conf.cc, conf.cxx, conf.linker].each do |cc|
-    cc.flags << '-Oz'
-  end
+#   [conf.cc, conf.cxx, conf.linker].each do |cc|
+#     cc.flags << '-Oz'
+#   end
 
-  gem_config(conf)
-end
+#   gem_config(conf)
+# end
 
-MRuby::CrossBuild.new('i686-pc-linux-gnu') do |conf|
-  toolchain :clang
+# MRuby::CrossBuild.new('i686-pc-linux-gnu') do |conf|
+#   toolchain :clang
 
-  [conf.cc, conf.cxx, conf.linker].each do |cc|
-    cc.flags += %w[-Oz -m32]
-  end
+#   [conf.cc, conf.cxx, conf.linker].each do |cc|
+#     cc.flags += %w[-Oz -m32]
+#   end
 
-  gem_config(conf)
-end
+#   gem_config(conf)
+# end
 
-MRuby::CrossBuild.new('x86_64-alpine-linux-musl') do |conf|
-  toolchain :gcc
+# MRuby::CrossBuild.new('x86_64-alpine-linux-musl') do |conf|
+#   toolchain :gcc
 
-  [conf.cc, conf.linker].each do |cc|
-    cc.command = 'musl-gcc'
-    cc.flags << '-Os'
-  end
+#   [conf.cc, conf.linker].each do |cc|
+#     cc.command = 'musl-gcc'
+#     cc.flags << '-Os'
+#   end
 
-  gem_config(conf)
-end
+#   gem_config(conf)
+# end
 
 MRuby::CrossBuild.new('x86_64-apple-darwin15') do |conf|
   toolchain :clang
@@ -81,52 +81,52 @@ MRuby::CrossBuild.new('x86_64-apple-darwin15') do |conf|
   gem_config(conf)
 end
 
-MRuby::CrossBuild.new('i386-apple-darwin15') do |conf|
-  toolchain :clang
+# MRuby::CrossBuild.new('i386-apple-darwin15') do |conf|
+#   toolchain :clang
 
-  [conf.cc, conf.linker].each do |cc|
-    cc.command = 'i386-apple-darwin15-clang'
-    cc.flags << '-Oz'
-  end
-  conf.cxx.command      = 'i386-apple-darwin15-clang++'
-  conf.archiver.command = 'i386-apple-darwin15-ar'
+#   [conf.cc, conf.linker].each do |cc|
+#     cc.command = 'i386-apple-darwin15-clang'
+#     cc.flags << '-Oz'
+#   end
+#   conf.cxx.command      = 'i386-apple-darwin15-clang++'
+#   conf.archiver.command = 'i386-apple-darwin15-ar'
 
-  conf.build_target     = 'i386-pc-linux-gnu'
-  conf.host_target      = 'i386-apple-darwin15'
+#   conf.build_target     = 'i386-pc-linux-gnu'
+#   conf.host_target      = 'i386-apple-darwin15'
 
-  gem_config(conf)
-end
+#   gem_config(conf)
+# end
 
-MRuby::CrossBuild.new('x86_64-w64-mingw32') do |conf|
-  toolchain :gcc
+# MRuby::CrossBuild.new('x86_64-w64-mingw32') do |conf|
+#   toolchain :gcc
 
-  [conf.cc, conf.linker].each do |cc|
-    cc.command = 'x86_64-w64-mingw32-gcc'
-    cc.flags << '-Os'
-  end
-  conf.cxx.command      = 'x86_64-w64-mingw32-cpp'
-  conf.archiver.command = 'x86_64-w64-mingw32-gcc-ar'
-  conf.exts.executable  = '.exe'
+#   [conf.cc, conf.linker].each do |cc|
+#     cc.command = 'x86_64-w64-mingw32-gcc'
+#     cc.flags << '-Os'
+#   end
+#   conf.cxx.command      = 'x86_64-w64-mingw32-cpp'
+#   conf.archiver.command = 'x86_64-w64-mingw32-gcc-ar'
+#   conf.exts.executable  = '.exe'
 
-  conf.build_target     = 'x86_64-pc-linux-gnu'
-  conf.host_target      = 'x86_64-w64-mingw32'
+#   conf.build_target     = 'x86_64-pc-linux-gnu'
+#   conf.host_target      = 'x86_64-w64-mingw32'
 
-  gem_config(conf)
-end
+#   gem_config(conf)
+# end
 
-MRuby::CrossBuild.new('i686-w64-mingw32') do |conf|
-  toolchain :gcc
+# MRuby::CrossBuild.new('i686-w64-mingw32') do |conf|
+#   toolchain :gcc
 
-  [conf.cc, conf.linker].each do |cc|
-    cc.command = 'i686-w64-mingw32-gcc'
-    cc.flags << '-Os'
-  end
-  conf.cxx.command      = 'i686-w64-mingw32-cpp'
-  conf.archiver.command = 'i686-w64-mingw32-gcc-ar'
-  conf.exts.executable  = '.exe'
+#   [conf.cc, conf.linker].each do |cc|
+#     cc.command = 'i686-w64-mingw32-gcc'
+#     cc.flags << '-Os'
+#   end
+#   conf.cxx.command      = 'i686-w64-mingw32-cpp'
+#   conf.archiver.command = 'i686-w64-mingw32-gcc-ar'
+#   conf.exts.executable  = '.exe'
 
-  conf.build_target     = 'i686-pc-linux-gnu'
-  conf.host_target      = 'i686-w64-mingw32'
+#   conf.build_target     = 'i686-pc-linux-gnu'
+#   conf.host_target      = 'i686-w64-mingw32'
 
-  gem_config(conf)
-end
+#   gem_config(conf)
+# end

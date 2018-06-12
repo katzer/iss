@@ -48,11 +48,11 @@ class LogFile
   #
   # @return [ Void ]
   def initialize(entry, planet_id, sftp, plc_id = nil)
-    @id         = LogFile.path2id(entry.name)
-    @planet_id  = planet_id
-    @plc_id     = plc_id
-    @entry      = entry
-    @sftp       = sftp
+    @id        = LogFile.path2id(entry.name)
+    @planet_id = planet_id
+    @plc_id    = plc_id
+    @entry     = entry
+    @sftp      = sftp
   end
 
   # Returns the content of a logfile.
@@ -62,27 +62,14 @@ class LogFile
   #
   # @return [ Array<Hash> ]
   def content(size = nil)
-    lines = []
-
-    read(size).each_with_index do |l, i|
-      lines << { file_id: @id, planet_id: @planet_id, line: i + 1, content: l }
-    end
-
-    lines
+    (pos = 0) && read(size).map! { |l| [@id, @planet_id, pos + 1, l] }
   end
 
   # Converts the object into a hash struct.
   #
   # @return [ Hash ]
-  def to_h
-    {
-      id:        @id,
-      planet_id: @planet_id,
-      plc_id:    @plc_id,
-      name:      @entry.name,
-      size:      @entry.stats&.size,
-      mtime:     @entry.stats&.mtime
-    }
+  def to_a
+    [@id, @planet_id, @plc_id, @entry.name, @entry.stats&.size, @entry.stats&.mtime]
   end
 
   private

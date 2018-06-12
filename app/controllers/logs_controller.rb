@@ -27,7 +27,7 @@ class LogsController < Yeah::Controller
   #
   # @return [ Void ]
   def index(*)
-    render json: planet.logs.find_all.map(&:to_h) if planet
+    render json: planet.logs.find_all.map(&:to_a) if planet
   end
 
   # Render the content of a log file.

@@ -23,10 +23,10 @@
 class StatsController < Yeah::Controller
   # Default result set for the stats action
   STATS = [
-    { id: 'server', name: 'Instances' }.freeze,
-    { id: 'db',     name: 'Databases' }.freeze,
-    { id: 'web',    name: 'Webserver' }.freeze,
-    { id: 'tool',   name: 'Tools'     }.freeze
+    %w[server Instances].freeze,
+    %w[db Databases].freeze,
+    %w[web Webserver].freeze,
+    %w[tool Tools].freeze
   ].freeze
 
   # Render stats about how many planets of each type are defined.
@@ -35,7 +35,7 @@ class StatsController < Yeah::Controller
   def index
     stats = fifa '-c type=server type=db type=web type=tool'
 
-    render(json: STATS.zip(stats).map! { |s, c = 0| s.merge count: c.to_i })
+    render(json: STATS.zip(stats).map! { |s, c = 0| s.dup << c.to_i })
   end
 
   # Render count of planets who have the specified type.
