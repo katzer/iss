@@ -62,7 +62,7 @@ class LogFile
   #
   # @return [ Array<Hash> ]
   def content(size = nil)
-    (pos = 0) && read(size).map! { |l| [@id, @planet_id, pos + 1, l] }
+    (pos = 0) && read(size).map! { |l| [@id, @planet_id, pos += 1, l] }
   end
 
   # Converts the object into a hash struct.
