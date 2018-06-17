@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-class LogFile
+class LogFile < BasicObject
   # Convert the id of the path into a file path.
   #
   # @param [ String ] id The path ID to convert.

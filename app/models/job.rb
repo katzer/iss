@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-class Job
+class Job < BasicObject
   # Path where to find all jobs
   FOLDER = File.join(ENV['ORBIT_HOME'], 'jobs').freeze
 
