@@ -32,6 +32,15 @@ def api_call(url)
   Yeah.application.app.call env_for(url)
 end
 
+def `(cmd)
+  case cmd
+  when 'fifa -a=name localhost otherhost' then "Localhost\nOtherhost\n"
+  else ''
+  end
+ensure
+  $? = 0
+end
+
 assert 'GET /jobs' do
   code, headers, body = api_call('/jobs')
 

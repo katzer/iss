@@ -16,13 +16,13 @@
     "Keys": "Num_i, Name, Value",
     "planets": [
         {
-            "id": "sample-planet",
+            "id": "localhost",
             "output": "[[\"Num_i\", \"Name\", \"Value\"],[\"43\", \"sessions\", \"480\"],[\"44\", \"timed_statistics\", \"TRUE\"]]",
             "errored": false,
             "created_at": "2017-05-12T08:29:03Z"
         },
         {
-            "id": "localhost",
+            "id": "otherhost",
             "output": "[[\"Num_i\", \"Name\", \"Value\"]]",
             "errored": true,
             "created_at": "2017-05-12T08:29:03Z"

@@ -67,13 +67,17 @@ class Report
   #
   # @return [ Hash ]
   def content
-    @content ||= begin
-      content = JSON.parse(IO.read(path))
-      items   = content['planets']
-      ids     = items.map { |item| item['id'] }
-      names   = `fifa -a=name #{ids.join(' ')}`.split("\n")
+    @content ||= JSON.parse(IO.read(path))
+  end
+
+  # The planet items of the parsed report.
+  #
+  # @return [ Hash ]
+  def content_items
+    content['planets'].tap do |items|
+      ids   = items.map { |item| item['id'] }
+      names = `fifa -a=name #{ids.join(' ')}`.split("\n")
       items.each_with_index { |item, idx| item[:planet] = names[idx] }
-      content
     end
   end
 
@@ -96,7 +100,7 @@ class Report
   #
   # @return [ Array<ReportResult> ]
   def results
-    content['planets'].each_with_object([]) do |item, items|
+    content_items.each_with_object([]) do |item, items|
       _, *rows = JSON.parse(item['output'])
 
       with_each_converted_row(rows) do |row|
