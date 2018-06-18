@@ -50,8 +50,6 @@ class Result < BasicObject
   #
   # @return [ String ]
   def planet
-    Planet.find(planet_id)['name']
-  rescue StandardError
-    planet_id
+    @data[:planet] || planet_id
   end
 end

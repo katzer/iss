@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-class Report < BasicObject
+class Report# < BasicObject
   # Path where to find all the reports
   FOLDER = File.join(ENV['ORBIT_HOME'], 'reports').freeze
 
@@ -67,19 +67,27 @@ class Report < BasicObject
   #
   # @return [ Hash ]
   def content
-    @content ||= JSON.parse(IO.read(path))
+    @content ||= begin
+      content = JSON.parse(IO.read(path))
+      items   = content['planets']
+      ids     = items.map { |item| item['id'] }
+      names   = `fifa -a=name #{ids.join(' ')}`.split("\n")
+      items.each_with_index { |item, idx| item[:planet] = names[idx] }
+      content
+    end
   end
 
   # Max. list of columns extracted from linked result set.
   #
   # @return [ Array<Hash> ]
   def columns
-    @columns ||= content['Keys'].split(', ').map! do |name|
+    @columns ||= content['Keys'].split(',').map! do |name|
+      name.strip!
       case name[-2, 2]
       when '_s' then [name[0...-2], :string]
       when '_i' then [name[0...-2], :int]
       when '_f' then [name[0...-2], :float]
-      else           [name,         :string]
+      else           [name, :string]
       end
     end
   end
@@ -89,9 +97,7 @@ class Report < BasicObject
   # @return [ Array<ReportResult> ]
   def results
     content['planets'].each_with_object([]) do |item, items|
-      keys, *rows = JSON.parse(item['output'])
-
-      rows << Array.new(keys.size, '') if rows.empty?
+      _, *rows = JSON.parse(item['output'])
 
       with_each_converted_row(rows) do |row|
         items << Result.new(@job_id, @id, item.merge(output: row))
