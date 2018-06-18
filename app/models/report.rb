@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-class Report# < BasicObject
+class Report
   # Path where to find all the reports
   FOLDER = File.join(ENV['ORBIT_HOME'], 'reports').freeze
 
