@@ -32,6 +32,7 @@ class Job < BasicObject
 
     Dir.entries(FOLDER)
        .keep_if { |f| f.end_with? '.json' }
+       .sort
        .map! { |f| new f.chomp!('.json') }
   end
 
