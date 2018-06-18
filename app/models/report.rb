@@ -35,13 +35,25 @@ class Report < BasicObject
     @job_id = job_id
   end
 
-  attr_reader :id, :job_id
+  # The id of the report.
+  #
+  # @return [ String ]
+  attr_reader :id
+
+  # Converts the object into a hash struct.
+  #
+  # @return [ Hash ]
+  def to_a
+    [@id, @job_id, *Array.new(2, timestamp), columns]
+  end
+
+  private
 
   # The absolute path to the report file.
   #
   # @return [ String ]
   def path
-    File.join(FOLDER, job_id, "#{id}.json")
+    File.join(FOLDER, @job_id, "#{@id}.json")
   end
 
   # The timestamp when the report was created.
@@ -51,16 +63,23 @@ class Report < BasicObject
     "#{@id.gsub('_', ':')}Z"
   end
 
+  # The parsed report json file.
+  #
+  # @return [ Hash ]
+  def content
+    @content ||= JSON.parse(IO.read(path))
+  end
+
   # Max. list of columns extracted from linked result set.
   #
   # @return [ Array<Hash> ]
   def columns
     @columns ||= content['Keys'].split(', ').map! do |name|
       case name[-2, 2]
-      when '_s' then { id: name, name: name[0...-2], type: :string }
-      when '_i' then { id: name, name: name[0...-2], type: :int    }
-      when '_f' then { id: name, name: name[0...-2], type: :float  }
-      else           { id: name, name: name,         type: :string }
+      when '_s' then [name[0...-2], :string]
+      when '_i' then [name[0...-2], :int]
+      when '_f' then [name[0...-2], :float]
+      else           [name,         :string]
       end
     end
   end
@@ -75,31 +94,9 @@ class Report < BasicObject
       rows << Array.new(keys.size, '') if rows.empty?
 
       with_each_converted_row(rows) do |row|
-        items << Result.new(job_id, id, item.merge(output: keys.zip(row)))
+        items << Result.new(@job_id, @id, item.merge(output: row))
       end
     end
-  end
-
-  # Converts the object into a hash struct.
-  #
-  # @return [ Hash ]
-  def to_h
-    {
-      id:        id,
-      name:      timestamp,
-      timestamp: timestamp,
-      job_id:    job_id,
-      columns:   columns
-    }
-  end
-
-  private
-
-  # The parsed report json file.
-  #
-  # @return [ Hash ]
-  def content
-    @content ||= JSON.parse(IO.read(path))
   end
 
   # Convert each cell by column type.
@@ -108,11 +105,9 @@ class Report < BasicObject
   #
   # @return [ Void ]
   def with_each_converted_row(rows)
-    cols = columns
-
     rows.each do |row|
       row.each_with_index do |val, i|
-        case cols[i][:type]
+        case columns[i][-1]
         when :int   then row[i] = val.to_i
         when :float then row[i] = val.to_f
         end

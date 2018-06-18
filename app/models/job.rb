@@ -24,23 +24,15 @@ class Job < BasicObject
   # Path where to find all jobs
   FOLDER = File.join(ENV['ORBIT_HOME'], 'jobs').freeze
 
-  # Find of all jobs and return their ids.
-  #
-  # @return [ Array<String> ]
-  def self.find_ids
-    return [] unless Dir.exist? FOLDER
-
-    Dir.entries(FOLDER)
-       .keep_if { |f| f.end_with? '.json' }
-       .map! { |f| f.chomp! '.json' }
-       .sort!
-  end
-
   # Find of all jobs.
   #
   # @return [ Array<Job> ]
   def self.find_all
-    find_ids.map! { |id| new(id) }
+    return [] unless Dir.exist? FOLDER
+
+    Dir.entries(FOLDER)
+       .keep_if { |f| f.end_with? '.json' }
+       .map! { |f| new f.chomp!('.json') }
   end
 
   # Find a job by id.
@@ -49,16 +41,7 @@ class Job < BasicObject
   #
   # @return [ Job ]
   def self.find(id)
-    new(id) if exist? id
-  end
-
-  # Check if a job exists.
-  #
-  # @param [ String ] id The job id to check for.
-  #
-  # @return [ Boolean ]
-  def self.exist?(id)
-    find_ids.include? id
+    new(id) if File.file? File.join(FOLDER, "#{id}.json")
   end
 
   # Private Initializer for a job by id.
@@ -70,26 +53,22 @@ class Job < BasicObject
     @id = id.to_s
   end
 
+  # The job id.
+  #
+  # @return [ String ]
   attr_reader :id
 
-  # List of reports associated to the job.
+  # Proxy instance to find reports for the job.
   #
-  # @return [ Array<Report> ]
+  # @return [ ReportProxy ]
   def reports
-    dir = File.join(Report::FOLDER, id)
-
-    return [] unless Dir.exist? dir
-
-    Dir.entries(dir)
-       .keep_if { |f| f.end_with? '.json' }
-       .sort!
-       .map! { |f| Report.new(f.chomp!('.json'), id) }
+    ReportProxy.new(@id)
   end
 
-  # Converts the object into a hash struct.
+  # Converts the object into an array struct.
   #
-  # @return [ Hash ]
-  def to_h
-    { id: id, name: id }
+  # @return [ Array ]
+  def to_a
+    [@id, @id]
   end
 end

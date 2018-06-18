@@ -65,9 +65,9 @@ class LogFile < BasicObject
     (pos = 0) && read(size).map! { |l| [@id, @planet_id, pos += 1, l] }
   end
 
-  # Converts the object into a hash struct.
+  # Converts the object into an array struct.
   #
-  # @return [ Hash ]
+  # @return [ Array ]
   def to_a
     [@id, @planet_id, @plc_id, @entry.name, @entry.stats&.size, @entry.stats&.mtime]
   end

@@ -23,17 +23,12 @@
 class LogsController < Yeah::Controller
   # Render a list of all log files.
   #
-  # @param [ String ] planet_id The ID of the planet where to look for.
-  #
   # @return [ Void ]
   def index(*)
     render json: planet.logs.find_all.map(&:to_a) if planet
   end
 
   # Render the content of a log file.
-  #
-  # @param [ String ] planet_id The ID of the planet where to look for.
-  # @param [ String ] id        The id of the file to render.
   #
   # @return [ Void ]
   def show(*)

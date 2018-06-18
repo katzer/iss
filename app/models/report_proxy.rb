@@ -20,45 +20,35 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-class JobsController < Yeah::Controller
-  # Render all jobs found under the jobs folder.
+class ReportProxy < BasicObject
+  # Proxy between a job and its reports.
+  #
+  # @param [ String ] job_id The ID of the job.
   #
   # @return [ Void ]
-  def jobs
-    render(json: Job.find_all.map!(&:to_a))
+  def initialize(job_id)
+    @job_id = job_id
   end
 
-  # Render all reports for a given job.
+  # All reports associated with the job.
   #
-  # @return [ Void ]
-  def reports(*)
-    render json: job.reports.find_all.map!(&:to_a) if job
+  # @return [ Array<Report> ]
+  def find_all
+    dir = File.join(Report::FOLDER, @job_id)
+
+    return [] unless Dir.exist? dir
+
+    Dir.entries(dir)
+       .keep_if { |f| f.end_with? '.json' }
+       .map! { |f| Report.new(f.chomp!('.json'), @job_id) }
   end
 
-  # Render all results for a given job and report.
+  # All reports associated with the job.
   #
-  # @return [ Void ]
-  def results(*)
-    render json: report.results.map!(&:to_a) if report
-  end
-
-  private
-
-  # The requested job.
+  # @param [ String ] id The ID of the report.
   #
-  # @return [ Job ] nil if not found.
-  def job
-    job = Job.find(params[:job_id])
-  ensure
-    render 404 unless job
-  end
-
-  # The requested report.
-  #
-  # @return [ Job ] nil if not found.
-  def report
-    report = job&.reports&.find(params[:id])
-  ensure
-    render 404 unless report
+  # @return [ Report ] nil if not found.
+  def find(id)
+    Report.new(id, @job_id) if File.file? "#{Report::FOLDER}/#{@job_id}/#{id}.json"
   end
 end

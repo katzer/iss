@@ -53,6 +53,7 @@ class Planet
   # @return [ Void ]
   def initialize(data)
     @data = data
+    data.freeze
   end
 
   # The patsed JSON content returned from fifa.
@@ -76,13 +77,6 @@ class Planet
     @data['id']
   end
 
-  # The type of the planet.
-  #
-  # @return [ String ]
-  def type
-    @data['type']
-  end
-
   # A connected SFTP session to the planet.
   #
   # @return [ SFTP::Session ]
@@ -97,10 +91,10 @@ class Planet
     LogFileProxy.new(id, sftp)
   end
 
-  # Converts the object into a hash struct.
+  # Converts the object into an array struct.
   #
-  # @return [ Hash ]
+  # @return [ Array ]
   def to_a
-    [id, @data['name'], @data['url'], type]
+    [id, @data['name'], @data['url'], @data['type']]
   end
 end

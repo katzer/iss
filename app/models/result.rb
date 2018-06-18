@@ -30,7 +30,14 @@ class Result < BasicObject
     @data      = data
   end
 
-  attr_reader :job_id, :report_id
+  # Converts the object into an array struct.
+  #
+  # @return [ Array ]
+  def to_a
+    [@job_id, @report_id, planet_id, !@data['errored'], planet, *@data[:output]]
+  end
+
+  private
 
   # The id of the planet.
   #
@@ -46,25 +53,5 @@ class Result < BasicObject
     Planet.find(planet_id)['name']
   rescue StandardError
     planet_id
-  end
-
-  # The parsed output values.
-  #
-  # @return [ Map ]
-  def rows
-    @data[:output].to_h
-  end
-
-  # Converts the object into a hash struct.
-  #
-  # @return [ Hash ]
-  def to_h
-    {
-      job_id:    job_id,
-      report_id: report_id,
-      planet_id: planet_id,
-      valid:     !@data['errored'],
-      planet:    planet
-    }.merge!(rows)
   end
 end
