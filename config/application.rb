@@ -27,6 +27,6 @@ raise '$ORBIT_KEY not set'    unless ENV['ORBIT_KEY']
 raise '$ORBIT_KEY not a file' unless File.file? ENV['ORBIT_KEY']
 
 Yeah.application.configure do
-  enable :nonblock
+  enable :nonblock, :run_gc_per_request
   document_root "#{ENV['ORBIT_HOME']}/public", urls: ['/iss']
 end
