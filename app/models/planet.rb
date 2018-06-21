@@ -27,11 +27,9 @@ class Planet
   #
   # @return [ Planet ] nil if not found.
   def self.find(id)
-    item = `fifa -f=json '#{id}'`.chomp
+    item = fifa("-f=json '#{id}'", false)
 
     Planet.new(JSON.parse(item)) unless item.empty?
-  ensure
-    raise "fifa failed with exit code #{$?}" unless $? == 0
   end
 
   # Scope for all planets of type server.
@@ -41,9 +39,7 @@ class Planet
   #
   # @return [ Array<Hash> ]
   def self.find_all(ids = 'id:.*')
-    `fifa -f=json '#{ids}'`.split("\n").map! { |js| new JSON.parse(js) }
-  ensure
-    raise "fifa failed with exit code #{$?}" unless $? == 0
+    fifa("-f=json '#{ids}'").map! { |js| new JSON.parse(js) }
   end
 
   # Initializes a planet.

@@ -20,39 +20,22 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-class StatsController < Yeah::Controller
-  # Default result set for the stats action
-  STATS = [
-    %w[server Instances].freeze,
-    %w[db Databases].freeze,
-    %w[web Webserver].freeze,
-    %w[tool Tools].freeze
-  ].freeze
+class Object
+  # Either relative or absolute path to fifa tool.
+  FIFA_PATH = ENV.include?('ORBIT_BIN') ? "#{ENV['ORBIT_BIN']}/fifa" : 'fifa'
 
-  # Render stats about how many planets of each type are defined.
+  # Invoke fifa with the specified query string.
   #
-  # @return [ Void ]
-  def index
-    stats = fifa('-c type=server type=db type=web type=tool')
+  # @param [ String ] query  The query to ask for.
+  # @param [ Boolean ] split Set to true to autmatically split the output.
+  #                          Defaults to: true
+  #
+  # @return [ Array<String> ]
+  def fifa(query, split = true)
+    out = `#{FIFA_PATH} #{query}`
 
-    render(json: STATS.zip(stats).map! { |s, c = 0| s.dup << c.to_i })
-  end
+    raise "fifa failed with exit code #{$?}" unless $? == 0
 
-  # Render count of planets who have the specified type.
-  #
-  # @param [ String ] type The name of the type to search for.
-  #
-  # @return [ Void ]
-  def count(type)
-    render json: fifa("-c type=#{type}")[0].to_i
-  end
-
-  # Render list of ids who have the specified type.
-  #
-  # @param [ String ] type The name of the type to search for.
-  #
-  # @return [ Void ]
-  def list(type)
-    render json: fifa("type=#{type}")
+    split ? out.split("\n") : out
   end
 end
