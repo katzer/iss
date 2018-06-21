@@ -32,7 +32,7 @@ class LogsController < Yeah::Controller
   #
   # @return [ Void ]
   def show(*)
-    render json: file.content(params['size'].to_i) if file
+    render json: file.readlines(params['size'].to_i).map!(&:to_a) if file
   end
 
   private

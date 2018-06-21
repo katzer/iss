@@ -20,45 +20,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-class LogFile < BasicObject
-  # Convert the id of the path into a file path.
+class LogContentProxy < BasicObject
+  # Proxy handles the retrival of log files from the planet.
   #
-  # @param [ String ] id The path ID to convert.
-  #
-  # @return [ String ]
-  def self.id2path(id)
-    id.gsub('~', '/')
-  end
-
-  # Convert the path into a file ID.
-  #
-  # @param [ String ] path The path to convert.
-  #
-  # @return [ String ]
-  def self.path2id(path)
-    path.gsub('/', '~')
-  end
-
-  # Initializes a log file.
-  #
-  # @param [ SFTP::Entry  ] entry     A remote file entry.
-  # @param [ String ]       planet_id The ID of the corresponding planet.
-  # @param [ String ]       plc_id    The ID of the corresponding PLC.
+  # @param [ String ]       file_path The path of the file.
+  # @param [ String ]       planet_id The ID of the planet.
   # @param [ SFTP::Session] sftp      The connected SFTP session to the planet.
   #
   # @return [ Void ]
-  def initialize(entry, planet_id, sftp, plc_id = nil)
+  def initialize(file_path, planet_id, sftp)
+    @id        = LogFile.path2id(file_path)
+    @file_path = file_path
     @planet_id = planet_id
-    @plc_id    = plc_id
-    @entry     = entry
     @sftp      = sftp
-  end
-
-  # Returns a proxy object to retrieve the content of a file.
-  #
-  # @return [ LogContentProxy ]
-  def content
-    LogContentProxy.new(@entry.name, @planet_id, @sftp)
   end
 
   # Returns the content of a logfile.
@@ -66,16 +40,26 @@ class LogFile < BasicObject
   # @param [ Int ] size The amount of bytes to read.
   #                     Defaults to: nil (all)
   #
-  # @return [ Array<LogFileLine> ]
-  def readlines(size)
-    content.readlines(size)
+  # @return [ Array<Hash> ]
+  def readlines(size = nil)
+    pos   = 0
+    lines = read(size).map! { |l| LogContent.new(@id, @planet_id, pos += 1, l) }
+
+    lines
   end
 
-  # Converts the object into an array struct.
+  private
+
+  # Read the whole file from remote.
   #
-  # @return [ Array ]
-  def to_a
-    [LogFile.path2id(@entry.name), @planet_id, @plc_id,
-     @entry.name, @entry.stats&.size, @entry.stats&.mtime]
+  # @param [ Int ] size The amount of bytes to read.
+  #
+  # @return [ Array<String> ]
+  def read(size)
+    case size <=> 0
+    when 0  then @sftp.read(@file_path)
+    when 1  then @sftp.read(@file_path, size)
+    when -1 then @sftp.read(@file_path, -size, size)
+    end.to_s.split("\n")
   end
 end
