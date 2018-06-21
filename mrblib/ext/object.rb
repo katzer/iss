@@ -34,7 +34,7 @@ class Object
   def fifa(query, split = true)
     out = `#{FIFA_PATH} #{query}`
 
-    raise "fifa failed with exit code #{$?}" unless $? == 0
+    raise "fifa #{query} failed with exit code #{$?}" unless $? == 0
 
     split ? out.split("\n") : out
   end
