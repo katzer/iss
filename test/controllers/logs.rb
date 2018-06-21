@@ -24,7 +24,8 @@
 
 Yeah.application.settings[:lfv] = {
   planets: 'localhost otherhost',
-  files: [["#{File.dirname(__FILE__)}/{logs,stats}.rb*", 16]]
+  files: [["#{File.dirname(__FILE__)}/{logs,stats}.rb", 16]],
+  timestamps: [[__FILE__, 0, 'Copyright', 16, 4, 'Y']]
 }
 
 Yeah.application.opts.parser.parse
@@ -88,6 +89,8 @@ assert 'GET /planets/localhost/logs/{path}' do
   assert_equal 'localhost',  lines.first[1]
   assert_equal 1,            lines.first[2]
   assert_equal readme.first, lines.first[3]
+  assert_equal %w[2016 Y],   lines[2][4]
+  assert_equal lines[3][4],  lines[2][4]
   assert_equal readme.count, lines.count
 rescue RuntimeError => e
   ENV['OS'] == 'Windows_NT' ? skip : raise(e)
@@ -100,7 +103,7 @@ assert 'GET /planets/localhost/logs/{path}', '?size=int' do
   assert_equal 200, code
   assert_include headers['Content-Type'], 'application/json'
 
-  assert_equal IO.read(__FILE__)[0, 3].strip, JSON.parse(body[0])[0].last
+  assert_equal IO.read(__FILE__)[0, 3].strip, JSON.parse(body[0]).first[3]
 rescue RuntimeError => e
   ENV['OS'] == 'Windows_NT' ? skip : raise(e)
 end
@@ -112,7 +115,7 @@ assert 'GET /planets/localhost/logs/{path}', '?size=-int' do
   assert_equal 200, code
   assert_include headers['Content-Type'], 'application/json'
 
-  assert_equal IO.read(__FILE__)[-3, 3].strip, JSON.parse(body[0])[0].last
+  assert_equal IO.read(__FILE__)[-3, 3].strip, JSON.parse(body[0]).first[3]
 rescue RuntimeError => e
   ENV['OS'] == 'Windows_NT' ? skip : raise(e)
 end

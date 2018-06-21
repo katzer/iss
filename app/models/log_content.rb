@@ -32,14 +32,27 @@ class LogContent < BasicObject
   def initialize(file_id, planet_id, pos, content)
     @file_id   = file_id
     @planet_id = planet_id
-    @pos       = pos
     @content   = content
+    @pos       = pos
   end
 
   # Converts the object into an array struct.
   #
   # @return [ Array ]
   def to_a
-    [@file_id, @planet_id, @pos, @content]
+    [@file_id, @planet_id, @pos, @content, [@ts, @ts_format]]
+  end
+
+  protected
+
+  # Parse the timestamp specified by the timestamp rule.
+  #
+  # @param [ Array ] rule         The rule howto extract the timestamp.
+  # @param [ String ] ts_fallback The timestamp to use if no other can be found.
+  #
+  # @return [ String ] The parsed timestamp.
+  def parse_ts(rule, ts_fallback = nil)
+    @ts_format = rule[5]
+    @ts = @content.include?(rule[2]) ? @content[rule[3], rule[4]] : ts_fallback
   end
 end

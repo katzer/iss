@@ -42,8 +42,11 @@ class LogContentProxy < BasicObject
   #
   # @return [ Array<Hash> ]
   def readlines(size = nil)
-    pos   = 0
+    rule = find_ts_rule
+    pos  = 0
+
     lines = read(size).map! { |l| LogContent.new(@id, @planet_id, pos += 1, l) }
+    lines.inject(nil) { |ts, l| l.parse_ts(rule, ts) } if rule
 
     lines
   end
@@ -61,5 +64,14 @@ class LogContentProxy < BasicObject
     when 1  then @sftp.read(@file_path, size)
     when -1 then @sftp.read(@file_path, -size, size)
     end.to_s.split("\n")
+  end
+
+  # The rule where to find the timestamp.
+  #
+  # @return [ Array ] nil if there's no rule.
+  def find_ts_rule
+    Yeah.application.settings[:lfv][:timestamps]&.find do |rule|
+      File.fnmatch? rule[0], @file_path, File::FNM_PATHNAME | rule[1]
+    end
   end
 end
