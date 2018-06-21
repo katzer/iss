@@ -28,22 +28,23 @@ Download the latest version from the [release page][releases] and add the execut
 
 ## API
 
-All endpoints have the `/api/` prefix and usually return a JSON encoded result set.
+All endpoints return a JSON encoded result set.
 
     $ iss --routes
-    GET /api/stats
-    GET /api/stats/{type}/count
-    GET /api/stats/{type}/list
-    GET /api/jobs
-    GET /api/jobs/{job_id}/reports
-    GET /api/jobs/{job_id}/reports/{id}/results
-    GET /api/lfv/planets
-    GET /api/lfv/planets/{id}/files
-    GET /api/lfv/planets/{id}/file
+    GET /jobs
+    GET /jobs/{job_id}/reports
+    GET /jobs/{job_id}/reports/{id}/results
+    GET /planets
+    GET /planets/{id}
+    GET /planets/{id}/logs
+    GET /planets/{id}/logs/{path}
+    GET /stats
+    GET /stats/{type}/count
+    GET /stats/{type}/list
 
 For example to get the total number of planets with type of _web_:
 
-    $ curl localhost:1974/api/stats/web/count
+    $ curl localhost:1974/stats/web/count
 
 ## Web App
 
