@@ -11,6 +11,8 @@ A web frontend and API endpoint for _Orbit_.
     -p, --port        The port number to start the local server on
                       Defaults to: 1974
     -r, --routes      Print out all defined routes
+    -s, --size        Max pool size for SFTP/SSH sessions
+                      Defaults to: 5
     -t, --timeout     Receive timeout before socket will be closed
                       Defaults to: 1 (sec)
     -h, --help        This help text
