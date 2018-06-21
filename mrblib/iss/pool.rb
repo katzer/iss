@@ -67,7 +67,7 @@ module ISS
     # @return [ SFTP::Session ]
     def init_session(id)
       user, host = fifa("-f=ssh '#{id}'", false).chomp.split('@')
-      SFTP.start(host, user, CONFIG.dup) if $? == 0
+      SFTP.start(host, user, CONFIG.dup)
     end
 
     # Close the oldest SFTP session and remote it from the queue.
