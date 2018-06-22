@@ -25,6 +25,8 @@ Yeah.application.routes.draw do
 
   redirect '/index.html' => '/iss/index.html'
 
+  head('/ping') { render 200 }
+
   get '/embed/lfv/{planet}' do |id|
     render redirect: "/iss/index.html#!lfv/#{id}"
   end

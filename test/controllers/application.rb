@@ -20,8 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-def env_for(path, query = '')
-  { 'REQUEST_METHOD' => 'GET', 'PATH_INFO' => path, 'QUERY_STRING' => query }
+def env_for(path, method = 'GET', query = '')
+  { 'REQUEST_METHOD' => method, 'PATH_INFO' => path, 'QUERY_STRING' => query }
 end
 
 Yeah.application.initialize!
@@ -53,4 +53,8 @@ assert 'GET /iss/index.html' do
 
   assert_equal 200, code
   assert_equal '<html>Yeah!</html>', body[0]
+end
+
+assert 'HEAD /ping' do
+  assert_equal 200, @app.call(env_for('/ping', 'HEAD'))[0]
 end

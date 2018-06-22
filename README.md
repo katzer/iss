@@ -43,6 +43,7 @@ All endpoints return a JSON encoded result set.
     GET /stats
     GET /stats/{type}/count
     GET /stats/{type}/list
+    HEAD /ping
 
 For example to get the total number of planets with type of _web_:
 
