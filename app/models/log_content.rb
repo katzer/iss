@@ -29,18 +29,15 @@ class LogContent < BasicObject
   # @param [ String ]  content   The content of the line.
   #
   # @return [ Void ]
-  def initialize(file_id, planet_id, pos, content)
-    @file_id   = file_id
-    @planet_id = planet_id
-    @content   = content
-    @pos       = pos
+  def initialize(*args)
+    @args = args
   end
 
   # Converts the object into an array struct.
   #
   # @return [ Array ]
   def to_a
-    [@file_id, @planet_id, @pos, @content, [@ts, @ts_format]]
+    [*@args, @ts]
   end
 
   protected
@@ -51,8 +48,9 @@ class LogContent < BasicObject
   # @param [ String ] ts_fallback The timestamp to use if no other can be found.
   #
   # @return [ String ] The parsed timestamp.
-  def parse_ts(rule, ts_fallback = nil)
-    @ts_format = rule[5]
-    @ts = @content.include?(rule[2]) ? @content[rule[3], rule[4]] : ts_fallback
+  def parse_ts(rule, fallback = nil)
+    content = @args[3]
+    @ts     = [nil, rule[5]]
+    @ts[0]  = content.include?(rule[2]) ? content[rule[3], rule[4]] : fallback
   end
 end

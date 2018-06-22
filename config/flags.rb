@@ -44,7 +44,7 @@ Yeah.application.opts.draw do
   end
 
   opt! :version do
-    "iss v#{ISS::VERSION} - #{OS.sysname} #{OS.bits(:binary)}-Bit (#{OS.machine})"
+    "iss #{ISS::VERSION} - #{OS.sysname} #{OS.bits(:binary)}-Bit (#{OS.machine})"
   end
 
   opt! :routes do
