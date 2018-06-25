@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-class Object
+module Kernel
   # Either relative or absolute path to fifa tool.
   FIFA_PATH = ENV.include?('ORBIT_BIN') ? "#{ENV['ORBIT_BIN']}/fifa" : 'fifa'
 
@@ -37,5 +37,14 @@ class Object
     raise "fifa #{query} failed with exit code #{$?}" unless $? == 0
 
     split ? out.split("\n") : out
+  end
+
+  # Displays the given message on STDERR.
+  #
+  # @param [ String ] msg The error message.
+  #
+  # @return [ Void ]
+  def warn(msg)
+    $stderr.puts msg
   end
 end

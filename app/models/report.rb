@@ -67,7 +67,11 @@ class Report
   #
   # @return [ Hash ]
   def content
-    @content ||= JSON.parse(IO.read(path))
+    @content ||= begin
+      JSON.parse(IO.read(path))
+    rescue JSON::ParserError
+      warn "#{path} is not a valid json file."
+    end
   end
 
   # The planet items of the parsed report.
@@ -85,7 +89,7 @@ class Report
   #
   # @return [ Array<Hash> ]
   def columns
-    @columns ||= content['Keys'].split(',').map! do |name|
+    @columns ||= content['Keys'].to_s.split(',').map! do |name|
       name.strip!
       case name[-2, 2]
       when '_s' then [name[0...-2], :string]
@@ -106,6 +110,8 @@ class Report
       with_each_converted_row(rows) do |row|
         items << Result.new(@job_id, @id, item.merge(output: row))
       end
+    rescue JSON::ParserError
+      warn "#{path} contains invalid json: #{item}"
     end
   end
 
