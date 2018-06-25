@@ -27,7 +27,7 @@ class Planet
   #
   # @return [ Planet ] nil if not found.
   def self.find(id)
-    item = fifa("-f=json '#{id}'", false)
+    item = fifa("-f=json #{id}", false)
 
     Planet.new(JSON.parse(item)) unless item.empty?
   end
@@ -39,7 +39,7 @@ class Planet
   #
   # @return [ Array<Hash> ]
   def self.find_all(ids = 'id:.*')
-    fifa("-f=json '#{ids}'").map! { |js| new JSON.parse(js) }
+    fifa(%(-f=json "#{ids}")).map! { |js| new JSON.parse(js) }
   end
 
   # Initializes a planet.

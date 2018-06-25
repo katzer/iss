@@ -66,7 +66,7 @@ module ISS
     #
     # @return [ SFTP::Session ]
     def init_session(id)
-      user, host = fifa("-f=ssh '#{id}'", false).chomp.split('@')
+      user, host = fifa("-f=ssh #{id}", false).chomp.split('@')
       SFTP.start(host, user, CONFIG.dup)
     end
 

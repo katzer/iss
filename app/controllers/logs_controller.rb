@@ -66,7 +66,7 @@ class LogsController < Yeah::Controller
   #
   # @return [ Boolean ]
   def valid_planet?
-    !fifa("-a=id '#{params[:id]}'", false).empty?
+    !fifa("-a=id #{params[:id]}", false).empty?
   end
 
   # Validate if planet is allowed to access.
