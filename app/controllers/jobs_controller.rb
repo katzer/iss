@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-class JobsController < Yeah::Controller
+class JobsController < ApplicationController
   # Render all jobs found under the jobs folder.
   #
   # @return [ Void ]

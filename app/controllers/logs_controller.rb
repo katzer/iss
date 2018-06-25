@@ -20,12 +20,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-class LogsController < Yeah::Controller
+class LogsController < ApplicationController
   # Render a list of all log files.
   #
   # @return [ Void ]
   def index(*)
     render json: planet.logs.find_all.map!(&:to_a) if planet
+  rescue SSH::Exception, SFTP::Exception => e
+    delete_pooled_sftp_connection
+    @retried ? raise(e) : (@retried = true) && retry
   end
 
   # Render the content of a log file.
@@ -33,6 +36,9 @@ class LogsController < Yeah::Controller
   # @return [ Void ]
   def show(*)
     render json: file.readlines(params['size'].to_i).map!(&:to_a) if file
+  rescue SSH::Exception, SFTP::Exception => e
+    delete_pooled_sftp_connection
+    @retried ? raise(e) : (@retried = true) && retry
   end
 
   private
@@ -73,9 +79,7 @@ class LogsController < Yeah::Controller
   #
   # @return [ Boolean ]
   def valid_path?
-    Yeah.application.settings[:lfv][:files].any? do |p|
-      File.fnmatch?(p[0], path, p[1].to_i)
-    end
+    settings[:lfv][:files].any? { |p| File.fnmatch?(p[0], path, p[1].to_i) }
   end
 
   # Test if the remote path does exist.
@@ -83,5 +87,12 @@ class LogsController < Yeah::Controller
   # @return [ Boolean ]
   def file_exist?
     planet&.logs&.exist?(path)
+  end
+
+  # Delete the pooled sftp connection for the requested planet.
+  #
+  # @return [ Void ]
+  def delete_pooled_sftp_connection
+    settings[:pool].delete(params[:id])
   end
 end

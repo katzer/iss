@@ -58,6 +58,15 @@ module ISS
       @sessions[id] = session if session
     end
 
+    # Delete a SFTP session from the session pool.
+    #
+    # @param [ String ] id The ID of the session to delete.
+    #
+    # @return [ SFTP::Session ] The deleted session object.
+    def delete(id)
+      @sessions.delete(id) if id
+    end
+
     private
 
     # Start a new SFTP session for given planet by id.
@@ -75,7 +84,7 @@ module ISS
     # @return [ Void ]
     def cleanup_oldest
       id, = @sessions.first
-      @sessions.delete(id) if id
+      delete(id)
     end
   end
 end

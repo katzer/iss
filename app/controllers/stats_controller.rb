@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-class StatsController < Yeah::Controller
+class StatsController < ApplicationController
   # Default result set for the stats action
   STATS = [
     %w[server Instances].freeze,

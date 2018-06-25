@@ -20,38 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-class PlanetsController < ApplicationController
-  # Render a list of planets that matches the scope.
+class ApplicationController < Yeah::Controller
+  # The settings hash for this yeah app.
   #
-  # @param [ String ] scope The scope (lfv, server, etc.)
-  #
-  # @return [ Void ]
-  def index
-    render json: Planet.find_all(scope).map!(&:to_a)
-  end
-
-  # Render the data of a planet.
-  #
-  # @param [ String ] id The ID of the planet.
-  #
-  # @return [ Void ]
-  def show(id)
-    planet = Planet.find("id=#{id}")
-
-    planet ? render(json: planet.data) : render(404)
-  end
-
-  private
-
-  # The pattern to match the specified scope.
-  #
-  # @return [ String ]
-  def scope
-    case params['scope']
-    when 'lfv'                 then settings[:lfv][:planets]
-    when 'server', 'db', 'web' then "type=#{params['scope']}"
-    when nil                   then 'id:.*'
-    else raise 'Unknown scope'
-    end
+  # @return [ Hash ]
+  def settings
+    Yeah.application.settings
   end
 end
