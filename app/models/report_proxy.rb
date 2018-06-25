@@ -39,7 +39,7 @@ class ReportProxy < BasicObject
     return [] unless Dir.exist? dir
 
     Dir.entries(dir)
-       .keep_if { |f| f.end_with? '.json' }
+       .keep_if { |f| f[-5, 5] == '.json' }
        .map! { |f| Report.new(f.chomp!('.json'), @job_id) }
   end
 

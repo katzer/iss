@@ -31,7 +31,7 @@ class Job < BasicObject
     return [] unless Dir.exist? FOLDER
 
     Dir.entries(FOLDER)
-       .keep_if { |f| f.end_with? '.json' }
+       .keep_if { |f| f[-5, 5] == '.json' }
        .sort
        .map! { |f| new f.chomp!('.json') }
   end
