@@ -47,5 +47,5 @@ MRuby::Gem::Specification.new('iss') do |spec|
   spec.add_dependency 'mruby-sftp',            mgem: 'mruby-sftp'
   spec.add_dependency 'mruby-sftp-glob',       mgem: 'mruby-sftp-glob'
   spec.add_dependency 'mruby-tiny-opt-parser', mgem: 'mruby-tiny-opt-parser'
-  spec.add_dependency 'mruby-signal',          mgem: 'mruby-signal'
+  spec.add_dependency 'mruby-signal', github: 'katzer/mruby-signal'
 end
