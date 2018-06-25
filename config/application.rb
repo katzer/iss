@@ -20,13 +20,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-raise '$ORBIT_HOME not set'   unless ENV['ORBIT_HOME']
-raise '$ORBIT_HOME not a dir' unless File.directory? ENV['ORBIT_HOME']
-
-raise '$ORBIT_KEY not set'    unless ENV['ORBIT_KEY']
-raise '$ORBIT_KEY not a file' unless File.file? ENV['ORBIT_KEY']
-
 Yeah.application.configure do
+  raise '$ORBIT_HOME not set'   unless ENV['ORBIT_HOME']
+  raise '$ORBIT_HOME not a dir' unless File.directory? ENV['ORBIT_HOME']
+
+  raise '$ORBIT_KEY not set'    unless ENV['ORBIT_KEY']
+  raise '$ORBIT_KEY not a file' unless File.file? ENV['ORBIT_KEY']
+
   set :nonblock, OS.posix?
   enable :run_gc_per_request
   document_root "#{ENV['ORBIT_HOME']}/public", urls: ['/iss']
