@@ -22,4 +22,8 @@
 
 def __main__(args)
   Yeah.application.run! args[1..-1]
+rescue SignalException => e
+  warn "Received #{Signal.signame(e.signo)} signal"
+ensure
+  puts "Shutting down application at #{Time.now.localtime}"
 end
