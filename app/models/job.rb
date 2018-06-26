@@ -22,7 +22,7 @@
 
 class Job < BasicObject
   # Path where to find all jobs
-  FOLDER = File.join(ENV['ORBIT_HOME'], 'jobs').freeze
+  FOLDER = File.join(ENV['ORBIT_HOME'].to_s, 'jobs').freeze
 
   # Find of all jobs.
   #

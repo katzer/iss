@@ -27,6 +27,12 @@ Yeah.application.configure do
   raise '$ORBIT_KEY not set'    unless ENV['ORBIT_KEY']
   raise '$ORBIT_KEY not a file' unless File.file? ENV['ORBIT_KEY']
 
+  settings[:lfv] = \
+    JSON.parse(IO.read("#{ENV['ORBIT_HOME']}/config/lfv.json"))
+        .transform_keys!(&:to_sym)
+        .tap { |cfg| cfg[:planets] = [cfg[:planets]].flatten.join(' ') }
+        .tap { |cfg| cfg[:files].map! { |f| f.is_a?(Array) ? f : [f, 0] } }
+
   set :nonblock, OS.posix?
   enable :run_gc_per_request
   document_root "#{ENV['ORBIT_HOME']}/public", urls: ['/iss']

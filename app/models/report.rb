@@ -22,7 +22,7 @@
 
 class Report
   # Path where to find all the reports
-  FOLDER = File.join(ENV['ORBIT_HOME'], 'reports').freeze
+  FOLDER = File.join(ENV['ORBIT_HOME'].to_s, 'reports').freeze
 
   # Initializes a job report by id and its job id.
   #
