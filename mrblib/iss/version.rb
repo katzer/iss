@@ -21,5 +21,5 @@
 # SOFTWARE.
 
 module ISS
-  VERSION = '1.4.5-rc.2'.freeze
+  VERSION = '1.4.5'.freeze
 end

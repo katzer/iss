@@ -1,17 +1,60 @@
 ## Release Notes: _iss_
 
-### 1.4.5 (not yet released)
+### 1.4.5 (26.06.2018)
 
-- [web] Render only the visible part of the log file to improve preformance.
-- [web] Support for regex in the log file filter.
-- [web] Show AKZ for tcp_trace files in LFV module.
-- [web] Faster page loading.
-- [web] Dialog pops up to request a reload when a new version is available.
-- [iss] Map PLC identifier with tcp_trace files via tcp_config.
-- [iss] Fix 404 return code even the URL exist due to a memory leak.
-- [iss] Fix potential endless loop when client opens a socket connection but does not send anything resulting in a frozen behaivor and slow load time of the web app.
-- [iss] Fix connection closed on server side but client requested a keep-alive.
-- [iss] New -t flag to customize the recv timeout.
+#### Tool
+
+1. Great performance improvements by factor 15.
+2. API routes have been redesign without having an `/api` prefix.
+   ```
+   $ iss --routes
+   GET /embed/lfv/{planet}
+   GET /jobs
+   GET /jobs/{job_id}/reports
+   GET /jobs/{job_id}/reports/{id}/results
+   GET /planets
+   GET /planets/{id}
+   GET /planets/{id}/logs
+   GET /planets/{id}/logs/{path}
+   GET /stats
+   GET /stats/{type}/count
+   GET /stats/{type}/list
+   HEAD /ping
+   ```
+3. New `HEAD /ping` route for better monitoring and `GET /embed` to embed the app.
+4. The config settings for the log file viewer has been redesign and extended to the timestamps.
+   ```json
+   // $ORBIT_HOME/config/lfv.json
+   
+   {
+     "planets": "type=server%location:apac|p27",
+     "files": ["km/log/tcp_trace.*","legato/log/th_*[^1-9][^2-9]","km/cfg/tcp_config"],
+   
+     "timestamps": [
+       ["km/log/tcp_trace.*", 0, "Node",       0, 21, "d.m.y H:i:s.u"],
+       ["legato/log/th_*",    0, "KM receive", 0, 26, "d.m.Y H:i:s.u"]
+     ]
+   }
+   ```
+   - `planets` is a single string that will be used to invoke _fifa_.
+   - `files` is an array of path names who follow the syntax of [fnmatch(3)](http://man7.org/linux/man-pages/man3/fnmatch.3.html).
+   - `timestamps` specifies which files contains timestamps and where to find them in each line.
+5. New `--timeout` flag to adjust the read timeout of a socket.
+6. New `--size` flag to adjust the size of the connection pool.
+7. Server continues to run when SIGPIPE or SISSYS signal has been received.
+8. Log date, time and signal on graceful shut-down.
+9. Fixed various memory leaks.
+10. Reduced memory footprint.
+
+#### Web
+
+1. Advanced live-search capabilities for the log file viewer  (search, highlight, navigate and count).
+2. Adjustable refresh intervals and download sizes for log files.
+3. Filter log file entries by date range.
+4. Drop-downs display additional infos like file size, last modified timestamp and the plc identifier for tcp traces
+5. Page loads about 3 times faster.
+6. Update notifier pops-up when an update has been detected.
+7. The log file viewer loads 10 kB from the end of each file by default.
 
 ### 1.4.4 - Initial release (12.02.2018)
 
