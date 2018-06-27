@@ -28,7 +28,7 @@ MRuby::Gem::Specification.new('iss') do |spec|
   spec.version = ISS::VERSION
   spec.bins    = ['iss']
 
-  spec.mruby.cc.defines += %w[LIBSSH2_HAVE_ZLIB HAVE_UNISTD_H]
+  spec.mruby.cc.defines += %w[LIBSSH2_HAVE_ZLIB HAVE_UNISTD_H MRB_SSH_TINY]
 
   spec.rbfiles += Dir.glob("#{spec.dir}/{app,config}/**/*.rb").sort
 
