@@ -24,23 +24,23 @@ Yeah.application.opts.draw do
   opt! :help do
     <<-USAGE
 
-  #{ISS::LOGO}
+#{ISS::LOGO}
 
-  usage: iss [options...]
-  Options:
-  -e, --environment The environment to run the server with
-  -h, --host        The host to bind the local server on
-                    Defaults to: 0.0.0.0
-  -p, --port        The port number to start the local server on
-                    Defaults to: 1974
-  -r, --routes      Print out all defined routes
-  -s, --size        Max pool size for SFTP/SSH sessions
-                    Defaults to: 5
-  -t, --timeout     Receive timeout before socket will be closed
-                    Defaults to: 1 (sec)
-  -h, --help        This help text
-  -v, --version     Show version number
-  USAGE
+usage: iss [options...]
+Options:
+-e, --environment The environment to run the server with
+-h, --host        The host to bind the local server on
+                  Defaults to: 0.0.0.0
+-p, --port        The port number to start the local server on
+                  Defaults to: 1974
+-r, --routes      Print out all defined routes
+-s, --size        Max pool size for SFTP/SSH sessions
+                  Defaults to: 5
+-t, --timeout     Receive timeout before socket will be closed
+                  Defaults to: 1 (sec)
+-h, --help        This help text
+-v, --version     Show version number
+USAGE
   end
 
   opt! :version do
@@ -56,7 +56,7 @@ Yeah.application.opts.draw do
   end
 
   opt :host do |host|
-    set :host, ENV['SHELF_ENV'] == 'production' ? '0.0.0.0' : host || 'localhost'
+    set host: ENV['SHELF_ENV'] == 'production' ? '0.0.0.0' : host || 'localhost'
   end
 
   opt :port, :int, 1974 do |port|
