@@ -22,5 +22,4 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-docker-compose -f docker-compose.common.yml -f docker-compose.glibc-2.12.yml build test
-docker-compose -f docker-compose.common.yml -f docker-compose.glibc-2.12.yml run test
+MRUBY_CLI_TAG="glibc-2.12" docker-compose run test
