@@ -44,7 +44,7 @@ init:
 - gcc --version
 
 build_script:
-- rake mruby
+- rake mruby mruby:deps
 - DEL /F /Q mruby\mrbgems\mruby-compiler\bintest\*.rb
 - DEL /F /Q mruby\build\mrbgems\mruby-dir\test
 - DEL /F /Q mruby\build\mrbgems\mruby-signal\test
