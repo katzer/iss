@@ -1,0 +1,5 @@
+1494577743
+[["Num", "int"], ["Name", "string"], ["Value", "string"]]
+["localhost", "Localhost", true, ["43", "sessions", "480"]]
+["localhost", "Localhost", true, ["44", "timed_statistics", "TRUE"]]
+["otherhost", "Otherhost", false, "error message"]

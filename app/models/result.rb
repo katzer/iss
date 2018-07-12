@@ -23,33 +23,20 @@
 class Result < BasicObject
   # Initializes a job report by id and its job id.
   #
+  # @param [ String ]        job_id    The ID of the job.
+  # @param [ String ]        report_id The ID of the report.
+  # @param [ Array<String> ] row       The converted report item.
+  #
   # @return [ Report ]
-  def initialize(job_id, report_id, data)
-    @job_id    = job_id
-    @report_id = report_id
-    @data      = data
+  def initialize(job_id, report_id, row)
+    @row = [job_id, report_id, row]
+    @row.flatten!
   end
 
   # Converts the object into an array struct.
   #
   # @return [ Array ]
   def to_a
-    [@job_id, @report_id, planet_id, !@data['errored'], planet, *@data[:output]]
-  end
-
-  private
-
-  # The id of the planet.
-  #
-  # @return [ String ]
-  def planet_id
-    @data['id']
-  end
-
-  # The name of the planet.
-  #
-  # @return [ String ]
-  def planet
-    @data[:planet] || planet_id
+    @row
   end
 end

@@ -1,5 +1,0 @@
-{
-  "scriptName" : "hostname.sh",
-  "template"   : "hostname",
-  "planets"    : ["sample-planet"]
-}

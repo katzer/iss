@@ -23,6 +23,10 @@
 class Report
   # Path where to find all the reports
   FOLDER = File.join(ENV['ORBIT_HOME'].to_s, 'reports').freeze
+  # Integer column type
+  INT    = 'int'.freeze
+  # Float column type
+  FLOAT  = 'float'.freeze
 
   # Initializes a job report by id and its job id.
   #
@@ -44,92 +48,72 @@ class Report
   #
   # @return [ Hash ]
   def to_a
-    [@id, @job_id, *Array.new(2, timestamp), columns]
+    [@id, @job_id, timestamp, columns]
   end
-
-  private
 
   # The absolute path to the report file.
   #
   # @return [ String ]
   def path
-    File.join(FOLDER, @job_id, "#{@id}.json")
+    File.join(FOLDER, @job_id, "#{@id}.skirep")
   end
+
+  private
 
   # The timestamp when the report was created.
   #
   # @return [ String ]
   def timestamp
-    "#{@id.gsub('_', ':')}Z"
-  end
-
-  # The parsed report json file.
-  #
-  # @return [ Hash ]
-  def content
-    @content ||= begin
-      JSON.parse(IO.read(path))
-    rescue JSON::ParserError
-      warn "#{path} is not a valid json file."
-    end
-  end
-
-  # The planet items of the parsed report.
-  #
-  # @return [ Hash ]
-  def content_items
-    content['planets'].tap do |items|
-      ids   = items.map { |item| item['id'] }
-      names = `fifa -a=name #{ids.join(' ')}`.split("\n")
-      items.each_with_index { |item, idx| item[:planet] = names[idx] }
-    end
+    File.read(path, 10)
   end
 
   # Max. list of columns extracted from linked result set.
   #
   # @return [ Array<Hash> ]
   def columns
-    @columns ||= content['Keys'].to_s.split(',').map! do |name|
-      name.strip!
-      case name[-2, 2]
-      when '_s' then [name[0...-2], :string]
-      when '_i' then [name[0...-2], :int]
-      when '_f' then [name[0...-2], :float]
-      else           [name, :string]
-      end
+    @columns ||= File.open(path) do |f|
+      f.seek(11) && JSON.parse(f.readline)
+    rescue JSON::ParserError
+      warn "#{f.path} is not a valid skirep file."
     end
   end
 
-  # List of all report results.
+  # Convert each item in the report file into a result object.
   #
-  # @return [ Array<ReportResult> ]
+  # @return [ Array<Result> ]
   def results
-    content_items.each_with_object([]) do |item, items|
-      _, *rows = JSON.parse(item['output'])
+    res = []
 
-      with_each_converted_row(rows) do |row|
-        items << Result.new(@job_id, @id, item.merge(output: row))
+    File.open(path) do |f|
+      f.seek(11) && f.readline
+
+      f.each do |row|
+        res << Result.new(@job_id, @id, convert_cells(JSON.parse(row)))
+      rescue JSON::ParserError
+        warn "#{f.path} contains invalid json: #{row}"
       end
-    rescue JSON::ParserError
-      warn "#{path} contains invalid json: #{item}"
     end
+
+    res
   end
 
   # Convert each cell by column type.
   #
-  # @param [ Array] rows The list of rows.
+  # @param [ Array ] row The row to convert.
   #
-  # @return [ Void ]
-  def with_each_converted_row(rows)
-    rows.each do |row|
-      row.each_with_index do |val, i|
-        case columns[i][-1]
-        when :int   then row[i] = val.to_i
-        when :float then row[i] = val.to_f
-        end
-      end
+  # @return [ Array ]
+  def convert_cells(row)
+    valid, cells = row[2, 2]
 
-      yield(row)
+    return row unless valid
+
+    cells.each_with_index do |val, i|
+      case columns[i][1]
+      when INT   then cells[i] = val.to_i
+      when FLOAT then cells[i] = val.to_f
+      end
     end
+
+    row
   end
 end

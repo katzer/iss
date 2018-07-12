@@ -39,8 +39,8 @@ class ReportProxy < BasicObject
     return [] unless Dir.exist? dir
 
     Dir.entries(dir)
-       .keep_if { |f| f[-5, 5] == '.json' }
-       .map! { |f| Report.new(f.chomp!('.json'), @job_id) }
+       .keep_if { |f| f[-7, 7] == '.skirep' }
+       .map! { |f| Report.new(f.chomp!('.skirep'), @job_id) }
   end
 
   # All reports associated with the job.
@@ -49,6 +49,8 @@ class ReportProxy < BasicObject
   #
   # @return [ Report ] nil if not found.
   def find(id)
-    Report.new(id, @job_id) if File.file? "#{Report::FOLDER}/#{@job_id}/#{id}.json"
+    report = Report.new(id, @job_id)
+
+    report if File.file? report.path
   end
 end

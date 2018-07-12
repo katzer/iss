@@ -31,9 +31,9 @@ class Job < BasicObject
     return [] unless Dir.exist? FOLDER
 
     Dir.entries(FOLDER)
-       .keep_if { |f| f[-5, 5] == '.json' }
+       .keep_if { |f| f[-7, 7] == '.skijob' }
        .sort
-       .map! { |f| new f.chomp!('.json') }
+       .map! { |f| new f.chomp!('.skijob') }
   end
 
   # Find a job by id.
@@ -42,7 +42,7 @@ class Job < BasicObject
   #
   # @return [ Job ]
   def self.find(id)
-    new(id) if File.file? File.join(FOLDER, "#{id}.json")
+    new(id) if File.file? File.join(FOLDER, "#{id}.skijob")
   end
 
   # Private Initializer for a job by id.

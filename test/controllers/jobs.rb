@@ -32,15 +32,6 @@ def api_call(url)
   Yeah.application.app.call env_for(url)
 end
 
-def `(cmd)
-  case cmd
-  when 'fifa -a=name localhost otherhost' then "Localhost\nOtherhost\n"
-  else ''
-  end
-ensure
-  $? = 0
-end
-
 assert 'GET /jobs' do
   code, headers, body = api_call('/jobs')
 
@@ -74,7 +65,7 @@ assert 'GET /jobs/reports', 'unknown job' do
 end
 
 assert 'GET /jobs/reports/results' do
-  job = '/jobs/showver/reports/2017-05-12T10_29_03/results'
+  job = '/jobs/showver/reports/1494577743/results'
   code, headers, body = api_call(job)
 
   assert_equal 200, code
@@ -83,7 +74,7 @@ assert 'GET /jobs/reports/results' do
 end
 
 assert 'GET /jobs/reports/results', 'unknown job' do
-  assert_equal 404, api_call('/jobs/123/reports/2017-05-12T10_29_03/results')[0]
+  assert_equal 404, api_call('/jobs/123/reports/1494577743/results')[0]
 end
 
 assert 'GET /jobs/reports/results', 'unknown report' do
