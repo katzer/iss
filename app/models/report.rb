@@ -60,6 +60,15 @@ class Report
 
   private
 
+  # Open the report file and seek to the first result row.
+  #
+  # @param [ Proc ] yields the code block.
+  #
+  # @return [ Void ]
+  def open_skirep_file
+    File.open(path) { |f| f.seek(11) && yield(f, f.readline) }
+  end
+
   # The timestamp when the report was created.
   #
   # @return [ String ]
@@ -71,8 +80,8 @@ class Report
   #
   # @return [ Array<Hash> ]
   def columns
-    @columns ||= File.open(path) do |f|
-      f.seek(11) && JSON.parse(f.readline)
+    @columns ||= open_skirep_file do |f, cols|
+      JSON.parse(cols)
     rescue JSON::ParserError
       warn "#{f.path} is not a valid skirep file."
     end
@@ -84,9 +93,7 @@ class Report
   def results
     res = []
 
-    File.open(path) do |f|
-      f.seek(11) && f.readline
-
+    open_skirep_file do |f|
       f.each do |row|
         res << Result.new(@job_id, @id, convert_cells(JSON.parse(row)))
       rescue JSON::ParserError
