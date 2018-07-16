@@ -81,7 +81,7 @@ class Report
   # @return [ Array<Hash> ]
   def columns
     @columns ||= open_skirep_file do |f, cols|
-      JSON.parse(cols)
+      JSON.parse(cols).each { |col| col[0].upcase! }
     rescue JSON::ParserError
       warn "#{f.path} is not a valid skirep file."
     end
