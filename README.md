@@ -59,15 +59,11 @@ All static assets placed under the document root will become available. Please d
 
 Clone the repo:
     
-    $ git clone https://github.com/appPlant/iss.git && cd iss/
-
-Make the scripts executable:
-
-    $ chmod u+x scripts/*
+    $ git clone https://github.com/appplant/iss.git && cd iss/
 
 And then execute:
 
-    $ scripts/compile
+    $ rake compile
 
 To compile the sources locally for the host machine only:
 
@@ -104,7 +100,6 @@ Made with :yum: from Leipzig
 
 © 2016 [appPlant GmbH][appplant]
 
-[releases]: https://github.com/appPlant/iss/releases
-[docker]: https://docs.docker.com/engine/installation
+[releases]: https://github.com/appplant/iss/releases
 [license]: http://opensource.org/licenses/Apache-2.0
 [appplant]: www.appplant.de
