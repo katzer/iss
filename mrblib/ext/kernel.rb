@@ -32,9 +32,10 @@ module Kernel
   #
   # @return [ Array<String> ]
   def fifa(query, split = true)
-    out = `#{FIFA_PATH} #{query}`
+    cmd = "#{FIFA_PATH} --no-color #{query}"
+    out = `#{cmd}`
 
-    raise "fifa #{query} failed with exit code #{$?}" unless $? == 0
+    raise "#{cmd} failed with exit code #{$?}" unless $? == 0
 
     split ? out.split("\n") : out
   end
