@@ -27,7 +27,7 @@ end
 def `(cmd)
   if cmd.split('=').count > 3
     "41\n82\n84\n85\n"
-  elsif cmd.include? '-c'
+  elsif cmd.include? ' -c '
     "41\n"
   else
     "planet@1\nplanet@2\n"

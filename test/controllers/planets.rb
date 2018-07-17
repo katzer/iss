@@ -33,11 +33,11 @@ end
 
 def `(cmd)
   case cmd
-  when %(fifa -f=json "id:.*")
+  when %(fifa --no-color -f=json "id:.*")
     %({"id":"localhost","name":"name","url":"url","type":"server"}\n{"id":"otherhost","name":"name","url":"url","type":"db"}\n)
-  when 'fifa -f=json id=localhost'
+  when 'fifa --no-color -f=json id=localhost'
     %({"id":"localhost","name":"name","url":"url","type":"server"}\n)
-  when %(fifa -f=json "otherhost")
+  when %(fifa --no-color -f=json "otherhost")
     %({"id":"otherhost","name":"name","url":"url","type":"server"}\n)
   else
     ''
@@ -67,5 +67,5 @@ assert 'GET /planets/{id}' do
 
   assert_equal 200, code
   assert_include headers['Content-Type'], 'application/json'
-  assert_equal `fifa -f=json id=localhost`.chomp, body[0]
+  assert_equal `fifa --no-color -f=json id=localhost`.chomp, body[0]
 end
