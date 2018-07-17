@@ -46,6 +46,6 @@ module Kernel
   #
   # @return [ Void ]
   def warn(msg)
-    $stderr.puts msg
+    STDERR.puts msg
   end
 end
