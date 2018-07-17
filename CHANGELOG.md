@@ -1,5 +1,10 @@
 ## Release Notes: _iss_
 
+### 1.4.6 (not yet released)
+
+1. Compatibility with _ski_ v1.4.6-beta
+2. Ensure that _fifa_ does not include ansi colors in its output.
+
 ### 1.4.5 (26.06.2018)
 
 #### Tool
