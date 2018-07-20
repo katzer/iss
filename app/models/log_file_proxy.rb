@@ -83,6 +83,10 @@ class LogFileProxy < BasicObject
   #
   # @return [ ISS::TCPConfig ]
   def tcp_config
-    @tcp_config ||= ISS::TCPConfig.new(@sftp.read('km/cfg/tcp_config'))
+    @tcp_config ||= begin
+                      ISS::TCPConfig.new(@sftp.read('km/cfg/tcp_config'))
+                    rescue SFTP::FileError
+                      {}
+                    end
   end
 end
