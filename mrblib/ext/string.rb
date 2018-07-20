@@ -37,17 +37,4 @@ class String
     z -= 1 while a <= z and " \f\n\r\t\v\0".include?(self[z])
     (z >= 0) ? self[a..z] : ""
   end
-
-  ##
-  #  call-seq:
-  #     str.strip!   -> str or nil
-  #
-  #  Removes leading and trailing whitespace from <i>str</i>. Returns
-  #  <code>nil</code> if <i>str</i> was not altered.
-  #
-  def strip!
-    raise FrozenError, "can't modify frozen String" if frozen?
-    s = self.strip
-    (s == self) ? nil : self.replace(s)
-  end
 end

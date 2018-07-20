@@ -38,7 +38,7 @@ class LogFileProxy < BasicObject
   def find_all
     folders.each_with_object([]) do |args, files|
       files.concat(@sftp.dir.glob(*args).map! do |e|
-        LogFile.new(e, @planet_id, @sftp, find_plc_id(e.name))
+        LogFile.new(e, @planet_id, @sftp, tcp_config[e.name])
       end)
     end
   end
@@ -81,37 +81,8 @@ class LogFileProxy < BasicObject
 
   # The content of the tcp_config file on the planet.
   #
-  # @return [ Array<String> ]
+  # @return [ ISS::TCPConfig ]
   def tcp_config
-    @sftp.read('km/cfg/tcp_config').to_s.split("\n")
-  rescue
-    []
-  end
-
-  # Find the PLC identifier for the node.
-  #
-  # @param [ String ] path The file path of the tcp_trace file.
-  #
-  # @return [ String ] nil if not found.
-  def find_plc_id(path)
-    node   = path.split('/tcp_trace.')[1]&.split('.')&.first
-    plc_id = @plc_ids[node] if @plc_ids
-
-    return plc_id if plc_id || @plc_ids
-
-    @plc_ids = {}
-
-    (lines = tcp_config).each_with_index do |line, index|
-      next if line[0...3] != 'TCP' || line.include?('#')
-
-      id  = line.split[1]
-      akz = lines[index - 1][1..-1].to_s.split(';')[0]&.gsub('#', '')&.strip
-
-      @plc_ids[id] = akz unless akz.length > 8
-    end
-
-    @plc_ids[node]
-  rescue
-    nil
+    @tcp_config ||= ISS::TCPConfig.new(@sftp.read('km/cfg/tcp_config'))
   end
 end
