@@ -36,5 +36,6 @@ checks:
 
 exclude_patterns:
   - "bintest/"
+  - "test/"
   - "mrblib/ext/"
   - "build_config.*"
