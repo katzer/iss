@@ -25,20 +25,18 @@ class LogsController < ApplicationController
   #
   # @return [ Void ]
   def index(*)
-    render json: planet.logs.find_all.map!(&:to_a) if planet
-  rescue SSH::Exception, SFTP::Exception => e
-    delete_pooled_sftp_connection
-    @retried ? raise(e) : (@retried = true) && retry
+    try_twice do
+      render json: planet.logs.find_all.map!(&:to_a) if planet
+    end
   end
 
   # Render the content of a log file.
   #
   # @return [ Void ]
   def show(*)
-    render json: file.readlines(params['size'].to_i).map!(&:to_a) if file
-  rescue SSH::Exception, SFTP::Exception => e
-    delete_pooled_sftp_connection
-    @retried ? raise(e) : (@retried = true) && retry
+    try_twice do
+      render json: file.readlines(params['size'].to_i).map!(&:to_a) if file
+    end
   end
 
   private
@@ -94,5 +92,17 @@ class LogsController < ApplicationController
   # @return [ Void ]
   def delete_pooled_sftp_connection
     settings[:pool].delete(params[:id])
+  end
+
+  # Execute the code twice incase of a SSH/SFTP exeception occurs.
+  #
+  # @param [ Proc ] The code block to execute.
+  #
+  # @return [ Void ]
+  def try_twice
+    yield
+  rescue SSH::Exception, SFTP::Exception => e
+    delete_pooled_sftp_connection
+    @retried ? raise(e) : (@retried = true) && retry
   end
 end
