@@ -63,7 +63,7 @@ class LogContentProxy < BasicObject
     when 0  then @sftp.read(@file_path)
     when 1  then @sftp.read(@file_path, size)
     when -1 then @sftp.read(@file_path, -size, size)
-    end.to_s.split("\n")
+    end&.split("\n") || []
   end
 
   # The rule where to find the timestamp.
