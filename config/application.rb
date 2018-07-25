@@ -21,19 +21,52 @@
 # SOFTWARE.
 
 Yeah.application.configure do
+  ##
+  # Checks $ORBIT_HOME variable if its set and has a valid value.
+  ##
   raise '$ORBIT_HOME not set'   unless ENV['ORBIT_HOME']
   raise '$ORBIT_HOME not a dir' unless File.directory? ENV['ORBIT_HOME']
 
+  ##
+  # Checks $ORBIT_KEY variable if its set and has a valid value.
+  ##
   raise '$ORBIT_KEY not set'    unless ENV['ORBIT_KEY']
   raise '$ORBIT_KEY not a file' unless File.file? ENV['ORBIT_KEY']
 
-  settings[:lfv] = \
-    JSON.parse(IO.read("#{ENV['ORBIT_HOME']}/config/lfv.json"))
-        .transform_keys!(&:to_sym)
-        .tap { |cfg| cfg[:planets] = [cfg[:planets]].flatten.join(' ') }
-        .tap { |cfg| cfg[:files].map! { |f| f.is_a?(Array) ? f : [f, 0] } }
+  ##
+  # Loads the config settings for the log file viewer.
+  ##
+  settings[:lfv] = JSON.parse(IO.read("#{ENV['ORBIT_HOME']}/config/lfv.json"))
+                       .transform_keys!(&:to_sym)
 
+  ##
+  # Transform config settings for the log file viewer.
+  ##
+  settings[:lfv][:planets] = [settings[:lfv][:planets]].flatten.join(' ')
+  settings[:lfv][:files].map! { |f| f.is_a?(Array) ? f : [f, 0] }
+
+  ##
+  # Tells the shelf server to accept socket connections in non-blocking mode.
+  ##
   set :nonblock, OS.posix?
+
+  ##
+  # Tells the shelf server to invoke the GC after each request.
+  ##
   enable :run_gc_per_request
+
+  ##
+  # Enables support for compression in production mode.
+  ##
+  middleware['production'] << [
+    Shelf::Deflater, {
+      include: ['text/html', 'text/css', 'application/js', 'application/json'],
+      if: ->(*, body) { body.first.length >= 1400 }
+    }
+  ]
+
+  ##
+  # Tells Shelf where to find the static assets.
+  ##
   document_root "#{ENV['ORBIT_HOME']}/public", urls: ['/iss']
 end

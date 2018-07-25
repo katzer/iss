@@ -28,7 +28,8 @@ MRuby::Gem::Specification.new('iss') do |spec|
   spec.version = ISS::VERSION
   spec.bins    = ['iss']
 
-  spec.mruby.cc.defines += %w[LIBSSH2_HAVE_ZLIB HAVE_UNISTD_H MRB_SSH_TINY]
+  spec.mruby.cc.defines += %w[LIBSSH2_HAVE_ZLIB ZLIB_STATIC]
+  spec.mruby.cc.defines += %w[HAVE_UNISTD_H MRB_SSH_TINY]
 
   spec.rbfiles += Dir.glob("#{spec.dir}/{app,config}/**/*.rb").sort
 
@@ -48,4 +49,6 @@ MRuby::Gem::Specification.new('iss') do |spec|
   spec.add_dependency 'mruby-sftp-glob',       mgem: 'mruby-sftp-glob'
   spec.add_dependency 'mruby-tiny-opt-parser', mgem: 'mruby-tiny-opt-parser'
   spec.add_dependency 'mruby-signal',          mgem: 'mruby-signal'
+
+  spec.add_dependency 'mruby-shelf-deflater', github: 'katzer/mruby-shelf-deflater'
 end
