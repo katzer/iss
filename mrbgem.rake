@@ -28,26 +28,27 @@ MRuby::Gem::Specification.new('iss') do |spec|
   spec.version = ISS::VERSION
   spec.bins    = ['iss']
 
-  spec.mruby.cc.defines += %w[LIBSSH2_HAVE_ZLIB ZLIB_STATIC]
-  spec.mruby.cc.defines += %w[HAVE_UNISTD_H MRB_SSH_TINY]
+  spec.mruby.cc.defines += %w[LIBSSH2_HAVE_ZLIB ZLIB_STATIC MRB_SSH_TINY]
+  spec.mruby.cc.defines << 'HAVE_UNISTD_H' if build.toolchains.include? 'gcc'
 
   spec.rbfiles += Dir.glob("#{spec.dir}/{app,config}/**/*.rb").sort
 
-  spec.add_dependency 'mruby-print',           core: 'mruby-print'
-  spec.add_dependency 'mruby-io',              core: 'mruby-io'
-  spec.add_dependency 'mruby-logger',          mgem: 'mruby-logger'
-  spec.add_dependency 'mruby-ansi-colors',     mgem: 'mruby-ansi-colors'
-  spec.add_dependency 'mruby-env',             mgem: 'mruby-env'
-  spec.add_dependency 'mruby-dir',             mgem: 'mruby-dir'
-  spec.add_dependency 'mruby-os',              mgem: 'mruby-os'
-  spec.add_dependency 'mruby-json',            mgem: 'mruby-json'
-  spec.add_dependency 'mruby-hash-ext',        core: 'mruby-hash-ext'
-  spec.add_dependency 'mruby-array-ext',       core: 'mruby-array-ext'
-  spec.add_dependency 'mruby-object-ext',      core: 'mruby-object-ext'
-  spec.add_dependency 'mruby-yeah',            mgem: 'mruby-yeah'
-  spec.add_dependency 'mruby-sftp',            mgem: 'mruby-sftp'
-  spec.add_dependency 'mruby-sftp-glob',       mgem: 'mruby-sftp-glob'
-  spec.add_dependency 'mruby-tiny-opt-parser', mgem: 'mruby-tiny-opt-parser'
-  spec.add_dependency 'mruby-signal',          mgem: 'mruby-signal'
-  spec.add_dependency 'mruby-shelf-deflater',  mgem: 'mruby-shelf-deflater'
+  spec.add_dependency 'mruby-print',             core: 'mruby-print'
+  spec.add_dependency 'mruby-io',                core: 'mruby-io'
+  spec.add_dependency 'mruby-logger',            mgem: 'mruby-logger'
+  spec.add_dependency 'mruby-ansi-colors',       mgem: 'mruby-ansi-colors'
+  spec.add_dependency 'mruby-env',               mgem: 'mruby-env'
+  spec.add_dependency 'mruby-dir',               mgem: 'mruby-dir'
+  spec.add_dependency 'mruby-os',                mgem: 'mruby-os'
+  spec.add_dependency 'mruby-json',              mgem: 'mruby-json'
+  spec.add_dependency 'mruby-hash-ext',          core: 'mruby-hash-ext'
+  spec.add_dependency 'mruby-array-ext',         core: 'mruby-array-ext'
+  spec.add_dependency 'mruby-object-ext',        core: 'mruby-object-ext'
+  spec.add_dependency 'mruby-yeah',              mgem: 'mruby-yeah'
+  spec.add_dependency 'mruby-sftp',              mgem: 'mruby-sftp'
+  spec.add_dependency 'mruby-sftp-glob',         mgem: 'mruby-sftp-glob'
+  spec.add_dependency 'mruby-tiny-opt-parser',   mgem: 'mruby-tiny-opt-parser'
+  spec.add_dependency 'mruby-signal',            mgem: 'mruby-signal'
+  spec.add_dependency 'mruby-shelf-deflater',    mgem: 'mruby-shelf-deflater'
+  spec.add_dependency 'mruby-string-ext-latin9', mgem: 'mruby-string-ext-latin9'
 end

@@ -59,11 +59,15 @@ class LogContentProxy < BasicObject
   #
   # @return [ Array<String> ]
   def read(size)
-    case size <=> 0
-    when 0  then @sftp.read(@file_path)
-    when 1  then @sftp.read(@file_path, size)
-    when -1 then @sftp.read(@file_path, -size, size)
-    end&.split("\n") || []
+    str = case size <=> 0
+          when 0  then @sftp.read(@file_path)
+          when 1  then @sftp.read(@file_path, size)
+          when -1 then @sftp.read(@file_path, -size, size)
+          end || ''
+
+    str.from_latin9! if convert_from_latin?
+
+    str.split("\n")
   end
 
   # The rule where to find the timestamp.
@@ -72,6 +76,15 @@ class LogContentProxy < BasicObject
   def find_ts_rule
     Yeah.application.settings[:lfv][:timestamps]&.find do |rule|
       File.fnmatch? rule[0], @file_path, File::FNM_PATHNAME | rule[1]
+    end
+  end
+
+  # Test if the content of the file has to be converted from Latin to UTF.
+  #
+  # @return [ Boolean ]
+  def convert_from_latin?
+    Yeah.application.settings[:lfv][:encodings]&.any? do |pat, charset|
+      charset == :latin && File.fnmatch?(pat, @file_path, File::FNM_PATHNAME)
     end
   end
 end
