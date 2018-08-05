@@ -27,4 +27,23 @@ class ApplicationController < Yeah::Controller
   def settings
     Yeah.application.settings
   end
+
+  # HTTP Cache-Control header with max-age.
+  #
+  # @param [ Integer ] age The age in hours.
+  #
+  # @return [ Hash ] 'Cache-Control' => 'max-age=seconds'
+  def cache_control(age)
+    { 'Cache-Control' => "max-age=#{(age * 3600).round}" }
+  end
+
+  # Render the response by adding the Cache-Control tag to the headers.
+  #
+  # @param [ Integer ]             age The age in hours.
+  # @param [ Hash<Symbol,String> ] hsh The response data to render.
+  #
+  # @return [ Array ] The shelf response
+  def render_cache(age, hsh)
+    render hsh.merge!(headers: cache_control(age))
+  end
 end

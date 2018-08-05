@@ -2,8 +2,24 @@
 
 ### 1.4.6 (not yet released)
 
-1. Compatibility with _ski_ v1.4.6-beta
-2. Ensure that _fifa_ does not include ansi colors in its output.
+1. Compatibility with _ski_ v1.4.6
+2. Support for deflated transfer encoding.
+3. Convert files with LATIN-9 charset encoding to UTF-8.
+   ```json
+   // $ORBIT_HOME/config/lfv.json
+   
+   {
+      "encodings": {
+        "km/cfg/tcp_config": "latin"
+      }
+   }
+   ```
+4. Handle every request within its own process.
+5. Cache several API endpoint results on client side that wont change frequently.
+5. Ensure that _fifa_ does not include ansi colors in its output.
+6. Increase MacOSX min SDK version from 10.5 to to 10.11.
+7. Shrink size of executable by 10%.
+8. Remove 32-bit build targets.
 
 ### 1.4.5 (26.06.2018)
 

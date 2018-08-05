@@ -27,7 +27,7 @@ class PlanetsController < ApplicationController
   #
   # @return [ Void ]
   def index
-    render json: Planet.find_all(scope).map!(&:to_a)
+    render_cache 24, json: Planet.find_all(scope).map!(&:to_a)
   end
 
   # Render the data of a planet.

@@ -37,6 +37,7 @@ assert 'GET /jobs' do
 
   assert_equal 200, code
   assert_include headers['Content-Type'], 'application/json'
+  assert_not_include headers, 'Cache-Control'
   assert_equal fixture('jobs'), body[0]
 end
 
@@ -45,6 +46,7 @@ assert 'GET /jobs/reports' do
 
   assert_equal 200, code
   assert_include headers['Content-Type'], 'application/json'
+  assert_not_include headers, 'Cache-Control'
   assert_equal fixture('reports'), body[0]
 end
 

@@ -84,6 +84,7 @@ assert 'GET /planets/localhost/logs/{path}' do
 
   assert_equal 200, code
   assert_include headers['Content-Type'], 'application/json'
+  assert_not_include headers, 'Cache-Control'
 
   assert_equal @file_id,     lines.first[0]
   assert_equal 'localhost',  lines.first[1]
@@ -102,6 +103,7 @@ assert 'GET /planets/localhost/logs/{path}', '?size=int' do
 
   assert_equal 200, code
   assert_include headers['Content-Type'], 'application/json'
+  assert_not_include headers, 'Cache-Control'
 
   assert_equal IO.read(__FILE__)[0, 3].strip, JSON.parse(body[0]).first[3]
 rescue RuntimeError => e
@@ -114,6 +116,7 @@ assert 'GET /planets/localhost/logs/{path}', '?size=-int' do
 
   assert_equal 200, code
   assert_include headers['Content-Type'], 'application/json'
+  assert_not_include headers, 'Cache-Control'
 
   assert_equal IO.read(__FILE__)[-3, 3].strip, JSON.parse(body[0]).first[3]
 rescue RuntimeError => e

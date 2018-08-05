@@ -26,7 +26,7 @@ class LogsController < ApplicationController
   # @return [ Void ]
   def index(*)
     try_twice do
-      render json: planet.logs.find_all.map!(&:to_a) if planet
+      render_cache 1, json: planet.logs.find_all.map!(&:to_a) if planet
     end
   end
 
@@ -77,7 +77,7 @@ class LogsController < ApplicationController
   #
   # @return [ Boolean ]
   def valid_path?
-    settings[:lfv][:files].any? { |p| File.fnmatch?(p[0], path, p[1].to_i) }
+    settings[:lfv][:files]&.any? { |p| File.fnmatch?(p[0], path, p[1].to_i) }
   end
 
   # Test if the remote path does exist.

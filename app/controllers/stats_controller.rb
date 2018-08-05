@@ -33,9 +33,7 @@ class StatsController < ApplicationController
   #
   # @return [ Void ]
   def index
-    stats = fifa('-c type=server type=db type=web type=tool')
-
-    render(json: STATS.zip(stats).map! { |s, c = 0| s.dup << c.to_i })
+    render_cache 24, json: STATS.zip(stats).map! { |s, c = 0| s.dup << c.to_i }
   end
 
   # Render count of planets who have the specified type.
@@ -44,7 +42,7 @@ class StatsController < ApplicationController
   #
   # @return [ Void ]
   def count(type)
-    render json: fifa("-c type=#{type}")[0].to_i
+    render_cache 24, json: fifa("-c type=#{type}").first.to_i
   end
 
   # Render list of ids who have the specified type.
@@ -53,6 +51,15 @@ class StatsController < ApplicationController
   #
   # @return [ Void ]
   def list(type)
-    render json: fifa("type=#{type}")
+    render_cache 24, json: fifa("type=#{type}")
+  end
+
+  private
+
+  # Call fifa to return the count of each planet type.
+  #
+  # @return [ Array<String> ]
+  def stats
+    fifa '-c type=server type=db type=web type=tool'
   end
 end
