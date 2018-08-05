@@ -20,7 +20,5 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-signals = Signal.list
-
-Signal.trap(:PIPE) { warn 'Catched SIGPIPE signal' } if signals.include? 'PIPE'
-Signal.trap(:SYS)  { warn 'Catched SIGSYS signal' }  if signals.include? 'SYS'
+trap(:PIPE) { warn 'Catched SIGPIPE signal' } if Signal.list.include? 'PIPE'
+trap(:SYS)  { warn 'Catched SIGSYS signal' }  if Signal.list.include? 'SYS'
