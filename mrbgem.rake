@@ -47,7 +47,6 @@ MRuby::Gem::Specification.new('iss') do |spec|
   spec.add_dependency 'mruby-yeah',              mgem: 'mruby-yeah'
   spec.add_dependency 'mruby-sftp',              mgem: 'mruby-sftp'
   spec.add_dependency 'mruby-sftp-glob',         mgem: 'mruby-sftp-glob'
-  spec.add_dependency 'mruby-tiny-opt-parser',   mgem: 'mruby-tiny-opt-parser'
   spec.add_dependency 'mruby-signal',            mgem: 'mruby-signal'
   spec.add_dependency 'mruby-shelf-deflater',    mgem: 'mruby-shelf-deflater'
   spec.add_dependency 'mruby-string-ext-latin9', mgem: 'mruby-string-ext-latin9'
