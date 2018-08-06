@@ -42,7 +42,7 @@ class StatsController < ApplicationController
   #
   # @return [ Void ]
   def count(type)
-    render_cache 24, json: fifa("-c type=#{type}").first.to_i
+    render_cache 24, json: fifa("-c type=#{type}", false).to_i
   end
 
   # Render list of ids who have the specified type.
