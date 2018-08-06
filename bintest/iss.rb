@@ -42,7 +42,7 @@ end
     output, status = Open3.capture2(BINARY, flag)
 
     assert_true status.success?, 'Process did not exit cleanly'
-    assert_include output, 'usage'
+    assert_include output, 'Usage'
   end
 end
 
@@ -68,7 +68,7 @@ end
   end
 end
 
-%w[-t --timeout -s --size].each do |flag|
+%w[-t --timeout -c --cleanup].each do |flag|
   assert("usage [#{flag}]") do
     _, output, status = Open3.capture3(BINARY, flag, '0')
 

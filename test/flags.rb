@@ -51,6 +51,13 @@ assert '--size' do
   assert_equal 10, parser.parse(%w[-s 10])     && settings[:pool].size
 end
 
+assert '--cleanup' do
+  assert_kind_of Integer, parse_flags(:cleanup_interval)
+  assert_true parse_flags(:cleanup_interval) > 0
+  assert_equal 10, parse_flags(:cleanup_interval, %w[--cleanup 10])
+  assert_equal 10, parse_flags(:cleanup_interval, %w[-c 10])
+end
+
 assert '--environment' do
   assert_equal 'development', parser.parse                  && ENV['SHELF_ENV']
   assert_equal 'test', parser.parse(%w[--environment test]) && ENV['SHELF_ENV']

@@ -16,10 +16,10 @@
    ```
 4. Handle every request within its own process.
 5. Cache several API endpoint results on client side that wont change frequently.
-5. Ensure that _fifa_ does not include ansi colors in its output.
-6. Increase MacOSX min SDK version from 10.5 to to 10.11.
-7. Shrink size of executable by 10%.
-8. Remove 32-bit build targets.
+6. New `--cleanup` flag to adjust the interval to cleanup forked processes.
+7. Ensure that _fifa_ does not include ansi colors in its output.
+8. Increase MacOSX min SDK version from 10.5 to to 10.11.
+9. Remove 32-bit build targets.
 
 ### 1.4.5 (26.06.2018)
 

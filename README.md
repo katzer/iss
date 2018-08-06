@@ -2,9 +2,12 @@
 
 A web frontend and API endpoint for _Orbit_.
 
-    $ usage: iss [options...]
+    $ iss -h
     
+    Usage: iss [options...]
     Options:
+    -c, --cleanup     Interval to cleanup forked processes
+                      Defaults to: 5 (sec)
     -e, --environment The environment to run the server with
     -h, --host        The host to bind the local server on
                       Defaults to: 0.0.0.0

@@ -26,8 +26,10 @@ Yeah.application.opts.draw do
 
 #{ISS::LOGO}
 
-usage: iss [options...]
+Usage: iss [options...]
 Options:
+-c, --cleanup     Interval to cleanup forked processes
+                  Defaults to: 5 (sec)
 -e, --environment The environment to run the server with
 -h, --host        The host to bind the local server on
                   Defaults to: 0.0.0.0
@@ -73,7 +75,11 @@ USAGE
 
   opt :size, :int, 5 do |size|
     set :pool, ISS::Pool.new(size)
+  end
+
+  opt :cleanup, :int, 5 do |interval|
+    set :cleanup_interval, interval
   ensure
-    raise 'size cannot be zero' if size == 0
+    raise 'cleanup interval cannot be zero' if interval == 0
   end
 end
