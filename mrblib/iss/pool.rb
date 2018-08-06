@@ -55,7 +55,9 @@ module ISS
       cleanup_oldest if @sessions.size == @size && !@sessions.include?(id)
 
       session       = init_session(id)
-      @sessions[id] = session if session
+      @sessions[id] = session if @size > 0
+
+      session
     end
 
     # Delete a SFTP session from the session pool.
