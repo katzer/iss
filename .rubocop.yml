@@ -32,6 +32,9 @@ Style/ParallelAssignment:
 Layout/IndentHeredoc:
   Enabled: false
 
+Layout/ClosingHeredocIndentation:
+  Enabled: false
+
 Layout/RescueStandardError:
   Enabled: false
 
