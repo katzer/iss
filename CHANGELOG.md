@@ -1,6 +1,6 @@
 ## Release Notes: _iss_
 
-### 1.4.6 (not yet released)
+### 1.4.6 (16.08.2018)
 
 1. Compatibility with _ski_ v1.4.6
 2. Support for deflated transfer encoding.
