@@ -40,14 +40,14 @@ end
 
 def `(cmd)
   case cmd
-  when 'fifa --no-color -f json localhost' then %({"id":"localhost","type":"server"}\n)
-  when 'fifa --no-color -f ssh localhost'  then "root@localhost\n"
-  when 'fifa --no-color -a id localhost'   then "localhost\n"
-  when 'fifa --no-color -a id otherhost'   then "otherhost\n"
+  when 'fifa -n -f json localhost' then %({"id":"localhost","type":"server"}\n)
+  when 'fifa -n -f ssh localhost'  then "root@localhost\n"
+  when 'fifa -n -a id localhost'   then "localhost\n"
+  when 'fifa -n -a id otherhost'   then "otherhost\n"
   else ''
   end
 ensure
-  $? = cmd == 'fifa --no-color -f json otherhost' ? 1 : 0
+  $? = cmd == 'fifa -n -f json otherhost' ? 1 : 0
 end
 
 assert 'GET /planets/{id}/logs' do
