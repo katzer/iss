@@ -28,7 +28,7 @@ Yeah.application.settings[:lfv] = {
   timestamps: [[__FILE__, 0, 'Copyright', 16, 4, 'Y']]
 }
 
-Yeah.application.opts.parser.parse
+Yeah.application.opts.parser.parse([])
 
 def env_for(path, query = '')
   { 'REQUEST_METHOD' => 'GET', 'PATH_INFO' => path, 'QUERY_STRING' => query }

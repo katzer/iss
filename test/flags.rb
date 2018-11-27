@@ -46,7 +46,7 @@ assert '--timeout' do
 end
 
 assert '--size' do
-  assert_kind_of Integer, parser.parse         && settings[:pool].size
+  assert_kind_of Integer, parser.parse([])     && settings[:pool].size
   assert_equal 10, parser.parse(%w[--size 10]) && settings[:pool].size
   assert_equal 10, parser.parse(%w[-s 10])     && settings[:pool].size
 end
@@ -59,7 +59,7 @@ assert '--cleanup' do
 end
 
 assert '--environment' do
-  assert_equal 'development', parser.parse                  && ENV['SHELF_ENV']
+  assert_equal 'development', parser.parse([])              && ENV['SHELF_ENV']
   assert_equal 'test', parser.parse(%w[--environment test]) && ENV['SHELF_ENV']
   assert_equal 'test', parser.parse(%w[-e test])            && ENV['SHELF_ENV']
 end
