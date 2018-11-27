@@ -27,11 +27,11 @@ class Planet
   #
   # @return [ Planet ] nil if not found.
   def self.find(id)
-    json = fifa("-f=json #{id}", false)
+    json = fifa("-f json #{id}", false)
 
     Planet.new(JSON.parse(json)) unless json.empty?
   rescue JSON::ParserError
-    warn "fifa -f=json #{id} returned invalid json: #{json}"
+    warn "fifa -f json #{id} returned invalid json: #{json}"
   end
 
   # Scope for all planets of type server.
@@ -41,10 +41,10 @@ class Planet
   #
   # @return [ Array<Hash> ]
   def self.find_all(ids = 'id:.*')
-    fifa(%(-f=json "#{ids}")).each_with_object([]) do |json, planets|
+    fifa(%(-f json "#{ids}")).each_with_object([]) do |json, planets|
       planets << new(JSON.parse(json))
     rescue JSON::ParserError
-      warn "fifa -f=json #{ids} returned invalid json: #{json}"
+      warn "fifa -f json #{ids} returned invalid json: #{json}"
     end
   end
 
