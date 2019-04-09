@@ -1,4 +1,4 @@
-# iss [![GitHub release](https://img.shields.io/github/release/appPlant/iss.svg)](https://github.com/appPlant/iss/releases) [![Build Status](https://travis-ci.org/appPlant/iss.svg?branch=master)](https://travis-ci.org/appPlant/iss) [![Build status](https://ci.appveyor.com/api/projects/status/ihdgs8rtuexwtiv7/branch/master?svg=true)](https://ci.appveyor.com/project/katzer/iss/branch/master) [![codebeat badge](https://codebeat.co/badges/e8186575-89a2-4bb3-867f-257069891488)](https://codebeat.co/projects/github-com-appplant-iss-master)
+# iss [![GitHub release](https://img.shields.io/github/release/appPlant/iss.svg)](https://github.com/appPlant/iss/releases) [![Build Status](https://travis-ci.com/appPlant/iss.svg?branch=master)](https://travis-ci.com/appPlant/iss) [![Build status](https://ci.appveyor.com/api/projects/status/ihdgs8rtuexwtiv7/branch/master?svg=true)](https://ci.appveyor.com/project/katzer/iss/branch/master) [![codebeat badge](https://codebeat.co/badges/e8186575-89a2-4bb3-867f-257069891488)](https://codebeat.co/projects/github-com-appplant-iss-master)
 
 A web frontend and API endpoint for _Orbit_.
 
@@ -99,7 +99,7 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/apppla
 
 The code is available as open source under the terms of the [Apache 2.0 License][license].
 
-Made with :yum: from Leipzig
+Made with :yum: in Leipzig
 
 © 2016 [appPlant GmbH][appplant]
 
