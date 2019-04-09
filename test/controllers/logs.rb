@@ -52,7 +52,7 @@ end
 
 assert 'GET /planets/{id}/logs' do
   code, headers, body = api_call('/planets/localhost/logs')
-  logs                = JSON.parse(body[0])
+  logs                = JSON.parse(body[0]).sort
 
   assert_equal 200, code
   assert_include headers['Content-Type'], 'application/json'
