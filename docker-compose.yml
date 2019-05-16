@@ -30,7 +30,6 @@ compile: &defaults
     ORBIT_HOME: /home/mruby/code/bintest
     ORBIT_KEY: /root/.ssh/dev.key
     MRUBY_VERSION: ${MRUBY_VERSION}
-    SSH2_VERSION: head
   command: rake compile
 test:
   <<: *defaults
