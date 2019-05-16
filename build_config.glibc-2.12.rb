@@ -21,6 +21,8 @@
 # SOFTWARE.
 
 def gem_config(conf)
+  conf.cc.defines += %w[LIBSSH2_HAVE_ZLIB ZLIB_STATIC MRB_SSH_TINY]
+  conf.cc.defines << 'HAVE_UNISTD_H' if conf.toolchains.include? 'gcc'
   conf.gem __dir__
 end
 

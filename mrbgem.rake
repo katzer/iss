@@ -28,9 +28,6 @@ MRuby::Gem::Specification.new('iss') do |spec|
   spec.version = ISS::VERSION
   spec.bins    = ['iss']
 
-  spec.mruby.cc.defines += %w[LIBSSH2_HAVE_ZLIB ZLIB_STATIC MRB_SSH_TINY]
-  spec.mruby.cc.defines << 'HAVE_UNISTD_H' if build.toolchains.include? 'gcc'
-
   spec.rbfiles += Dir.glob("#{spec.dir}/{app,config}/**/*.rb").sort
 
   spec.add_dependency 'mruby-print',             core: 'mruby-print'
