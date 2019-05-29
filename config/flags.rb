@@ -23,9 +23,6 @@
 Yeah.application.opts.draw do
   opt! :help do
     <<-USAGE
-
-#{ISS::LOGO}
-
 Usage: iss [options...]
 Options:
 -c, --cleanup     Interval to cleanup forked processes

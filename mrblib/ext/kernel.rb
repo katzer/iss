@@ -24,16 +24,6 @@ module Kernel
   # Either relative or absolute path to fifa tool.
   FIFA_PATH = ENV.include?('ORBIT_BIN') ? "#{ENV['ORBIT_BIN']}/fifa" : 'fifa'
 
-  # Fix ansi colors for windows.
-  #
-  # @param [ String ] str The string to print.
-  #
-  # @return [ Void ]
-  def puts(str = "\n")
-    __printansistr__(str)
-    __printstr__("\n") unless str[-1] == "\n"
-  end
-
   # Invoke fifa with the specified query string.
   #
   # @param [ String ] query  The query to ask for.

@@ -33,7 +33,6 @@ MRuby::Gem::Specification.new('iss') do |spec|
   spec.add_dependency 'mruby-print',             core: 'mruby-print'
   spec.add_dependency 'mruby-io',                core: 'mruby-io'
   spec.add_dependency 'mruby-logger',            mgem: 'mruby-logger'
-  spec.add_dependency 'mruby-ansi-colors',       mgem: 'mruby-ansi-colors'
   spec.add_dependency 'mruby-env',               mgem: 'mruby-env'
   spec.add_dependency 'mruby-dir',               mgem: 'mruby-dir'
   spec.add_dependency 'mruby-os',                mgem: 'mruby-os'

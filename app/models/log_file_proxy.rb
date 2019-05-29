@@ -36,11 +36,7 @@ class LogFileProxy < BasicObject
   #
   # @return [ Array<LogFile> ]
   def find_all
-    folders.each_with_object([]) do |args, files|
-      files.concat(@sftp.dir.glob(*args).map! do |e|
-        LogFile.new(e, @planet_id, @sftp, tcp_config[e.name])
-      end)
-    end
+    folders.each_with_object([]) { |args, files| files.concat(entries(*args)) }
   end
 
   # Find the specified log file by ID.
@@ -77,6 +73,21 @@ class LogFileProxy < BasicObject
   # @return [ Array<Array<String>> ]
   def folders
     Yeah.application.settings[:lfv][:files]
+  end
+
+  # Returns an array containing all of the filenames in the given directory.
+  #
+  # @param [ String ] pattern A shell glob like pattern matcher.
+  # @param [ Int ]    flags   File.fnmatch flags (case insensitive, etc.)
+  #
+  # @return [ Array<LogFile> ] The matching files or an empty array
+  #                            in case of some SFTP errors.
+  def entries(pattern, flags)
+    @sftp.dir.glob(pattern, flags).map! do |entry|
+      LogFile.new(entry, @planet_id, @sftp, tcp_config[entry.name])
+    end
+  rescue SFTP::FileError, SFTP::DirError, SFTP::NameError, SFTP::PathError
+    []
   end
 
   # The content of the tcp_config file on the planet.
