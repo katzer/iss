@@ -77,22 +77,25 @@ end
   end
 end
 
-assert('usage [-r]') do
-  output, status = Open3.capture2(BINARY, '-r')
+%w[-r --routes].each do |flag|
+  assert("usage [#{flag}]") do
+    output, status = Open3.capture2(BINARY, flag)
 
-  assert_true status.success?, 'Process did not exit cleanly'
-  assert_include output, 'GET /'
+    assert_true status.success?, 'Process did not exit cleanly'
+    assert_include output, 'GET /'
+  end
 end
 
-assert('usage [--routes]') do
-  output, status = Open3.capture2(BINARY, '--routes')
+assert('usage [-b]') do
+  _, output, status = Open3.popen2(BINARY, '-b', '127.0.0.1')
 
-  assert_true status.success?, 'Process did not exit cleanly'
-  assert_include output, 'GET /'
+  assert_include output.gets, 'http://127.0.0.1:'
+ensure
+  Process.kill :KILL, status.pid
 end
 
-assert('usage [--host]') do
-  _, output, status = Open3.popen2(BINARY, '--host', '0.0.0.0')
+assert('usage [--bind]') do
+  _, output, status = Open3.popen2(BINARY, '--bind', '0.0.0.0')
 
   assert_include output.gets, 'http://0.0.0.0:'
 ensure

@@ -64,11 +64,11 @@ assert '--environment' do
   assert_equal 'test', parser.parse(%w[-e test])            && ENV['SHELF_ENV']
 end
 
-assert '--host' do
+assert '--bind' do
   assert_equal 'localhost', parse_flags(:host)
   assert_equal 'localhost', parse_flags(:host, %w[-e test])
-  assert_equal '127.0.0.1', parse_flags(:host, %w[--host 127.0.0.1])
+  assert_equal '127.0.0.1', parse_flags(:host, %w[--bind 127.0.0.1])
   assert_equal '0.0.0.0',   parse_flags(:host, %w[-e production])
-  assert_equal '0.0.0.0',   parse_flags(:host, %w[--host host -e production])
-  assert_equal 'host',      parse_flags(:host, %w[--host host -e development])
+  assert_equal '0.0.0.0',   parse_flags(:host, %w[--bind host -e production])
+  assert_equal 'host',      parse_flags(:host, %w[--bind host -e development])
 end

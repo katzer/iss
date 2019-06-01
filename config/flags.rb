@@ -25,11 +25,11 @@ Yeah.application.opts.draw do
     <<-USAGE
 Usage: iss [options...]
 Options:
+-b, --bind        The host to bind the local server on
+                  Defaults to: 0.0.0.0
 -c, --cleanup     Interval to cleanup forked processes
                   Defaults to: 5 (sec)
 -e, --environment The environment to run the server with
--h, --host        The host to bind the local server on
-                  Defaults to: 0.0.0.0
 -p, --port        The port number to start the local server on
                   Defaults to: 1974
 -r, --routes      Print out all defined routes
@@ -54,7 +54,7 @@ USAGE
     ENV['SHELF_ENV'] = env
   end
 
-  opt :host do |host|
+  opt :bind do |host|
     set host: ENV['SHELF_ENV'] == 'production' ? '0.0.0.0' : host || 'localhost'
   end
 
