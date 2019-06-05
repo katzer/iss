@@ -28,6 +28,7 @@ MRuby::Gem::Specification.new('iss') do |spec|
   spec.version = ISS::VERSION
   spec.bins    = ['iss']
 
+  spec.rbfiles -= Dir.glob("#{spec.dir}/mrblib/mruby/**/*.rb")
   spec.rbfiles += Dir.glob("#{spec.dir}/{app,config}/**/*.rb").sort
 
   spec.add_dependency 'mruby-print',             core: 'mruby-print'
