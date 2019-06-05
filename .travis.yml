@@ -30,7 +30,7 @@ os:
 
 env:
   global:
-  - SSH2_VERSION: head
+  - LIBSSH2_VERSION: head
 
 matrix:
   include:
