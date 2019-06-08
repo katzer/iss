@@ -47,7 +47,6 @@ matrix:
 
 before_script:
 - rake mruby mruby:deps
-- rm -rf mruby/mrbgems/mruby-socket/test
 - rm -rf mruby/build/mrbgems/mruby-process/test
 - rm -rf mruby/build/mrbgems/mruby-json/test
 
