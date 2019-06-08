@@ -45,7 +45,6 @@ init:
 
 build_script:
 - rake mruby mruby:deps
-- DEL /F /Q mruby\mrbgems\mruby-compiler\bintest\*.rb
 - DEL /F /Q mruby\build\mrbgems\mruby-dir\test
 - DEL /F /Q mruby\build\mrbgems\mruby-signal\test
 - DEL /F /Q mruby\build\mrbgems\mruby-json\test
