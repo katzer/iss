@@ -73,19 +73,19 @@ MRuby::CrossBuild.new('x86_64-alpine-linux-musl') do |conf|
   gem_config(conf)
 end
 
-MRuby::CrossBuild.new('x86_64-apple-darwin15') do |conf|
+MRuby::CrossBuild.new('x86_64-apple-darwin17') do |conf|
   toolchain :clang
 
   [conf.cc, conf.linker].each do |cc|
-    cc.command = 'x86_64-apple-darwin15-clang'
-    cc.flags  += %w[-mmacosx-version-min=10.11 -stdlib=libstdc++]
+    cc.command = 'x86_64-apple-darwin17-clang'
+    cc.flags  += %w[-mmacosx-version-min=10.13 -stdlib=libstdc++]
   end
 
-  conf.cxx.command      = 'x86_64-apple-darwin15-clang++'
-  conf.archiver.command = 'x86_64-apple-darwin15-ar'
+  conf.cxx.command      = 'x86_64-apple-darwin17-clang++'
+  conf.archiver.command = 'x86_64-apple-darwin17-ar'
 
   conf.build_target     = 'x86_64-pc-linux-gnu'
-  conf.host_target      = 'x86_64-apple-darwin15'
+  conf.host_target      = 'x86_64-apple-darwin17'
 
   gem_config(conf)
 end
@@ -95,10 +95,6 @@ MRuby::CrossBuild.new('x86_64-w64-mingw32') do |conf|
 
   [conf.cc, conf.linker].each do |cc|
     cc.command = 'x86_64-w64-mingw32-gcc'
-  end
-
-  [conf.cc, conf.cxx].each do |cc|
-    cc.defines << 'PCRE_STATIC'
   end
 
   conf.cxx.command      = 'x86_64-w64-mingw32-cpp'

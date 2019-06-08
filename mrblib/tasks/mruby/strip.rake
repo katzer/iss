@@ -28,7 +28,7 @@ namespace :mruby do
         if RbConfig::CONFIG['host_os'].include? 'darwin'
           sh "strip -u -r -arch all #{bin}"
         elsif name.include? 'darwin'
-          sh "x86_64-apple-darwin15-strip -u -r -arch all #{bin}"
+          sh "x86_64-apple-darwin17-strip -u -r -arch all #{bin}"
         else
           sh "strip --strip-unneeded #{bin}"
         end
