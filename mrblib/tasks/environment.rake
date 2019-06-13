@@ -20,7 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-desc 'environment variables'
 task :environment do
   ENV['MRUBY_VERSION'] ||= '2.0.1'
   ENV['MRUBY_ROOT']      = File.expand_path('mruby')

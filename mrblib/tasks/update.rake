@@ -20,22 +20,5 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-task 'mruby:tuneup' => 'mruby:environment' do
-  MRuby.targets.keep_if do |name, spec|
-    case "#{ARGV.join(' ')} local=#{ENV['MRUBY_CLI_LOCAL'].to_i}"
-    when /local=1/ then name == 'host'
-    when /compile/ then true
-    when /bintest/ then spec.bintest_enabled?
-    when /test/    then spec.bintest_enabled? || spec.test_enabled?
-    else                true
-    end
-  end
-
-  MRuby.targets.each do |_, spec, opts = spec.mrbc.compile_options|
-    opts << ' --remove-lv' unless spec.bintest_enabled? || spec.test_enabled?
-  end
-
-  Rake::Task['mruby:all'].prerequisites.keep_if do |p|
-    MRuby.targets.any? { |n, _| p =~ %r{mruby/bin|/#{n}/} }
-  end
-end
+desc 'update mruby and all mrbgems'
+task update: %w[update:mruby update:mgems]

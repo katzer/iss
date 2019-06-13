@@ -20,14 +20,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-namespace :test do
-  desc 'run integration tests'
-  task bintest: 'environment' do
-    if in_a_docker_container? || ENV['MRUBY_CLI_LOCAL']
-      %w[mruby:deps mruby:tuneup compile].each { |t| Rake::Task[t].invoke }
-      Dir.chdir('mruby') { MRuby.each_target { run_bintest if bintest_enabled? } }
-    else
-      docker_run 'bintest'
-    end
+desc 'run integration tests'
+task 'test:bintest' => :environment do
+  if in_a_docker_container? || ENV['MRUBY_CLI_LOCAL']
+    %w[mruby:deps mruby:tuneup compile].each { |t| Rake::Task[t].invoke }
+    Dir.chdir('mruby') { MRuby.each_target { run_bintest if bintest_enabled? } }
+  else
+    docker_run 'bintest'
   end
 end

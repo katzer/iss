@@ -20,15 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-desc 'update all git based mrbgems'
-task updategems: 'mruby:environment' do
-  MRuby.each_target do
-    gems.each do |mgem|
-      next unless File.exist?("#{mgem.dir}/.git")
-
-      Dir.chdir(mgem.dir) do
-        sh "git pull origin #{`git symbolic-ref --short HEAD`.strip}"
-      end
-    end
-  end
+desc 'fetch latest updates from github'
+task 'update:mruby': :environment do
+  Dir.chdir(ENV['MRUBY_ROOT']) do
+    sh "git pull origin #{`git symbolic-ref --short HEAD`.strip}"
+  end if File.exist? "#{ENV['MRUBY_ROOT']}/.git"
 end

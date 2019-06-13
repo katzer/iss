@@ -20,11 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-namespace :mruby do
-  desc 'load mruby tasks and mrbgem'
-  task environment: 'environment' do
-    Dir.chdir('mruby') { namespace(:mruby) { load 'Rakefile' } }
-    load 'mrbgem.rake'
-    MRuby::Gem.current.tap { |spec| spec.build ||= MRuby::Build.current }.setup
-  end
+task 'mruby:environment' => :environment do
+  Dir.chdir('mruby') { namespace(:mruby) { load 'Rakefile' } }
+  load 'mrbgem.rake'
+  MRuby::Gem.current.tap { |spec| spec.build ||= MRuby::Build.current }.setup
 end

@@ -20,7 +20,4 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-namespace :mruby do
-  desc 'Download mruby and all dependencies'
-  task deps: %w[mruby mruby:environment]
-end
+task 'mruby:deps' => %w[mruby mruby:environment]
