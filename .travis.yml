@@ -45,8 +45,13 @@ matrix:
   allow_failures:
   - env: MRUBY_VERSION=head
 
+before_install:
+- gem install mruby_utils
+
+install:
+- rake mruby:setup
+
 before_script:
-- rake mruby mruby:deps
 - rm -rf mruby/build/mrbgems/mruby-process/test
 - rm -rf mruby/build/mrbgems/mruby-json/test
 
