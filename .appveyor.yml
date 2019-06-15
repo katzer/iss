@@ -44,7 +44,7 @@ init:
 - gcc --version
 
 install:
-- gem install mruby_utils
+- gem install mruby_utils --no-document
 
 before_build:
 - rake mruby:setup
