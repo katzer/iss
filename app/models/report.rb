@@ -71,9 +71,9 @@ class Report
 
   # The timestamp when the report was created.
   #
-  # @return [ String ]
+  # @return [ Integer ]
   def timestamp
-    File.read(path, 10)
+    File.read(path, 10).to_i
   end
 
   # Max. list of columns extracted from linked result set.
