@@ -24,6 +24,13 @@ module Kernel
   # Either relative or absolute path to fifa tool.
   FIFA_PATH = ENV.include?('ORBIT_BIN') ? "#{ENV['ORBIT_BIN']}/fifa" : 'fifa'
 
+  # Yields obj and returns the result.
+  #
+  # @return [ Object ]
+  def yield_self(&block)
+    block.call(self)
+  end
+
   # Invoke fifa with the specified query string.
   #
   # @param [ String ] query  The query to ask for.
