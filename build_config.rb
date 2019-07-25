@@ -28,7 +28,7 @@ def gem_config(conf, glibc_version: '2.19', openssl: false, static: false)
   conf.configure_libssh2(openssl: openssl, tiny: true)
 
   conf.glibc_version = glibc_version
-  conf.static        = static
+  conf.static = true if static
 
   conf.gem __dir__
 end
