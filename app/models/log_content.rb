@@ -51,6 +51,6 @@ class LogContent < BasicObject
   def parse_ts(rule, fallback = nil)
     content = @args[3]
     @ts     = [nil, rule[5]]
-    @ts[0]  = content.include?(rule[2]) ? content[rule[3], rule[4]] : fallback
+    @ts[0]  = content&.include?(rule[2]) ? content[rule[3], rule[4]] : fallback
   end
 end
