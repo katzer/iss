@@ -20,40 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-image: Visual Studio 2017
+ruby '>=2.5'
 
-environment:
-  global:
-    COMPILER: C:\mingw-w64\x86_64-8.1.0-posix-seh-rt_v6-rev0\mingw64
-    TOOLCHAIN: gcc
-    MRUBY_CLI_LOCAL: 1
-    ORBIT_HOME: '%APPVEYOR_BUILD_FOLDER%\bintest'
-    ORBIT_FILE: '%APPVEYOR_BUILD_FOLDER%\bintest\config\orbit.json'
-    ORBIT_KEY: '%APPVEYOR_BUILD_FOLDER%\bintest\config\orbit.json'
-    LIBSSH2_VERSION: head
-  matrix:
-  - MRUBY_VERSION: 2.0.1
-  - MRUBY_VERSION: head
+source 'https://rubygems.org'
 
-matrix:
-  allow_failures:
-  - MRUBY_VERSION: head
-
-init:
-- SET PATH=%COMPILER%\bin;C:\Ruby26-x64\bin;%PATH%;C:\cygwin64\bin
-- gcc --version
-
-install:
-- bundle
-
-before_build:
-- rake mruby:setup
-- DEL /F /Q mruby\build\mrbgems\mruby-dir\test
-- DEL /F /Q mruby\build\mrbgems\mruby-signal\test
-- DEL /F /Q mruby\build\mrbgems\mruby-json\test
-
-build_script:
-- rake compile
-
-test_script:
-- rake test
+gem 'mruby_utils', '>=1.4.1'
