@@ -37,6 +37,6 @@ checks:
 exclude_patterns:
   - "bintest/"
   - "test/"
-  - "mrblib/ext/"
-  - "tasks/"
+  - "mrblib/string.rb"
+  - "mrblib/symbol.rb"
   - "build_config.*"
