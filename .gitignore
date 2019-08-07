@@ -1,5 +1,6 @@
-/mruby
-/releases
-/packages
-/bintest/logs
+mruby/
+releases/
+packages/
+build/
+bintest/logs/
 Gemfile.lock

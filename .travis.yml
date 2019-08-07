@@ -46,18 +46,17 @@ install:
 - rake mruby:setup
 
 before_script:
-- rm -rf mruby/build/mrbgems/mruby-process/test
-- rm -rf mruby/build/mrbgems/mruby-json/test
+- rm -rf build/mrbgems/mruby-process/test
+- rm -rf build/mrbgems/mruby-json/test
 
 script:
 - rake test
 
 before_deploy:
 - rake release
-- mruby/build/x86_64-pc-linux-gnu-glibc-2.9/bin/iss -v
-- mruby/build/x86_64-pc-linux-gnu/bin/iss -v
+- build/x86_64-pc-linux-gnu/bin/iss -v
 - sudo chmod -R 1777 releases
-- sudo chmod -R 1777 mruby/build/host/mrbgems
+- sudo chmod -R 1777 build/host/mrbgems
 - export BUILD_VERSION=`rake version`
 - echo $BUILD_VERSION
 - ls -la releases
