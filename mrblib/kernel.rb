@@ -22,7 +22,7 @@
 
 module Kernel
   # Either relative or absolute path to fifa tool.
-  FIFA_PATH = ENV.include?('ORBIT_BIN') ? "#{ENV['ORBIT_BIN']}/fifa" : 'fifa'
+  FIFA_PATH = ENV.include?('ORBIT_PATH') ? "#{ENV['ORBIT_PATH']}/fifa" : 'fifa'
 
   # Yields obj and returns the result.
   #
