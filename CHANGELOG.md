@@ -1,6 +1,39 @@
-## Release Notes: _iss_
+# Release Notes: _iss_
 
-### 1.4.7 (02.01.2019)
+The API endpoint for _Orbit_.
+
+## 1.5.0
+
+Released at: UNRELEASED
+
+1. Added support for `ECDSA` for both key exchange and host key algorithms.
+
+2. Updated `/logs` endpoint to return list in sorted order.
+
+3. Updated `/jobs` endpoint to include run count and most recent timestamp.
+
+4. Changed `/reports` endpoint to return timestamps as integers.
+
+5. Fixed `/logs/{path}` endpoint failed to load files with null lines.
+
+6. Fixed crash during shutdown when received SIGTERM or similar.
+
+7. Fixed memory leak when converting LATIN-9 encoded files.
+
+8. Renamed `--host` flag to `--bind`.
+
+9. Compiled binary for OSX build with MacOSX10.13 SDK (Darwin17).
+
+10. Upgraded to mruby 2.0.1
+
+[Full Changelog](https://github.com/appplant/iss/compare/1.4.7...HEAD)
+
+## 1.4.7
+
+Released at: 02.01.2019
+
+<details><summary>Releasenotes</summary>
+<p>
 
 1. Dropped compatibility with orbit v1.4.6 due to breaking changes in _fifa_.
 
@@ -8,7 +41,17 @@
 
 3. Upgraded to mruby 2.0.0
 
-### 1.4.6 (16.08.2018)
+</p>
+
+[Full Changelog](https://github.com/appplant/iss/compare/1.4.6...1.4.7)
+</details>
+
+## 1.4.6
+
+Released at: 16.08.2018
+
+<details><summary>Releasenotes</summary>
+<p>
 
 1. Compatibility with _ski_ v1.4.6
 
@@ -36,9 +79,17 @@
 
 9. Remove 32-bit build targets.
 
-### 1.4.5 (26.06.2018)
+</p>
 
-#### Tool
+[Full Changelog](https://github.com/appplant/iss/compare/1.4.5...1.4.6)
+</details>
+
+## 1.4.5
+
+Released at: 26.06.2018
+
+<details><summary>Releasenotes</summary>
+<p>
 
 1. Great performance improvements by factor 15.
 
@@ -90,26 +141,19 @@
 
 10. Reduced memory footprint.
 
-#### Web
+</p>
 
-1. Advanced live-search capabilities for the log file viewer  (search, highlight, navigate and count).
+[Full Changelog](https://github.com/appplant/iss/compare/1.4.5...1.4.6)
+</details>
 
-2. Adjustable refresh intervals and download sizes for log files.
+## 1.4.4
 
-3. Filter log file entries by date range.
+Released at: 12.02.2018
 
-4. Drop-downs display additional infos like file size, last modified timestamp and the plc identifier for tcp traces.
+<details><summary>Releasenotes</summary>
+<p>
 
-5. Page loads about 3 times faster.
-
-6. Update notifier pops-up when an update has been detected.
-
-7. The log file viewer loads 10 kB from the end of each file by default.
-
-
-### 1.4.4 - Initial release (12.02.2018)
-
-A web frontend and API endpoint for _Orbit_.
+Initial release
 
 ```
 $ usage: iss [options...]
@@ -146,3 +190,8 @@ $ curl localhost:1974/api/stats/web/count
 ```
 
 The tool expects to find the index.html file and related ressources under `$ORBIT_HOME/public/iss`. The file `$ORBIT_HOME/public/iss/index.html` maps to `localhost:1974/iss/index.html`.
+
+</p>
+
+[Full Changelog](https://github.com/appplant/iss/compare/e8a9c6f8e1787757c35c2708800affea78fe656d...1.4.4)
+</details>

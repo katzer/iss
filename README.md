@@ -1,6 +1,6 @@
 # iss [![GitHub release](https://img.shields.io/github/release/appPlant/iss.svg)](https://github.com/appPlant/iss/releases) [![Build Status](https://travis-ci.com/appPlant/iss.svg?branch=master)](https://travis-ci.com/appPlant/iss) [![Build status](https://ci.appveyor.com/api/projects/status/ihdgs8rtuexwtiv7/branch/master?svg=true)](https://ci.appveyor.com/project/katzer/iss/branch/master) [![codebeat badge](https://codebeat.co/badges/e8186575-89a2-4bb3-867f-257069891488)](https://codebeat.co/projects/github-com-appplant-iss-master)
 
-A web frontend and API endpoint for _Orbit_.
+The API endpoint for _Orbit_.
 
     $ iss -h
     
