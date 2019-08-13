@@ -21,9 +21,6 @@
 # SOFTWARE.
 
 module Kernel
-  # Either relative or absolute path to fifa tool.
-  FIFA_PATH = ENV.include?('ORBIT_PATH') ? "#{ENV['ORBIT_PATH']}/fifa" : 'fifa'
-
   # Yields obj and returns the result.
   #
   # @return [ Object ]
@@ -39,7 +36,8 @@ module Kernel
   #
   # @return [ Array<String> ]
   def fifa(query, split = true)
-    cmd = "#{FIFA_PATH} -n #{query}"
+    bin = ENV.include?('ORBIT_PATH') ? "#{ENV['ORBIT_PATH']}/fifa" : 'fifa'
+    cmd = "#{bin} -n #{query}"
     out = `#{cmd}`
 
     raise "#{cmd} failed with exit code #{$?}" unless $? == 0
