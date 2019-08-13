@@ -24,13 +24,13 @@ Yeah.application.configure do
   ##
   # Checks $ORBIT_HOME variable if its set and has a valid value.
   ##
-  raise '$ORBIT_HOME not set'   unless ENV['ORBIT_HOME']
+  raise '$ORBIT_HOME not set'   unless ENV.include? 'ORBIT_HOME'
   raise '$ORBIT_HOME not a dir' unless File.directory? ENV['ORBIT_HOME']
 
   ##
   # Checks $ORBIT_KEY variable if its set and has a valid value.
   ##
-  raise '$ORBIT_KEY not set'    unless ENV['ORBIT_KEY']
+  raise '$ORBIT_KEY not set'    unless ENV.include? 'ORBIT_KEY'
   raise '$ORBIT_KEY not a file' unless File.file? ENV['ORBIT_KEY']
 
   ##
