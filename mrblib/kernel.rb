@@ -36,7 +36,7 @@ module Kernel
   #
   # @return [ Array<String> ]
   def fifa(query, split = true)
-    bin = ENV.include?('ORBIT_PATH') ? "#{ENV['ORBIT_PATH']}/fifa" : 'fifa'
+    bin = ENV.include?('ORBIT_BIN') ? "#{ENV['ORBIT_BIN']}/fifa" : 'fifa'
     cmd = "#{bin} -n #{query}"
     out = `#{cmd}`
 
