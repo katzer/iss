@@ -22,7 +22,7 @@
 
 class Report
   # Path where to find all the reports
-  FOLDER = File.join(ENV['ORBIT_HOME'].to_s, 'reports').freeze
+  FOLDER = File.join(ENV['ORBIT_HOME'].to_s, 'report').freeze
   # Integer column type
   INT    = 'int'.freeze
   # Float column type

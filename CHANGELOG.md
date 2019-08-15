@@ -2,7 +2,18 @@
 
 The API endpoint for _Orbit_.
 
+## 1.5.1
+
+Released at: UNRELEASED
+
+1. Singularized folder names.
+
+[Full Changelog](https://github.com/appplant/iss/compare/1.5.0...HEAD)
+
 ## 1.5.0
+
+<details><summary>Releasenotes</summary>
+<p>
 
 Released at: 13.08.2019
 
@@ -26,7 +37,10 @@ Released at: 13.08.2019
 
 10. Upgraded to mruby 2.0.1
 
+</p>
+
 [Full Changelog](https://github.com/appplant/iss/compare/1.4.7...1.5.0)
+</details>
 
 ## 1.4.7
 
