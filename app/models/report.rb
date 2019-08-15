@@ -21,12 +21,17 @@
 # SOFTWARE.
 
 class Report
-  # Path where to find all the reports
-  FOLDER = File.join(ENV['ORBIT_HOME'].to_s, 'report').freeze
   # Integer column type
-  INT    = 'int'.freeze
+  INT   = 'int'.freeze
   # Float column type
-  FLOAT  = 'float'.freeze
+  FLOAT = 'float'.freeze
+
+  # The absolute path to $ORBIT_HOME/report.
+  #
+  # @return [ String ]
+  def self.path
+    "#{ENV['ORBIT_HOME']}/report"
+  end
 
   # Initializes a job report by id and its job id.
   #
@@ -55,7 +60,7 @@ class Report
   #
   # @return [ String ]
   def path
-    File.join(FOLDER, @job_id, "#{@id}.skirep")
+    File.join(self.class.path, @job_id, "#{@id}.skirep")
   end
 
   private

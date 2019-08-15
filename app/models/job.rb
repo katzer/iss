@@ -21,19 +21,19 @@
 # SOFTWARE.
 
 class Job < BasicObject
-  # Path where to find all jobs
-  FOLDER = File.join(ENV['ORBIT_HOME'].to_s, 'job').freeze
-
   # Find of all jobs.
   #
   # @return [ Array<Job> ]
   def self.find_all
-    return [] unless Dir.exist? FOLDER
+    dir = path
+    ext = '.skijob'
 
-    Dir.entries(FOLDER)
-       .keep_if { |f| f[-7, 7] == '.skijob' }
+    return [] unless Dir.exist?(dir)
+
+    Dir.entries(dir)
+       .keep_if { |f| f[-7, 7] == ext }
        .sort
-       .map! { |f| new f.chomp!('.skijob') }
+       .map! { |f| new f.chomp!(ext) }
   end
 
   # Find a job by id.
@@ -42,7 +42,14 @@ class Job < BasicObject
   #
   # @return [ Job ]
   def self.find(id)
-    new(id) if File.file? File.join(FOLDER, "#{id}.skijob")
+    new(id) if File.file? File.join(path, "#{id}.skijob")
+  end
+
+  # The absolute path to $ORBIT_HOME/job.
+  #
+  # @return [ String ]
+  def self.path
+    "#{ENV['ORBIT_HOME']}/job"
   end
 
   # Private Initializer for a job by id.

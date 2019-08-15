@@ -34,13 +34,14 @@ class ReportProxy < BasicObject
   #
   # @return [ Array<Report> ]
   def find_all
-    dir = File.join(Report::FOLDER, @job_id)
+    dir = File.join(Report.path, @job_id)
+    ext = '.skirep'
 
-    return [] unless Dir.exist? dir
+    return [] unless Dir.exist?(dir)
 
     Dir.entries(dir)
-       .keep_if { |f| f[-7, 7] == '.skirep' }
-       .map! { |f| Report.new(f.chomp!('.skirep'), @job_id) }
+       .keep_if { |f| f[-7, 7] == ext }
+       .map! { |f| Report.new(f.chomp!(ext), @job_id) }
   end
 
   # All reports associated with the job.

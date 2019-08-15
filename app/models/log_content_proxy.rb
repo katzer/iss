@@ -45,7 +45,10 @@ class LogContentProxy < BasicObject
     rule = find_ts_rule
     pos  = 0
 
-    lines = read(size).map! { |l| LogContent.new(@id, @planet_id, pos += 1, l) }
+    lines = read(size).map! do |line|
+      LogContent.new(@id, @planet_id, pos += 1, line)
+    end
+
     lines.inject(nil) { |ts, l| l.parse_ts(rule, ts) } if rule
 
     lines
