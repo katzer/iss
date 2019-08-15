@@ -21,5 +21,5 @@
 # SOFTWARE.
 
 Yeah.application.configure :production do
-  log_folder File.join(ENV['ORBIT_HOME'], 'logs'), 'iss.log'
+  log_folder File.join(ENV.fetch('ORBIT_HOME', '.'), 'logs'), 'iss.log'
 end
