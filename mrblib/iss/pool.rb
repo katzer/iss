@@ -23,9 +23,6 @@
 module ISS
   # Class for SFTP Session pooling
   class Pool
-    # Default configuration for every SFTP connection
-    CONFIG = { key: ENV['ORBIT_KEY'], compress: true, timeout: 5_000 }.freeze
-
     # Initialize a new session pool with given size.
     #
     # @param [ Int ] size The pool size. Set to nil for infinite.
@@ -52,6 +49,7 @@ module ISS
       session = @sessions[id]
 
       return session if session&.connected?
+
       cleanup_oldest if @sessions.size == @size && !@sessions.include?(id)
 
       session       = init_session(id)
@@ -78,7 +76,17 @@ module ISS
     # @return [ SFTP::Session ]
     def init_session(id)
       user, host = fifa("-f ssh #{id}", false).chomp.split('@')
-      SFTP.start(host, user, CONFIG.dup)
+
+      SFTP.start(host, user, ssh_config)
+    end
+
+    # Configuration for SSH connection.
+    #
+    # @return [ Hash<Symbol,Object> ]
+    def ssh_config
+      { key: ENV.fetch('ORBIT_KEY'), compress: true, timeout: 5_000 }
+    rescue KeyError
+      raise '$ORBIT_KEY not set'
     end
 
     # Close the oldest SFTP session and remote it from the queue.
@@ -86,6 +94,7 @@ module ISS
     # @return [ Void ]
     def cleanup_oldest
       id, = @sessions.first
+
       delete(id)
     end
   end
