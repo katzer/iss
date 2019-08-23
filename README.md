@@ -29,6 +29,34 @@ You'll need to add `ORBIT_HOME` and `ORBIT_KEY` first to your profile:
 
 Download the latest version from the [release page][releases] and add the executable to your `PATH`.
 
+## Configuration
+
+The tool expects to find the __lfv.json__ file at `$ORBIT_HOME/config/lfv.json`.
+
+```json
+{
+  "planets": "type=server%location:apac|p27",
+
+  "files": [
+    "log/tcp_trace.*",
+    "log/th_*[^1-9][^2-9]"
+  ],
+
+  "encodings": {
+    "log/th_*": "latin"
+  },
+
+  "timestamps": [
+    ["log/tcp_trace.*", 0, "Node",       0, 21, "d.m.y H:i:s.u"],
+    ["log/th_*",        0, "KM receive", 0, 26, "d.m.Y H:i:s.u"]
+  ]
+}
+```
+
+To reload the config at runtime:
+
+    $ kill -s USR1 pid
+
 ## API
 
 All endpoints return a JSON encoded result set.
@@ -52,9 +80,9 @@ For example to get the total number of planets with type of _web_:
 
 ## Web App
 
-The tool expects to find the index.html file and related ressources under `$ORBIT_HOME/public/iss`. The file `$ORBIT_HOME/public/iss/index.html` maps to `localhost:1974/iss/index.html`.
+The tool expects to find the __index.html__ file and related ressources under `$ORBIT_HOME/public/iss`. The file `$ORBIT_HOME/public/iss/index.html` maps to `localhost:1974/iss/index.html`.
 
-All static assets placed under the document root will become available. Please don't put sensitive data there!
+All static assets placed under the document root will become available. Don't put sensitive data there!
 
 ## Development
 
