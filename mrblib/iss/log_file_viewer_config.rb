@@ -67,7 +67,7 @@ module ISS
     def parse
       planets, files, encodings =
         JSON.parse(IO.read("#{ENV['ORBIT_HOME']}/#{@path}"))
-            .fetch_values('planets', 'files', 'encodings')
+            .values_at('planets', 'files', 'encodings')
 
       {
         planets: [planets].flatten.join(' '),
