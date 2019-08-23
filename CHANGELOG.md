@@ -8,6 +8,8 @@ Released at: UNRELEASED
 
 1. Singularized folder names.
 
+2. Hot reload of lfv.json when received `SIGUSR1`.
+
 [Full Changelog](https://github.com/appplant/iss/compare/1.5.0...HEAD)
 
 ## 1.5.0

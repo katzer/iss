@@ -52,6 +52,13 @@ module ISS
       @cfg[key]
     end
 
+    # Reload the config file.
+    #
+    # @return [ Void ]
+    def reload
+      @cfg.replace(parse)
+    end
+
     private
 
     # Parse the config file.
