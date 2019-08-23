@@ -36,15 +36,7 @@ Yeah.application.configure do
   ##
   # Loads the config settings for the log file viewer.
   ##
-  settings[:lfv] = JSON.parse(IO.read("#{ENV['ORBIT_HOME']}/config/lfv.json"))
-                       .transform_keys!(&:to_sym)
-
-  ##
-  # Transform config settings for the log file viewer.
-  ##
-  settings[:lfv][:planets] = [settings[:lfv][:planets]].flatten.join(' ')
-  settings[:lfv][:files]&.map! { |f| f.is_a?(Array) ? f : [f, 0] }
-  settings[:lfv][:encodings]&.transform_values!(&:to_sym)
+  settings[:lfv] = ISS::LogFileViewerConfig.parse
 
   ##
   # Tells the shelf server to accept socket connections in non-blocking mode.
