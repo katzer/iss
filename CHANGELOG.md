@@ -14,10 +14,10 @@ Released at: UNRELEASED
 
 ## 1.5.0
 
+Released at: 13.08.2019
+
 <details><summary>Releasenotes</summary>
 <p>
-
-Released at: 13.08.2019
 
 1. Added support for `ECDSA` for both key exchange and host key algorithms.
 
