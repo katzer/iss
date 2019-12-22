@@ -48,9 +48,8 @@ install:
 
 before_build:
 - rake mruby:setup
-- DEL /F /Q build\mrbgems\mruby-dir\test
-- DEL /F /Q build\mrbgems\mruby-signal\test
-- DEL /F /Q build\mrbgems\mruby-json\test
+- DEL /F /Q build\repos\host\mruby-dir\test
+- DEL /F /Q build\repos\host\mruby-signal\test
 
 build_script:
 - rake compile

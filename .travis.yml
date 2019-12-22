@@ -43,11 +43,6 @@ before_install:
 
 install:
 - bundle
-- rake mruby:setup
-
-before_script:
-- rm -rf build/mrbgems/mruby-process/test
-- rm -rf build/mrbgems/mruby-json/test
 
 script:
 - rake test
