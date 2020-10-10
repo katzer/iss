@@ -12,7 +12,7 @@ Released at: 18.03.2020
 
 3. Fixed potential memory leaks.
 
-4. Compiled binary for OSX build with MacOSX10.15 SDK
+4. Compiled binary for OSX build with MacOSX10.15 SDK.
 
 5. Upgraded to mruby 2.1.0
 
