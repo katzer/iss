@@ -27,9 +27,7 @@ MRuby::Lockfile.disable
 def gem_config(conf, glibc_version: '2.19')
   conf.enable_optimizations
 
-  conf.configure_libssh2(
-    source: 'katzer/libssh2#feature/mbedtls-ecdsa-support', tiny: true
-  )
+  conf.configure_libssh2 tiny: true
 
   conf.glibc_version = glibc_version
 
