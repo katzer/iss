@@ -25,7 +25,7 @@ def env_for(path, query = '')
 end
 
 def `(cmd)
-  if cmd.split('=').count > 3
+  if cmd.split('=').size > 3
     "41\n82\n84\n85\n"
   elsif cmd.include? ' -c '
     "41\n"

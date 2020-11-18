@@ -78,7 +78,7 @@ class Job < BasicObject
   # @return [ Array ]
   def to_a
     reports.find_all.yield_self do |items|
-      [@id, @id, items.count, items.map!(&:timestamp).max]
+      [@id, @id, items.size, items.map!(&:timestamp).max]
     end
   end
 end

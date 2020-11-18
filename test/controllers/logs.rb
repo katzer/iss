@@ -92,7 +92,7 @@ assert 'GET /planets/localhost/logs/{path}' do
   assert_equal readme.first, lines.first[3]
   assert_equal %w[2016 Y],   lines[2][4]
   assert_equal lines[3][4],  lines[2][4]
-  assert_equal readme.count, lines.count
+  assert_equal readme.size,  lines.size
 rescue RuntimeError => e
   ENV['OS'] == 'Windows_NT' ? skip : raise(e)
 end
