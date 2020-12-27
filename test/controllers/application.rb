@@ -45,7 +45,7 @@ assert 'GET /embed/lfv/p07-int' do
   code, headers, = @app.call env_for('/embed/lfv/p07-int')
 
   assert_equal 303, code
-  assert_equal '/iss/index.html#!lfv/p07-int', headers['Location']
+  assert_equal '/iss/index.html#lfv/p07-int', headers['Location']
 end
 
 assert 'GET /iss/index.html' do

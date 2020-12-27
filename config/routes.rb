@@ -28,7 +28,7 @@ Yeah.application.routes.draw do
   head('/ping') { render 200 }
 
   get '/embed/lfv/{planet}' do |id|
-    render redirect: "/iss/index.html#!lfv/#{id}"
+    render redirect: "/iss/index.html#lfv/#{id}"
   end
 
   get '/stats',                              to: 'stats'
@@ -39,9 +39,9 @@ Yeah.application.routes.draw do
   get '/jobs/{job_id}/reports',              to: 'jobs#reports'
   get '/jobs/{job_id}/reports/{id}/results', to: 'jobs#results'
 
-  get '/planets',      to: 'planets'
-  get '/planets/{id}', to: 'planets#show'
+  get '/planets',                            to: 'planets'
+  get '/planets/{id}',                       to: 'planets#show'
 
-  get '/planets/{id}/logs',        to: 'logs'
-  get '/planets/{id}/logs/{path}', to: 'logs#show'
+  get '/planets/{id}/logs',                  to: 'logs'
+  get '/planets/{id}/logs/{path}',           to: 'logs#show'
 end

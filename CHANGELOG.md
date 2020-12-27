@@ -2,9 +2,18 @@
 
 The API endpoint for _Orbit_.
 
+## 1.5.2
+
+Released at:
+
+1. Upgraded to mruby 2.1.2
+
 ## 1.5.1
 
 Released at: 18.03.2020
+
+<details><summary>Releasenotes</summary>
+<p>
 
 1. Singularized folder names.
 
@@ -12,11 +21,12 @@ Released at: 18.03.2020
 
 3. Fixed potential memory leaks.
 
-4. Compiled binary for OSX build with MacOSX10.15 SDK.
+4. Compiled binary for OSX build with MacOS 10.15 SDK.
 
 5. Upgraded to mruby 2.1.0
 
 [Full Changelog](https://github.com/appplant/iss/compare/1.5.0...1.5.1)
+</details>
 
 ## 1.5.0
 
