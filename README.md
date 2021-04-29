@@ -1,4 +1,4 @@
-# iss - The API endpoint for _Orbit_ <br> [![GitHub release](https://img.shields.io/github/release/appPlant/iss.svg)](https://github.com/appPlant/iss/releases) [![Build Status](https://travis-ci.com/appPlant/iss.svg?branch=master)](https://travis-ci.com/appPlant/iss) [![Build status](https://ci.appveyor.com/api/projects/status/ihdgs8rtuexwtiv7/branch/master?svg=true)](https://ci.appveyor.com/project/katzer/iss/branch/master) [![Maintainability](https://api.codeclimate.com/v1/badges/5b6eefc8260ef6d6dd0f/maintainability)](https://codeclimate.com/github/appPlant/iss/maintainability)
+# iss - The API endpoint for _Orbit_ <br> [![GitHub release](https://img.shields.io/github/release/katzer/iss.svg)](https://github.com/katzer/iss/releases) [![Build Status](https://travis-ci.com/katzer/iss.svg?branch=master)](https://travis-ci.com/katzer/iss) [![Build status](https://ci.appveyor.com/api/projects/status/ihdgs8rtuexwtiv7/branch/master?svg=true)](https://ci.appveyor.com/project/katzer/iss/branch/master) [![Maintainability](https://api.codeclimate.com/v1/badges/5b6eefc8260ef6d6dd0f/maintainability)](https://codeclimate.com/github/katzer/iss/maintainability)
 
     $ iss -h
     
@@ -88,7 +88,7 @@ All static assets placed under the document root will become available. Don't pu
 
 Clone the repo:
     
-    $ git clone https://github.com/appplant/iss.git && cd iss/
+    $ git clone https://github.com/katzer/iss.git && cd iss/
 
 Install the dependencies:
 
@@ -117,7 +117,7 @@ For the complete list of build tasks:
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/appplant/iss.
+Bug reports and pull requests are welcome on GitHub at https://github.com/katzer/iss.
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
@@ -133,6 +133,6 @@ Made with :heart: in Leipzig
 
 © 2016 [appPlant GmbH][appplant]
 
-[releases]: https://github.com/appplant/iss/releases
+[releases]: https://github.com/katzer/iss/releases
 [license]: http://opensource.org/licenses/Apache-2.0
 [appplant]: www.appplant.de

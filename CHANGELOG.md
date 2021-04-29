@@ -25,7 +25,7 @@ Released at: 18.03.2020
 
 5. Upgraded to mruby 2.1.0
 
-[Full Changelog](https://github.com/appplant/iss/compare/1.5.0...1.5.1)
+[Full Changelog](https://github.com/katzer/iss/compare/1.5.0...1.5.1)
 </details>
 
 ## 1.5.0
@@ -57,7 +57,7 @@ Released at: 13.08.2019
 
 </p>
 
-[Full Changelog](https://github.com/appplant/iss/compare/1.4.7...1.5.0)
+[Full Changelog](https://github.com/katzer/iss/compare/1.4.7...1.5.0)
 </details>
 
 ## 1.4.7
@@ -75,7 +75,7 @@ Released at: 02.01.2019
 
 </p>
 
-[Full Changelog](https://github.com/appplant/iss/compare/1.4.6...1.4.7)
+[Full Changelog](https://github.com/katzer/iss/compare/1.4.6...1.4.7)
 </details>
 
 ## 1.4.6
@@ -113,7 +113,7 @@ Released at: 16.08.2018
 
 </p>
 
-[Full Changelog](https://github.com/appplant/iss/compare/1.4.5...1.4.6)
+[Full Changelog](https://github.com/katzer/iss/compare/1.4.5...1.4.6)
 </details>
 
 ## 1.4.5
@@ -175,7 +175,7 @@ Released at: 26.06.2018
 
 </p>
 
-[Full Changelog](https://github.com/appplant/iss/compare/1.4.5...1.4.6)
+[Full Changelog](https://github.com/katzer/iss/compare/1.4.5...1.4.6)
 </details>
 
 ## 1.4.4
@@ -225,5 +225,5 @@ The tool expects to find the index.html file and related ressources under `$ORBI
 
 </p>
 
-[Full Changelog](https://github.com/appplant/iss/compare/e8a9c6f8e1787757c35c2708800affea78fe656d...1.4.4)
+[Full Changelog](https://github.com/katzer/iss/compare/e8a9c6f8e1787757c35c2708800affea78fe656d...1.4.4)
 </details>
