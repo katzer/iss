@@ -22,7 +22,7 @@
 
 module ISS
   # Reads the lfv.json config file
-  class LogFileViewerConfig < BasicObject
+  class LogFileViewerConfig
     # Parse the lfv.json config file.
     #
     # @param [ String ] path The path to the config file.

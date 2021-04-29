@@ -6,7 +6,7 @@ The API endpoint for _Orbit_.
 
 Released at:
 
-1. Upgraded to mruby 2.1.2
+1. Upgraded to mruby 3.0.0
 
 ## 1.5.1
 

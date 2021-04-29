@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-class LogContentProxy < BasicObject
+class LogContentProxy
   # Proxy handles the retrival of log files from the planet.
   #
   # @param [ String ]       file_path The path of the file.

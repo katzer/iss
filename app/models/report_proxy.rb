@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-class ReportProxy < BasicObject
+class ReportProxy
   # Proxy between a job and its reports.
   #
   # @param [ String ] job_id The ID of the job.
