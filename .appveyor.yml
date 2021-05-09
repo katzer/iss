@@ -29,7 +29,6 @@ environment:
     MRUBY_CLI_LOCAL: 1
     ORBIT_HOME: '%APPVEYOR_BUILD_FOLDER%\bintest'
     ORBIT_FILE: '%APPVEYOR_BUILD_FOLDER%\bintest\config\orbit.json'
-    ORBIT_KEY: '%APPVEYOR_BUILD_FOLDER%\bintest\config\orbit.json'
     LIBSSH2_VERSION: head
   matrix:
   - MRUBY_VERSION: 3.0.0

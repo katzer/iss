@@ -23,6 +23,8 @@
 module ISS
   # Class for SFTP Session pooling
   class Pool
+    # Used for every SSH connection
+    SSH_CONFIIG = { use_agent: true, compress: true, timeout: 5_000 }.freeze
     # Initialize a new session pool with given size.
     #
     # @param [ Int ] size The pool size. Set to nil for infinite.
@@ -77,16 +79,7 @@ module ISS
     def init_session(id)
       user, host = fifa("-f ssh #{id}", false).chomp.split('@')
 
-      SFTP.start(host, user, ssh_config)
-    end
-
-    # Configuration for SSH connection.
-    #
-    # @return [ Hash<Symbol,Object> ]
-    def ssh_config
-      { key: ENV.fetch('ORBIT_KEY'), compress: true, timeout: 5_000 }
-    rescue KeyError
-      raise '$ORBIT_KEY not set'
+      SFTP.start(host, user, SSH_CONFIIG)
     end
 
     # Close the oldest SFTP session and remote it from the queue.

@@ -21,9 +21,13 @@
 
 ## Prerequisites
 
-You'll need to add `ORBIT_HOME` and `ORBIT_KEY` first to your profile:
+You'll need to add `ORBIT_HOME` and `ORBIT_BIN` first to your profile:
 
     $ export ORBIT_HOME=/path/to/orbit
+
+Then setup the SSH agent for passwordless authentication:
+
+    $ ssh-add /path/to/key
 
 ## Installation
 

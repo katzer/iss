@@ -6,7 +6,9 @@ The API endpoint for _Orbit_.
 
 Released at:
 
-1. Upgraded to mruby 3.0.0
+1. Use SSH Agent instead of `$ORBIT_KEY` for authentication.
+
+2. Upgraded to mruby 3.0.0
 
 ## 1.5.1
 

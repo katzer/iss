@@ -28,12 +28,6 @@ Yeah.application.configure do
   raise '$ORBIT_HOME not a dir' unless File.directory? ENV['ORBIT_HOME']
 
   ##
-  # Checks $ORBIT_KEY variable if its set and has a valid value.
-  ##
-  raise '$ORBIT_KEY not set'    unless ENV.include? 'ORBIT_KEY'
-  raise '$ORBIT_KEY not a file' unless File.file? ENV['ORBIT_KEY']
-
-  ##
   # Loads the config settings for the log file viewer.
   ##
   settings[:lfv] = ISS::LogFileViewerConfig.parse
