@@ -8,7 +8,11 @@ Released at:
 
 1. Use SSH Agent instead of `$ORBIT_KEY` for authentication.
 
-2. Upgraded to mruby 3.0.0
+2. New setting to specify server-side content filters.
+
+3. Fix timestamps setting was ignored.
+
+4. Upgraded to mruby 3.0.0
 
 ## 1.5.1
 
