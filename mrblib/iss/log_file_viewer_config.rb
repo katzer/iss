@@ -65,14 +65,16 @@ module ISS
     #
     # @return [ Hash<Symbol,Object> ]
     def parse
-      planets, files, encodings =
+      planets, files, encodings, timestamps, filters =
         JSON.parse(IO.read("#{ENV['ORBIT_HOME']}/#{@path}"))
-            .values_at('planets', 'files', 'encodings')
+            .values_at('planets', 'files', 'encodings', 'timestamps', 'filters')
 
       {
         planets: [planets].flatten.join(' '),
         files: files&.map! { |f| f.is_a?(Array) ? f : [f, 0] },
-        encodings: encodings&.transform_values!(&:to_sym)
+        encodings: encodings&.transform_values!(&:to_sym),
+        timestamps: timestamps,
+        filters: filters
       }
     end
   end
