@@ -83,7 +83,7 @@ class Planet
   #
   # @return [ SFTP::Session ]
   def sftp
-    Yeah.application.settings[:pool][id]
+    settings[:pool][id]
   end
 
   # Proxy instance of the LFV module.

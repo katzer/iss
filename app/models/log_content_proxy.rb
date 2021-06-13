@@ -77,7 +77,7 @@ class LogContentProxy
   #
   # @return [ Array ] nil if there's no rule.
   def find_ts_rule
-    Yeah.application.settings[:lfv][:timestamps]&.find do |rule|
+    settings[:lfv][:timestamps]&.find do |rule|
       File.fnmatch? rule[0], @file_path, File::FNM_PATHNAME | rule[1]
     end
   end
@@ -86,7 +86,7 @@ class LogContentProxy
   #
   # @return [ Boolean ]
   def convert_from_latin?
-    Yeah.application.settings[:lfv][:encodings]&.any? do |pat, charset|
+    settings[:lfv][:encodings]&.any? do |pat, charset|
       charset == :latin && File.fnmatch?(pat, @file_path, File::FNM_PATHNAME)
     end
   end

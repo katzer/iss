@@ -21,13 +21,6 @@
 # SOFTWARE.
 
 class ApplicationController < Yeah::Controller
-  # The settings hash for this yeah app.
-  #
-  # @return [ Hash ]
-  def settings
-    Yeah.application.settings
-  end
-
   # HTTP Cache-Control header with max-age.
   #
   # @param [ Integer ] age The age in hours.

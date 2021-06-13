@@ -72,7 +72,7 @@ class LogFileProxy
   #
   # @return [ Array<Array<String>> ]
   def folders
-    Yeah.application.settings[:lfv][:files]
+    settings[:lfv][:files]
   end
 
   # Returns an array containing all of the filenames in the given directory.

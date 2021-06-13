@@ -28,6 +28,13 @@ module Kernel
     block.call(self)
   end
 
+  # The settings hash for this yeah app.
+  #
+  # @return [ Hash ]
+  def settings
+    Yeah.application.settings
+  end
+
   # Invoke fifa with the specified query string.
   #
   # @param [ String ] query  The query to ask for.

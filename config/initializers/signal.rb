@@ -23,4 +23,4 @@
 trap(:PIPE) { warn 'Catched SIGPIPE signal' } if Signal.list.include? 'PIPE'
 trap(:SYS)  { warn 'Catched SIGSYS signal' }  if Signal.list.include? 'SYS'
 
-trap(:USR1) { Yeah.application.settings[:lfv]&.reload } if Signal.list.include? 'USR1'
+trap(:USR1) { settings[:lfv]&.reload } if Signal.list.include? 'USR1'
