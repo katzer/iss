@@ -53,6 +53,10 @@ The tool expects to find the __lfv.json__ file at `$ORBIT_HOME/config/lfv.json`.
   "timestamps": [
     ["log/tcp_trace.*", 0, "Node",       0, 21, "d.m.y H:i:s.u"],
     ["log/th_*",        0, "KM receive", 0, 26, "d.m.Y H:i:s.u"]
+  ],
+
+  "filters": [
+    ["log/tcp_trace.*", 0, "TRACE", "INFO"]
   ]
 }
 ```

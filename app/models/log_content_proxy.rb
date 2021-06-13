@@ -42,16 +42,14 @@ class LogContentProxy
   #
   # @return [ Array<Hash> ]
   def readlines(size = nil)
-    rule = find_ts_rule
-    pos  = 0
+    lines = filter_lines(read(size))
+    pos   = 0
 
-    lines = read(size).map! do |line|
+    lines.map! do |line|
       LogContent.new(@id, @planet_id, pos += 1, line)
     end
 
-    lines.inject(nil) { |ts, l| l.parse_ts(rule, ts) } if rule
-
-    lines
+    parse_timestamps(lines)
   end
 
   private
@@ -73,11 +71,66 @@ class LogContentProxy
     str.split("\n")
   end
 
+  # Filter out lines by filter rules.
+  #
+  # @param [ Array<String> ] lines Lines to filter.
+  #
+  # @return [ Array<String> ]
+  def filter_lines(lines)
+    rule = find_filter_rule
+
+    return lines unless rule
+
+    _, _, select, *filters = rule
+
+    if select
+      lines.select! { |line| line_includes_filter?(line, filters) }
+    else
+      lines.reject! { |line| line_includes_filter?(line, filters) }
+    end
+
+    lines
+  end
+
+  # Test if line includes one of the filter.
+  #
+  # @param [ String ] line String to test.
+  # @param [ Array<String> ] filters List of filters to test.
+  #
+  # @return [ Boolean ]
+  def line_includes_filter?(line, filters)
+    line && filters.any? { |filter| line.include? filter }
+  end
+
+  # Parse timestamp of each line.
+  #
+  # @param [ Array<LogContent> ] lines Lines to parse.
+  #
+  # @return [ Array<LogContent> ]
+  def parse_timestamps(lines)
+    rule = find_ts_rule
+
+    return lines unless rule
+
+    lines.inject(nil) { |ts, l| l.parse_ts(rule, ts) }
+
+    lines
+  end
+
   # The rule where to find the timestamp.
   #
   # @return [ Array ] nil if there's no rule.
   def find_ts_rule
     settings[:lfv][:timestamps]&.find do |rule|
+      File.fnmatch? rule[0], @file_path, File::FNM_PATHNAME | rule[1]
+    end
+  end
+
+  # The matching filter rule.
+  #
+  # @return [ Array ] List of filters.
+  def find_filter_rule
+    settings[:lfv][:filters]&.find do |rule|
       File.fnmatch? rule[0], @file_path, File::FNM_PATHNAME | rule[1]
     end
   end
