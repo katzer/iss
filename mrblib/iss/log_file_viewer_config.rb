@@ -74,19 +74,16 @@ module ISS
     #
     # @return [ Hash<Symbol,Object> ]
     def parse
-      planets, files, encodings, timestamps, filters, cache_controls =
-        JSON.parse(IO.read("#{ENV['ORBIT_HOME']}/#{@path}"))
-            .values_at('planets', 'files', 'encodings',
-                       'timestamps', 'filters', 'cache-controls')
+      cfg = JSON
+      .parse(IO.read("#{ENV['ORBIT_HOME']}/#{@path}"))
+      .transform_keys!(&:to_sym)
 
-      {
-        planets: [planets].flatten.join(' '),
-        files: files&.map! { |f| f.is_a?(Array) ? f : [f, 0] },
-        encodings: encodings&.transform_values!(&:to_sym),
-        timestamps: timestamps,
-        filters: filters,
-        'cache-controls': cache_controls&.transform_keys!(&:to_sym)
-      }
+      cfg[:planets] = [cfg[:planets]].flatten.join(' ')
+      cfg[:files]&.map! { |f| f.is_a?(Array) ? f : [f, 0] }
+      cfg[:encodings]&.transform_values!(&:to_sym)
+      cfg[:'cache-controls']&.transform_keys!(&:to_sym)
+
+      cfg
     end
   end
 end
