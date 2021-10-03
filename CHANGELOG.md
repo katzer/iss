@@ -12,9 +12,11 @@ Released at:
 
 3. New _cache-controls_ setting to customize header value.
 
-4. Fix _timestamps_ setting was ignored.
+4. New `/configs` endpoint to request client settings.
 
-5. Upgraded to mruby 3.0.0
+5. Fix _timestamps_ setting was ignored.
+
+6. Upgraded to mruby 3.0.0
 
 ## 1.5.1
 

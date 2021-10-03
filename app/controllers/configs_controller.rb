@@ -20,30 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-Yeah.application.routes.draw do
-  root '/iss/index.html'
-
-  redirect '/index.html' => '/iss/index.html'
-
-  head('/ping') { render 200 }
-
-  get '/embed/lfv/{planet}' do |id|
-    render redirect: "/iss/index.html#lfv/#{id}"
+class ConfigsController < ApplicationController
+  # Render client settings.
+  #
+  # @return [ Void ]
+  def index
+    render json: settings.dig(:lfv, :web)&.dup
   end
-
-  get '/configs',                            to: 'configs'
-
-  get '/stats',                              to: 'stats'
-  get '/stats/{type}/count',                 to: 'stats#count'
-  get '/stats/{type}/list',                  to: 'stats#list'
-
-  get '/jobs',                               to: 'jobs#jobs'
-  get '/jobs/{job_id}/reports',              to: 'jobs#reports'
-  get '/jobs/{job_id}/reports/{id}/results', to: 'jobs#results'
-
-  get '/planets',                            to: 'planets'
-  get '/planets/{id}',                       to: 'planets#show'
-
-  get '/planets/{id}/logs',                  to: 'logs'
-  get '/planets/{id}/logs/{path}',           to: 'logs#show'
 end

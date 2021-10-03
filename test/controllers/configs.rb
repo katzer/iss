@@ -20,30 +20,22 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-Yeah.application.routes.draw do
-  root '/iss/index.html'
+Yeah.application.settings[:lfv] = {
+  web: { 'key' => 'value' }
+}
 
-  redirect '/index.html' => '/iss/index.html'
+def env_for(path, query = '')
+  { 'REQUEST_METHOD' => 'GET', 'PATH_INFO' => path, 'QUERY_STRING' => query }
+end
 
-  head('/ping') { render 200 }
+def api_call(url, query = '')
+  Yeah.application.app.call env_for(url, query)
+end
 
-  get '/embed/lfv/{planet}' do |id|
-    render redirect: "/iss/index.html#lfv/#{id}"
-  end
+assert 'GET /configs' do
+  code, headers, body = api_call('/configs')
 
-  get '/configs',                            to: 'configs'
-
-  get '/stats',                              to: 'stats'
-  get '/stats/{type}/count',                 to: 'stats#count'
-  get '/stats/{type}/list',                  to: 'stats#list'
-
-  get '/jobs',                               to: 'jobs#jobs'
-  get '/jobs/{job_id}/reports',              to: 'jobs#reports'
-  get '/jobs/{job_id}/reports/{id}/results', to: 'jobs#results'
-
-  get '/planets',                            to: 'planets'
-  get '/planets/{id}',                       to: 'planets#show'
-
-  get '/planets/{id}/logs',                  to: 'logs'
-  get '/planets/{id}/logs/{path}',           to: 'logs#show'
+  assert_equal 200, code
+  assert_include headers['Content-Type'], 'application/json'
+  assert_equal Yeah.application.settings.dig(:lfv, :web), JSON.parse(body[0])
 end
