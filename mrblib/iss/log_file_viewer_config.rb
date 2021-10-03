@@ -52,6 +52,15 @@ module ISS
       @cfg[key]
     end
 
+    # Extracts the nested value specified by the sequence of keys
+    #
+    # @param [ *Object ] keys A sequence of keys.
+    #
+    # @return [ Object]
+    def dig(*keys)
+      @cfg.dig(*keys)
+    end
+
     # Reload the config file.
     #
     # @return [ Void ]
@@ -65,16 +74,18 @@ module ISS
     #
     # @return [ Hash<Symbol,Object> ]
     def parse
-      planets, files, encodings, timestamps, filters =
+      planets, files, encodings, timestamps, filters, cache_controls =
         JSON.parse(IO.read("#{ENV['ORBIT_HOME']}/#{@path}"))
-            .values_at('planets', 'files', 'encodings', 'timestamps', 'filters')
+            .values_at('planets', 'files', 'encodings',
+                       'timestamps', 'filters', 'cache-controls')
 
       {
         planets: [planets].flatten.join(' '),
         files: files&.map! { |f| f.is_a?(Array) ? f : [f, 0] },
         encodings: encodings&.transform_values!(&:to_sym),
         timestamps: timestamps,
-        filters: filters
+        filters: filters,
+        'cache-controls': cache_controls&.transform_keys!(&:to_sym)
       }
     end
   end

@@ -23,20 +23,29 @@
 class ApplicationController < Yeah::Controller
   # HTTP Cache-Control header with max-age.
   #
-  # @param [ Integer ] age The age in hours.
+  # @param [ Symbol ] key The config name where to find the max-age value.
   #
   # @return [ Hash ] 'Cache-Control' => 'max-age=seconds'
-  def cache_control(age)
-    { 'Cache-Control' => "max-age=#{(age * 3600).round}" }
+  def cache_control(key)
+    { 'Cache-Control' => "max-age=#{max_age(key).round}" }
   end
 
   # Render the response by adding the Cache-Control tag to the headers.
   #
-  # @param [ Integer ]             age The age in hours.
+  # @param [ Symbol ] key The config name where to find the max-age value.
   # @param [ Hash<Symbol,String> ] hsh The response data to render.
   #
   # @return [ Array ] The shelf response
   def render_cache(age, hsh)
     render hsh.merge!(headers: cache_control(age))
+  end
+
+  # The value for max-age header.
+  #
+  # @param [ Symbol ] key The config name where to find the value.
+  #
+  # @return [ Float ] age The age in seconds.
+  def max_age(key)
+    3600 * (settings.dig(:lfv, :'cache-controls', key) || 0)
   end
 end

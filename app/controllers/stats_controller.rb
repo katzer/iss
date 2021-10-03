@@ -33,7 +33,7 @@ class StatsController < ApplicationController
   #
   # @return [ Void ]
   def index
-    render_cache 24, json: STATS.zip(stats).map! { |s, c = 0| s.dup << c.to_i }
+    render_cache :stats, json: STATS.zip(stats).map! { |s, c = 0| s.dup << c.to_i }
   end
 
   # Render count of planets who have the specified type.
@@ -42,7 +42,7 @@ class StatsController < ApplicationController
   #
   # @return [ Void ]
   def count(type)
-    render_cache 24, json: fifa("-c type=#{type}", false).to_i
+    render_cache :stats, json: fifa("-c type=#{type}", false).to_i
   end
 
   # Render list of ids who have the specified type.
@@ -51,7 +51,7 @@ class StatsController < ApplicationController
   #
   # @return [ Void ]
   def list(type)
-    render_cache 24, json: fifa("type=#{type}")
+    render_cache :stats, json: fifa("type=#{type}")
   end
 
   private

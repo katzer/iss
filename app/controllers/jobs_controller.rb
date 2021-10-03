@@ -39,7 +39,7 @@ class JobsController < ApplicationController
   #
   # @return [ Void ]
   def results(*)
-    render_cache 0.1, json: report.results.map!(&:to_a) if report
+    render_cache :logs, json: report.results.map!(&:to_a) if report
   end
 
   private
