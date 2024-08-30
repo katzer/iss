@@ -73,6 +73,8 @@ Released at: 18.03.2020
 
 5. Upgraded to mruby 2.1.0
 
+</p>
+
 [Full Changelog](https://github.com/katzer/iss/compare/1.5.0...1.5.1)
 </details>
 
