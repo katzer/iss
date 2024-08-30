@@ -1,6 +1,6 @@
 # Apache 2.0 License
 #
-# Copyright (c) 2016 Sebastian Katzer, appPlant GmbH
+# Copyright (c) 2022 Sebastian Katzer
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,20 +20,29 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-Yeah.application.settings[:web] = { 'key' => 'value' }
+module FindPlanet
 
-def env_for(path, query = '')
-  { 'REQUEST_METHOD' => 'GET', 'PATH_INFO' => path, 'QUERY_STRING' => query }
-end
+  # Find all planets that matches the given matcher.
+  #
+  # @param [ String ] planet_id The id of the planet.
+  #
+  # @raise [ PlanetNotFound ]
+  #
+  # @return [ Planet ]
+  def self.by_id(planet_id, scope: nil)
+    if planet_id == Galaxy::MILKY_WAY_ID
+      Galaxy.milky_way
+    else
+      Planet.find(query(planet_id))
+    end.to_h
+  end
 
-def api_call(url, query = '')
-  Yeah.application.app.call env_for(url, query)
-end
+  private
 
-assert 'GET /configs' do
-  code, headers, body = api_call('/configs')
-
-  assert_equal 200, code
-  assert_include headers['Content-Type'], 'application/json'
-  assert_equal Yeah.application.settings[:web], JSON.parse(body[0])
+  def self.query(planet_id)
+    settings[:planets].split
+                      .map! { |it| it.gsub('"', '') }
+                      .map! { |it| "#{it}@id=#{planet_id}" }
+                      .join(' ')
+  end
 end

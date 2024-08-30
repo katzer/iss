@@ -42,14 +42,32 @@ module Kernel
   #                          Defaults to: true
   #
   # @return [ Array<String> ]
-  def fifa(query, split = true)
+  def fifa(query, split: true, chomp: true)
     bin = ENV.include?('ORBIT_BIN') ? "#{ENV['ORBIT_BIN']}/fifa" : 'fifa'
     cmd = "#{bin} -n #{query}"
     out = `#{cmd}`
 
     raise "#{cmd} failed with exit code #{$?}" unless $? == 0
 
-    split ? out.split("\n") : out
+    return out.split("\n") if split
+
+    out.chomp! if chomp
+    out
+  end
+
+  # Start a new SFTP session for given planet by id.
+  #
+  # @param [ String ] planet_id The id of the planet.
+  #
+  # @raise [ PlanetNotFound ]
+  #
+  # @return [ SFTP::Session ]
+  def sftp(planet_id, &block)
+    user, host = fifa("-f ssh #{planet_id}", split: false).split('@')
+
+    raise PlanetNotFound unless host
+
+    SFTP.start(host, user, use_agent: true, compress: true, timeout: 5_000, &block)
   end
 
   # Displays the given message on STDERR.

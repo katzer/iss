@@ -46,6 +46,6 @@ class ApplicationController < Yeah::Controller
   #
   # @return [ Float ] age The age in seconds.
   def max_age(key)
-    3600 * (settings.dig(:lfv, :'cache-controls', key) || 0)
+    3600 * (settings.dig(:'cache-controls', key) || 0)
   end
 end

@@ -20,20 +20,26 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-Yeah.application.settings[:web] = { 'key' => 'value' }
+class Galaxy < Planet
+  # Fix identifier of the singleton galaxy
+  MILKY_WAY_ID = 'milky-way'.freeze
 
-def env_for(path, query = '')
-  { 'REQUEST_METHOD' => 'GET', 'PATH_INFO' => path, 'QUERY_STRING' => query }
-end
+  # Default instance of the galaxy
+  #
+  # @return [ Galaxy ]
+  def self.milky_way
+    new
+  end
 
-def api_call(url, query = '')
-  Yeah.application.app.call env_for(url, query)
-end
-
-assert 'GET /configs' do
-  code, headers, body = api_call('/configs')
-
-  assert_equal 200, code
-  assert_include headers['Content-Type'], 'application/json'
-  assert_equal Yeah.application.settings[:web], JSON.parse(body[0])
+  # Initializes a galaxy.
+  #
+  # @return [ Void ]
+  def initialize
+    super({
+      'id'   => MILKY_WAY_ID,
+      'name' => 'Log Groups',
+      'url'  => '',
+      'type' => 'server'
+    })
+  end
 end

@@ -31,7 +31,7 @@ environment:
     ORBIT_FILE: '%APPVEYOR_BUILD_FOLDER%\bintest\config\orbit.json'
     LIBSSH2_VERSION: head
   matrix:
-  - MRUBY_VERSION: 3.0.0
+  - MRUBY_VERSION: 3.1.0
   - MRUBY_VERSION: head
 
 matrix:

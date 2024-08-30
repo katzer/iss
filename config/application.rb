@@ -30,7 +30,7 @@ Yeah.application.configure do
   ##
   # Loads the config settings for the log file viewer.
   ##
-  settings[:lfv] = ISS::LogFileViewerConfig.parse
+  settings.merge!(ISS::Config.parse)
 
   ##
   # Tells the shelf server to accept socket connections in non-blocking mode.

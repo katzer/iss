@@ -33,10 +33,10 @@ Options:
 -p, --port        The port number to start the local server on
                   Defaults to: 1974
 -r, --routes      Print out all defined routes
--s, --size        Max pool size for SFTP/SSH sessions
-                  Defaults to: 5
 -t, --timeout     Receive timeout before socket will be closed
                   Defaults to: 1 (sec)
+-w, --workers     The max amount of threads to work in parallel
+                  Defaults to: 20
 -h, --help        This help text
 -v, --version     Show version number
 USAGE
@@ -61,22 +61,24 @@ USAGE
   opt :port, :int, 1974 do |port|
     set :port, port
   ensure
-    raise 'port cannot be zero' if port == 0
+    raise 'port must be greater then zero' if port <= 0
   end
 
   opt :timeout, :int, 1 do |timeout|
     set :timeout, timeout
   ensure
-    raise 'timeout cannot be zero' if timeout == 0
-  end
-
-  opt :size, :int, 5 do |size|
-    set :pool, ISS::Pool.new(size)
+    raise 'receive timeout must be greater then zero' if timeout <= 0
   end
 
   opt :cleanup, :int, 5 do |interval|
     set :cleanup_interval, interval
   ensure
-    raise 'cleanup interval cannot be zero' if interval == 0
+    raise 'cleanup interval must be greater then zero' if interval <= 0
+  end
+
+  opt :workers, :int, 20 do |workers|
+    set :thread_count, workers
+  ensure
+    raise 'worker size must be greater then zero' if workers <= 0
   end
 end

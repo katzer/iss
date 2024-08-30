@@ -42,7 +42,7 @@ class StatsController < ApplicationController
   #
   # @return [ Void ]
   def count(type)
-    render_cache :stats, json: fifa("-c type=#{type}", false).to_i
+    render_cache :stats, json: fifa("-c type=#{type}", split: false).to_i
   end
 
   # Render list of ids who have the specified type.

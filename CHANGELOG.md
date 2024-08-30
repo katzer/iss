@@ -8,15 +8,53 @@ Released at:
 
 1. Use SSH Agent instead of `$ORBIT_KEY` for authentication.
 
-2. New _filters_ setting to specify server-side content filters.
+2. New _groups_ setting to specify virtual logfiles.
+   ```json
+   // $ORBIT_HOME/config/lfv.json
 
-3. New _cache-controls_ setting to customize header value.
+   {
+      "groups": {
+         "Kafka": {
+            "planets": "type=server%location:apac|p27",
+            "files": [
+               "data/logs/kafka/server*"
+            ]
+         }
+      }
+   }
+   ```
 
-4. New `/configs` endpoint to request client settings.
+3. New `--workers` flag to adjust the max count of parallel threads.
 
-5. Fix _timestamps_ setting was ignored.
+4. New _filters_ setting to specify server-side content filters.
+   ```json
+   // $ORBIT_HOME/config/lfv.json
 
-6. Upgraded to mruby 3.0.0
+   {
+      "filters": [
+         ["log/tcp_trace.*", 0, true, "KEY1", "KEY2"], // positive case
+         ["log/th_*[^1-9]*", 0, false, "KEY1", "KEY2"] // negative case
+      ]
+   }
+   ```
+
+5. New _cache-controls_ setting to customize header value.
+
+6. New `/configs` endpoint to request client settings.
+
+7. Fix _timestamps_ setting was ignored.
+
+8. Compiled binary for OSX build with MacOSX11.3 SDK.
+
+9. Added binary for `arm64-apple-darwin19` target.
+
+10. Renamed `config/lvf.json` to `config/iss.json`.
+
+11. Removed `--size` flag.
+
+12. Upgraded to mruby 3.1.0
+
+[Full Changelog](https://github.com/katzer/iss/compare/1.5.1...HEAD)
 
 ## 1.5.1
 

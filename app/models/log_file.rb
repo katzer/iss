@@ -54,28 +54,22 @@ class LogFile
     @sftp      = sftp
   end
 
-  # Returns a proxy object to retrieve the content of a file.
-  #
-  # @return [ LogContentProxy ]
-  def content
-    LogContentProxy.new(@entry.name, @planet_id, @sftp)
-  end
-
   # Returns the content of a logfile.
   #
   # @param [ Int ] size The amount of bytes to read.
   #                     Defaults to: nil (all)
   #
-  # @return [ Array<LogFileLine> ]
-  def readlines(size)
-    content.readlines(size)
+  # @return [ Array<LogContent> ]
+  def readlines(...)
+    content.readlines(...)
   end
 
-  # Converts the object into an array struct.
+  private
+
+  # Returns a proxy object to retrieve the content of a file.
   #
-  # @return [ Array ]
-  def to_a
-    [LogFile.path2id(@entry.name), @planet_id, @plc_id,
-     @entry.name, @entry.stats&.size, @entry.stats&.mtime]
+  # @return [ LogContentProxy ]
+  def content
+    LogContentProxy.new(@entry.name, @planet_id, @sftp)
   end
 end

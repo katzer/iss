@@ -1,6 +1,6 @@
 # Apache 2.0 License
 #
-# Copyright (c) 2016 Sebastian Katzer, appPlant GmbH
+# Copyright (c) 2022 Sebastian Katzer
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,20 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-Yeah.application.settings[:web] = { 'key' => 'value' }
+class NotFoundError < RuntimeError; end
 
-def env_for(path, query = '')
-  { 'REQUEST_METHOD' => 'GET', 'PATH_INFO' => path, 'QUERY_STRING' => query }
-end
+class PlanetNotFound < NotFoundError; end
 
-def api_call(url, query = '')
-  Yeah.application.app.call env_for(url, query)
-end
-
-assert 'GET /configs' do
-  code, headers, body = api_call('/configs')
-
-  assert_equal 200, code
-  assert_include headers['Content-Type'], 'application/json'
-  assert_equal Yeah.application.settings[:web], JSON.parse(body[0])
-end
+class LogFileNotFound < NotFoundError; end

@@ -20,20 +20,38 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-Yeah.application.settings[:web] = { 'key' => 'value' }
+class Array
+  # Maps all entries in parallel. All passed arguments will be forwarded as a
+  # copy to the thread. If only one thread is needed the method simply acts like
+  # Array#map!
+  #
+  # @param [Int] thread_count: The max thread pool size.
+  #                            Default to: 20
+  #
+  # @return Array<>
+  def parallel_map(*args, thread_count: 20, **kwargs, &block)
+    return to_enum(:parallel_map!, *args, thread_count: thread_count, **kwargs) unless block
+    return [] if empty?
 
-def env_for(path, query = '')
-  { 'REQUEST_METHOD' => 'GET', 'PATH_INFO' => path, 'QUERY_STRING' => query }
-end
+    size = [self.size / thread_count, 1].max
+    ths  = []
 
-def api_call(url, query = '')
-  Yeah.application.app.call env_for(url, query)
-end
+    if self.size <= size || thread_count == 1
+      return self.map! { |it| block.call(it, *args, **kwargs) }.flatten!(1)
+    end
 
-assert 'GET /configs' do
-  code, headers, body = api_call('/configs')
+    each_slice(size) do |slice|
+      ths << Thread.new(slice, *args, **kwargs) do |slice, *args, **kwargs|
+        slice.flat_map { |item| block.call(item, *args, **kwargs) }
+      rescue => e
+        [e]
+      end
+    end
 
-  assert_equal 200, code
-  assert_include headers['Content-Type'], 'application/json'
-  assert_equal Yeah.application.settings[:web], JSON.parse(body[0])
+    ths
+      .map!(&:join)
+      .flatten!(1)
+      .to_a
+      .each { |it| raise it if it.is_a?(Exception) }
+  end
 end

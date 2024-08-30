@@ -16,6 +16,8 @@
                       Defaults to: 5
     -t, --timeout     Receive timeout before socket will be closed
                       Defaults to: 1 (sec)
+    -w, --workers     The max amount of threads to work in parallel
+                      Defaults to: 20
     -h, --help        This help text
     -v, --version     Show version number
 
@@ -35,7 +37,7 @@ Download the latest version from the [release page][releases] and add the execut
 
 ## Configuration
 
-The tool expects to find the __lfv.json__ file at `$ORBIT_HOME/config/lfv.json`.
+The tool expects to find the __iss.json__ file at `$ORBIT_HOME/config/iss.json`.
 
 ```json
 {
@@ -45,6 +47,13 @@ The tool expects to find the __lfv.json__ file at `$ORBIT_HOME/config/lfv.json`.
     "log/tcp_trace.*",
     "log/th_*[^1-9][^2-9]"
   ],
+
+  "Kafka": {
+    "planets": "type=server%location:apac|p27",
+    "files": [
+      "data/logs/kafka/server*"
+    ]
+ },
 
   "encodings": {
     "log/th_*": "latin"
@@ -56,7 +65,7 @@ The tool expects to find the __lfv.json__ file at `$ORBIT_HOME/config/lfv.json`.
   ],
 
   "filters": [
-    ["log/tcp_trace.*", 0, "TRACE", "INFO"]
+    ["log/tcp_trace.*", 0, false, "TRACE", "INFO"]
   ]
 }
 ```

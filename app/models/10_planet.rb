@@ -21,25 +21,30 @@
 # SOFTWARE.
 
 class Planet
+
   # Find a planet by its ID.
   #
   # @param [ String ] id The id of the planet to find for.
   #
-  # @return [ Planet ] nil if not found.
+  # @raise [ PlanetNotFound ]
+  #
+  # @return [ Planet ]
   def self.find(id)
-    json = fifa("-f json #{id}", false)
+    json = fifa(%(-f json "#{id}"), split: false, chomp: false)
 
-    Planet.new(JSON.parse(json)) unless json.empty?
+    raise PlanetNotFound if json.empty?
+
+    Planet.new(JSON.parse(json))
   rescue JSON::ParserError
     warn "fifa -f json #{id} returned invalid json: #{json}"
   end
 
-  # Scope for all planets of type server.
+  # Find for all matching planets.
   #
   # @param [ String ] ids The ids of the planets to find for.
   #                       Defaults to: 'id:.*'
   #
-  # @return [ Array<Hash> ]
+  # @return [ Array<Planet> ]
   def self.find_all(ids = 'id:.*')
     fifa(%(-f json "#{ids}")).each_with_object([]) do |json, planets|
       planets << new(JSON.parse(json))
@@ -54,14 +59,8 @@ class Planet
   #
   # @return [ Void ]
   def initialize(data)
-    @data = data
-    data.freeze
+    @data = data.freeze
   end
-
-  # The patsed JSON content returned from fifa.
-  #
-  # @return [ Hash<String, Object> ]
-  attr_reader :data
 
   # Hash-like access to all properties.
   #
@@ -79,24 +78,17 @@ class Planet
     @data['id']
   end
 
-  # A connected SFTP session to the planet.
+  # Converts the object into a hash.
   #
-  # @return [ SFTP::Session ]
-  def sftp
-    settings[:pool][id]
-  end
-
-  # Proxy instance of the LFV module.
-  #
-  # @return [ LogFileProxy ]
-  def logs
-    LogFileProxy.new(id, sftp)
+  # @return [ Hash ]
+  def to_h
+    @data.dup
   end
 
   # Converts the object into an array struct.
   #
   # @return [ Array ]
   def to_a
-    [id, @data['name'], @data['url'], @data['type']]
+    [@data['id'], @data['name'], @data['url'], @data['type']]
   end
 end

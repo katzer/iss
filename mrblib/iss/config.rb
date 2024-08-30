@@ -21,16 +21,16 @@
 # SOFTWARE.
 
 module ISS
-  # Reads the lfv.json config file
-  class LogFileViewerConfig
-    # Parse the lfv.json config file.
+  # Reads the iss.json config file
+  class Config
+    # Parse the iss.json config file.
     #
     # @param [ String ] path The path to the config file.
-    #                        Defaults to: 'config/lfv.json'
+    #                        Defaults to: 'config/iss.json'
     #
-    # @return [ ISS::LogFileViewerConfig ]
-    def self.parse(path = 'config/lfv.json')
-      new(path)
+    # @return [ Hash ]
+    def self.parse(path = 'config/iss.json')
+      new(path).to_h
     end
 
     # Initialize a new config object.
@@ -43,29 +43,11 @@ module ISS
       @cfg  = parse
     end
 
-    # Return a config value.
+    # Converts the config into a hash.
     #
-    # @param [ Symbol ] key The config key.
-    #
-    # @return [ Object ]
-    def [](key)
-      @cfg[key]
-    end
-
-    # Extracts the nested value specified by the sequence of keys
-    #
-    # @param [ *Object ] keys A sequence of keys.
-    #
-    # @return [ Object]
-    def dig(*keys)
-      @cfg.dig(*keys)
-    end
-
-    # Reload the config file.
-    #
-    # @return [ Void ]
-    def reload
-      @cfg.replace(parse)
+    # @return [ Hash ]
+    def to_h
+      @cfg
     end
 
     private
@@ -74,16 +56,42 @@ module ISS
     #
     # @return [ Hash<Symbol,Object> ]
     def parse
-      cfg = JSON
-      .parse(IO.read("#{ENV['ORBIT_HOME']}/#{@path}"))
-      .transform_keys!(&:to_sym)
+      cfg = load_config
 
-      cfg[:planets] = [cfg[:planets]].flatten.join(' ')
-      cfg[:files]&.map! { |f| f.is_a?(Array) ? f : [f, 0] }
-      cfg[:encodings]&.transform_values!(&:to_sym)
-      cfg[:'cache-controls']&.transform_keys!(&:to_sym)
+      cfg[:planets] = parse_planets(cfg[:planets])
+      cfg[:files].map! { |f| parse_file(f) }
+      cfg[:encodings].transform_values!(&:to_sym)
+      cfg[:'cache-controls'].transform_keys!(&:to_sym)
+      cfg[:groups].each { |k, v| v.replace(planets: parse_planets(v['planets']), files: parse_files(v['files'])) }
 
       cfg
+    end
+
+    def load_config
+      cfg = JSON
+        .parse(IO.read("#{ENV['ORBIT_HOME']}/#{@path}"))
+        .transform_keys!(&:to_sym)
+
+      cfg[:files] ||= []
+      cfg[:encodings] ||= {}
+      cfg[:'cache-controls'] ||= {}
+      cfg[:groups] ||= []
+      cfg[:timestamps] ||= []
+      cfg[:filters] ||= []
+
+      cfg
+    end
+
+    def parse_planets(planets)
+      [planets].flatten.join(' ')
+    end
+
+    def parse_file(file)
+      file.is_a?(Array) ? file : [file, 0]
+    end
+
+    def parse_files(files)
+      files&.map! { |f| parse_file(f) } || []
     end
   end
 end

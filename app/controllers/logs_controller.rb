@@ -26,7 +26,7 @@ class LogsController < ApplicationController
   # @return [ Void ]
   def index(*)
     try_twice do
-      render_cache :logs, json: planet.logs.find_all.map!(&:to_a) if planet
+      render_cache :logs, json: FindAllLogFiles.of_planet(planet_id)
     end
   end
 
@@ -35,29 +35,15 @@ class LogsController < ApplicationController
   # @return [ Void ]
   def show(*)
     try_twice do
-      render json: file.readlines(params['size'].to_i).map!(&:to_a) if file
+      if accessible_logfile?
+        render json: ReadContent.of_log_file(path, planet_id: planet_id, size: params['size'].to_i)
+      else
+        render 404
+      end
     end
   end
 
   private
-
-  # The requested planet. Validates first if its allowed to ask for.
-  #
-  # @return [ Planet ]
-  def planet
-    planet = Planet.find(params[:id]) if valid_planet?
-  ensure
-    render 404 unless planet
-  end
-
-  # The requested log file. Validates first if its allowed to ask for.
-  #
-  # @return [ LogFile ]
-  def file
-    file = planet&.logs&.find_by_path(path) if valid_path? && file_exist?
-  ensure
-    render 404 unless file
-  end
 
   # The converted file path.
   #
@@ -66,32 +52,40 @@ class LogsController < ApplicationController
     @path ||= LogFile.id2path(params[:path])
   end
 
-  # Validate if planet is allowed to access.
+  # The proved id of the planet from the request.
   #
-  # @return [ Boolean ]
-  def valid_planet?
-    !fifa("-a id #{params[:id]}", false).empty?
+  # @return [ String ]
+  def planet_id
+    params[:id]
   end
 
-  # Validate if planet is allowed to access.
+  # Checks if the provided planet id matches the milky way.
+  #
+  # @return [ Boolean ]
+  def milky_way?
+    planet_id == Galaxy::MILKY_WAY_ID
+  end
+
+  # Validate if logfile is allowed to access.
+  #
+  # @return [ Boolean ]
+  def accessible_logfile?
+    valid_planet? && valid_path?
+  end
+
+  # Validate if path is allowed to access.
   #
   # @return [ Boolean ]
   def valid_path?
-    settings[:lfv][:files]&.any? { |p| File.fnmatch?(p[0], path, p[1].to_i) }
+    return settings.dig(:groups, path) if milky_way?
+    settings[:files].any? { |p| File.fnmatch?(p[0], path, p[1].to_i) }
   end
 
-  # Test if the remote path does exist.
+  # Validates if planet is allowed to access.
   #
   # @return [ Boolean ]
-  def file_exist?
-    planet&.logs&.exist?(path)
-  end
-
-  # Delete the pooled sftp connection for the requested planet.
-  #
-  # @return [ Void ]
-  def delete_pooled_sftp_connection
-    settings[:pool].delete(params[:id])
+  def valid_planet?
+    FindPlanet.by_id(planet_id)
   end
 
   # Execute the code twice incase of a SSH/SFTP exeception occurs.
@@ -102,7 +96,8 @@ class LogsController < ApplicationController
   def try_twice
     yield
   rescue SSH::Exception, SFTP::Exception => e
-    delete_pooled_sftp_connection
     @retried ? raise(e) : (@retried = true) && retry
+  rescue NotFoundError
+    render 404
   end
 end

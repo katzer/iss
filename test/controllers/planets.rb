@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 Yeah.application.initialize!
-Yeah.application.settings[:lfv] = { planets: 'otherhost' }
+Yeah.application.settings[:planets] = 'type=server'
 
 def env_for(path, query = '')
   { 'REQUEST_METHOD' => 'GET', 'PATH_INFO' => path, 'QUERY_STRING' => query }
@@ -35,10 +35,10 @@ def `(cmd)
   case cmd
   when %(fifa -n -f json "id:.*")
     %({"id":"localhost","name":"name","url":"url","type":"server"}\n{"id":"otherhost","name":"name","url":"url","type":"db"}\n)
-  when 'fifa -n -f json id=localhost'
+  when %(fifa -n -f json "type=server")
     %({"id":"localhost","name":"name","url":"url","type":"server"}\n)
-  when %(fifa -n -f json "otherhost")
-    %({"id":"otherhost","name":"name","url":"url","type":"server"}\n)
+  when %(fifa -n -f json "type=server@id=localhost")
+    %({"id":"localhost","name":"name","url":"url","type":"server"}\n)
   else
     ''
   end
@@ -51,15 +51,7 @@ assert 'GET /planets' do
 
   assert_equal 200, code
   assert_include headers['Content-Type'], 'application/json'
-  assert_equal '[["localhost","name","url","server"],["otherhost","name","url","db"]]', body[0]
-end
-
-assert 'GET /planets?scope=lfv' do
-  code, headers, body = api_call('/planets', 'scope=lfv')
-
-  assert_equal 200, code
-  assert_include headers['Content-Type'], 'application/json'
-  assert_equal '[["otherhost","name","url","server"]]', body[0]
+  assert_equal '[["localhost","name","url","server"],["milky-way","Log Groups","","server"]]', body[0]
 end
 
 assert 'GET /planets/{id}' do
@@ -67,5 +59,9 @@ assert 'GET /planets/{id}' do
 
   assert_equal 200, code
   assert_include headers['Content-Type'], 'application/json'
-  assert_equal `fifa -n -f json id=localhost`.chomp, body[0]
+  assert_equal %({"id":"localhost","name":"name","url":"url","type":"server"}), body[0]
+end
+
+assert 'GET /planets/{id}', 'when planet is unknown' do
+  assert_equal 404, api_call('/planets/unknown')[0]
 end

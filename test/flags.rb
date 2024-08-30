@@ -45,12 +45,6 @@ assert '--timeout' do
   assert_equal 10, parse_flags(:timeout, %w[-t 10])
 end
 
-assert '--size' do
-  assert_kind_of Integer, parser.parse([])     && settings[:pool].size
-  assert_equal 10, parser.parse(%w[--size 10]) && settings[:pool].size
-  assert_equal 10, parser.parse(%w[-s 10])     && settings[:pool].size
-end
-
 assert '--cleanup' do
   assert_kind_of Integer, parse_flags(:cleanup_interval)
   assert_true parse_flags(:cleanup_interval) > 0

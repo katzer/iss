@@ -25,6 +25,6 @@ class ConfigsController < ApplicationController
   #
   # @return [ Void ]
   def index
-    render json: settings.dig(:lfv, :web)&.dup
+    render json: settings[:web]&.dup
   end
 end

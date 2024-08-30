@@ -23,11 +23,9 @@
 class PlanetsController < ApplicationController
   # Render a list of planets that matches the scope.
   #
-  # @param [ String ] scope The scope (lfv, server, etc.)
-  #
   # @return [ Void ]
   def index
-    render_cache :planets, json: Planet.find_all(scope).map!(&:to_a)
+    render_cache :planets, json: FindAllPlanets()
   end
 
   # Render the data of a planet.
@@ -36,22 +34,8 @@ class PlanetsController < ApplicationController
   #
   # @return [ Void ]
   def show(id)
-    planet = Planet.find("id=#{id}")
-
-    planet ? render(json: planet.data) : render(404)
-  end
-
-  private
-
-  # The pattern to match the specified scope.
-  #
-  # @return [ String ]
-  def scope
-    case params['scope']
-    when 'lfv'                 then settings[:lfv][:planets]
-    when 'server', 'db', 'web' then "type=#{params['scope']}"
-    when nil                   then 'id:.*'
-    else raise 'Unknown scope'
-    end
+    render(json: FindPlanet.by_id(id))
+  rescue PlanetNotFound
+    render(404)
   end
 end

@@ -68,12 +68,12 @@ end
   end
 end
 
-%w[-t --timeout -c --cleanup].each do |flag|
+%w[-t --timeout -c --cleanup -w --workers].each do |flag|
   assert("usage [#{flag}]") do
     _, output, status = Open3.capture3(BINARY, flag, '0')
 
     assert_false status.success?, 'Process did exit cleanly'
-    assert_include output, 'cannot be zero'
+    assert_include output, 'must be greater then zero'
   end
 end
 
